@@ -1,6 +1,6 @@
 {
   "name": "pegnomeu",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Gerenciador de workspace global de dependências para Bun — by Suissa 🧠",
   "type": "module",
   "bin": {

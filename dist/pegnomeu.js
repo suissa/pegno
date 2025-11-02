@@ -17,7 +17,7 @@ import {
 import { join } from "path";
 import * as os from "os";
 
-// node_modules/kleur/index.mjs
+// ../../../../../../../../home/suissa/.pegnomeu_workspace/js/kleur___4.1.5/index.mjs
 var FORCE_COLOR;
 var NODE_DISABLE_COLORS;
 var NO_COLOR;
@@ -112,7 +112,7 @@ function init(open, close) {
     return txt === undefined ? chain([open], [blk]) : $.enabled ? run([blk], txt + "") : txt + "";
   };
 }
-var kleur_default = $;
+var kleur___4_1_default = $;
 
 // pegnomeu.ts
 import readline from "readline";
@@ -128,16 +128,16 @@ var HELP = args.includes("--help");
 var IS_DEV = args.includes("--dev");
 function log(...msg) {
   if (VERBOSE)
-    console.log(kleur_default.cyan("[pegnomeu]"), ...msg);
+    console.log(kleur___4_1_default.cyan("[pegnomeu]"), ...msg);
 }
 function info(...msg) {
-  console.log(kleur_default.blue("[pegnomeu]"), ...msg);
+  console.log(kleur___4_1_default.blue("[pegnomeu]"), ...msg);
 }
 function warn(...msg) {
-  console.warn(kleur_default.yellow("[AVISO]"), ...msg);
+  console.warn(kleur___4_1_default.yellow("[AVISO]"), ...msg);
 }
 function error(...msg) {
-  console.error(kleur_default.red("[ERRO]"), ...msg);
+  console.error(kleur___4_1_default.red("[ERRO]"), ...msg);
 }
 function ensureDir(path) {
   if (!existsSync(path))
@@ -173,7 +173,39 @@ function addToPackageJSON(name, version, isDev = false) {
     pkg[key] = {};
   pkg[key][name] = version;
   writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
-  info(`\uD83E\uDDFE Adicionado ${kleur_default.cyan(name)}@${kleur_default.gray(version)} em ${kleur_default.yellow(key)}`);
+  info(`\uD83E\uDDFE Adicionado ${kleur___4_1_default.cyan(name)}@${kleur___4_1_default.gray(version)} em ${kleur___4_1_default.yellow(key)}`);
+}
+function ensureBinDir() {
+  const BIN = "node_modules/.bin";
+  if (!existsSync(BIN))
+    mkdirSync(BIN, { recursive: true });
+  return BIN;
+}
+function linkPackageBins(pkgName, pkgPathInNodeModules) {
+  const pkgJsonPath = join(pkgPathInNodeModules, "package.json");
+  if (!existsSync(pkgJsonPath))
+    return;
+  const pkg = JSON.parse(readFileSync(pkgJsonPath, "utf8"));
+  const bin = pkg.bin;
+  if (!bin)
+    return;
+  const BIN_DIR = ensureBinDir();
+  const entries = typeof bin === "string" ? { [pkgName]: bin } : bin;
+  for (const [binName, relTarget] of Object.entries(entries)) {
+    const src = join(pkgPathInNodeModules, relTarget);
+    if (!existsSync(src)) {
+      warn(`Bin n\xE3o encontrado para ${pkgName}: ${relTarget}`);
+      continue;
+    }
+    const linkName = join(BIN_DIR, binName);
+    rmSync(linkName, { force: true });
+    try {
+      symlinkSync(src, linkName);
+      info(`\uD83D\uDD17 .bin: ${kleur___4_1_default.magenta(binName)} \u2192 ${kleur___4_1_default.gray(src)}`);
+    } catch {
+      warn(`Falha ao linkar .bin para ${pkgName}/${binName}`);
+    }
+  }
 }
 function handlePkg(raw) {
   let name = raw;
@@ -203,7 +235,7 @@ function handlePkg(raw) {
       process.exit(1);
     }
     cpSync(pkgPath, target, { recursive: true });
-    info(`\uD83D\uDCE6 Copiado para ${kleur_default.green(target)}`);
+    info(`\uD83D\uDCE6 Copiado para ${kleur___4_1_default.green(target)}`);
   } else {
     log(`\u2705 Encontrado no workspace: ${name}@${version}`);
   }
@@ -215,11 +247,12 @@ function handlePkg(raw) {
   rmSync(nodePath, { recursive: true, force: true });
   if (COPY_MODE) {
     cpSync(target, nodePath, { recursive: true });
-    info(`\uD83D\uDCC1 Copiado ${kleur_default.magenta(name)} \u2192 node_modules`);
+    info(`\uD83D\uDCC1 Copiado ${kleur___4_1_default.magenta(name)} \u2192 node_modules`);
   } else {
     symlinkSync(target, nodePath, "dir");
-    info(`\uD83D\uDD17 Vinculado ${kleur_default.magenta(nodePath)} \u2192 ${kleur_default.gray(target)}`);
+    info(`\uD83D\uDD17 Vinculado ${kleur___4_1_default.magenta(nodePath)} \u2192 ${kleur___4_1_default.gray(target)}`);
   }
+  linkPackageBins(name, nodePath);
   addToPackageJSON(name, version, IS_DEV);
 }
 async function askSavePreset() {
@@ -240,7 +273,7 @@ async function askSavePreset() {
           devDependencies: pkg.devDependencies || {}
         };
         writeFileSync(path, JSON.stringify(data, null, 2));
-        info(`\u2705 Miniworkspace "${name}" salvo em ${kleur_default.gray(path)}`);
+        info(`\u2705 Miniworkspace "${name}" salvo em ${kleur___4_1_default.gray(path)}`);
         rl.close();
         resolve();
       });
@@ -256,7 +289,7 @@ function usePreset(name) {
   const all = { ...preset.dependencies, ...preset.devDependencies };
   for (const [pkg, ver] of Object.entries(all))
     handlePkg(`${pkg}@${ver}`);
-  info(kleur_default.green(`\uD83D\uDE80 Miniworkspace "${preset.name}" aplicado!`));
+  info(kleur___4_1_default.green(`\uD83D\uDE80 Miniworkspace "${preset.name}" aplicado!`));
 }
 function listPresets() {
   const files = readdirSync(PRESET_DIR).filter((f) => f.endsWith(".json"));
@@ -276,23 +309,23 @@ function installAll() {
   const deps = Object.entries(all).map(([k, v]) => `${k}@${v}`);
   if (!deps.length)
     return warn("Nenhuma depend\xEAncia encontrada em package.json.");
-  info(`\uD83D\uDCC1 Workspace: ${kleur_default.gray(WORKSPACE)}`);
+  info(`\uD83D\uDCC1 Workspace: ${kleur___4_1_default.gray(WORKSPACE)}`);
   for (const dep of deps)
     handlePkg(dep);
-  info(kleur_default.green("\uD83D\uDE80 Instala\xE7\xE3o conclu\xEDda!"));
+  info(kleur___4_1_default.green("\uD83D\uDE80 Instala\xE7\xE3o conclu\xEDda!"));
 }
 function showHelp() {
-  console.log(kleur_default.bold("pegnomeu CLI 1.3.0"));
+  console.log(kleur___4_1_default.bold("pegnomeu CLI 1.3.0"));
   console.log(`
-  ${kleur_default.cyan("Uso:")}
-    ${kleur_default.green("pegnomeu")} ${kleur_default.yellow("axios@latest")}       ${kleur_default.gray("\u2192")} Instala pacote direto
-    ${kleur_default.green("pegnomeu")} ${kleur_default.blue("--dev")} ${kleur_default.yellow("vitest")}       ${kleur_default.gray("\u2192")} Instala como devDependency
-    ${kleur_default.green("pegnomeu")} ${kleur_default.magenta("use")} ${kleur_default.yellow("api")}            ${kleur_default.gray("\u2192")} Usa miniworkspace salvo
-    ${kleur_default.green("pegnomeu")} ${kleur_default.magenta("list")}               ${kleur_default.gray("\u2192")} Lista miniworkspaces
-    ${kleur_default.green("pegnomeu")} ${kleur_default.blue("--copy")}             ${kleur_default.gray("\u2192")} Copia ao inv\xE9s de linkar
-    ${kleur_default.green("pegnomeu")} ${kleur_default.magenta("sync")}               ${kleur_default.gray("\u2192")} Copia todos do workspace para node_modules
-    ${kleur_default.green("pegnomeu")} ${kleur_default.blue("--verbose")}          ${kleur_default.gray("\u2192")} Logs detalhados
-    ${kleur_default.green("pegnomeu")} ${kleur_default.blue("--help")}             ${kleur_default.gray("\u2192")} Mostra esta ajuda
+  ${kleur___4_1_default.cyan("Uso:")}
+    ${kleur___4_1_default.green("pegnomeu")} ${kleur___4_1_default.yellow("axios@latest")}       ${kleur___4_1_default.gray("\u2192")} Instala pacote direto
+    ${kleur___4_1_default.green("pegnomeu")} ${kleur___4_1_default.blue("--dev")} ${kleur___4_1_default.yellow("vitest")}       ${kleur___4_1_default.gray("\u2192")} Instala como devDependency
+    ${kleur___4_1_default.green("pegnomeu")} ${kleur___4_1_default.magenta("use")} ${kleur___4_1_default.yellow("api")}            ${kleur___4_1_default.gray("\u2192")} Usa miniworkspace salvo
+    ${kleur___4_1_default.green("pegnomeu")} ${kleur___4_1_default.magenta("list")}               ${kleur___4_1_default.gray("\u2192")} Lista miniworkspaces
+    ${kleur___4_1_default.green("pegnomeu")} ${kleur___4_1_default.blue("--copy")}             ${kleur___4_1_default.gray("\u2192")} Copia ao inv\xE9s de linkar
+    ${kleur___4_1_default.green("pegnomeu")} ${kleur___4_1_default.magenta("sync")}               ${kleur___4_1_default.gray("\u2192")} Copia todos do workspace para node_modules
+    ${kleur___4_1_default.green("pegnomeu")} ${kleur___4_1_default.blue("--verbose")}          ${kleur___4_1_default.gray("\u2192")} Logs detalhados
+    ${kleur___4_1_default.green("pegnomeu")} ${kleur___4_1_default.blue("--help")}             ${kleur___4_1_default.gray("\u2192")} Mostra esta ajuda
   `);
 }
 (async () => {
@@ -327,5 +360,5 @@ function syncWorkspace() {
     exec(`cp -R "${src}" "${dest}"`);
     log(`\uD83D\uDCC1 Sincronizado ${name}`);
   }
-  info(kleur_default.green("\u2728 Workspace sincronizado com sucesso!"));
+  info(kleur___4_1_default.green("\u2728 Workspace sincronizado com sucesso!"));
 }

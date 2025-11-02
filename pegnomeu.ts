@@ -96,6 +96,49 @@ function addToPackageJSON(name: string, version: string, isDev = false) {
   info(`🧾 Adicionado ${kleur.cyan(name)}@${kleur.gray(version)} em ${kleur.yellow(key)}`);
 }
 
+function ensureBinDir() {
+  const BIN = "node_modules/.bin";
+  if (!existsSync(BIN)) mkdirSync(BIN, { recursive: true });
+  return BIN;
+}
+
+function linkPackageBins(pkgName: string, pkgPathInNodeModules: string) {
+  // Lê package.json do pacote linkado/copied
+  const pkgJsonPath = join(pkgPathInNodeModules, "package.json");
+  if (!existsSync(pkgJsonPath)) return;
+
+  const pkg = JSON.parse(readFileSync(pkgJsonPath, "utf8"));
+  const bin = pkg.bin;
+  if (!bin) return;
+
+  const BIN_DIR = ensureBinDir();
+
+  const entries =
+    typeof bin === "string"
+      ? { [pkgName]: bin }
+      : bin; // { binName: "dist/cli.js", ... }
+
+  for (const [binName, relTarget] of Object.entries(entries)) {
+    const src = join(pkgPathInNodeModules, relTarget as string);
+    if (!existsSync(src)) {
+      warn(`Bin não encontrado para ${pkgName}: ${relTarget}`);
+      continue;
+    }
+
+    // nome do link no .bin → usa a key do bin ou o nome do pacote
+    const linkName = join(BIN_DIR, binName);
+    rmSync(linkName, { force: true });
+
+    try {
+      symlinkSync(src, linkName);
+      info(`🔗 .bin: ${kleur.magenta(binName)} → ${kleur.gray(src)}`);
+    } catch {
+      // fallback Windows (cria cópia .cmd não implementado aqui; manter simples em Linux)
+      warn(`Falha ao linkar .bin para ${pkgName}/${binName}`);
+    }
+  }
+}
+
 // ---------------------
 // Instala pacote único
 // ---------------------
@@ -158,7 +201,8 @@ function handlePkg(raw: string) {
     symlinkSync(target, nodePath, "dir");
     info(`🔗 Vinculado ${kleur.magenta(nodePath)} → ${kleur.gray(target)}`);
   }
-
+  
+  linkPackageBins(name, nodePath);
   addToPackageJSON(name, version, IS_DEV);
 }
 
