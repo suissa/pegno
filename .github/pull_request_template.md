@@ -27,10 +27,12 @@ Descreva os testes que você executou para verificar suas mudanças.
 ## 📋 Checklist
 
 - [ ] Meu código segue as diretrizes de estilo deste projeto
+- [ ] Executei `bun run format` para formatar o código
+- [ ] Executei `bun run lint` e corrigi todos os problemas
 - [ ] Eu fiz uma auto-revisão do meu próprio código
 - [ ] Eu comentei meu código, particularmente em áreas difíceis de entender
 - [ ] Eu fiz mudanças correspondentes na documentação
-- [ ] Minhas mudanças não geram novos warnings
+- [ ] Minhas mudanças não geram novos warnings de lint/TypeScript
 - [ ] O build passa localmente com minhas mudanças
 - [ ] Mantive a arquitetura de arquivo único (pegno.ts)
 - [ ] Não adicionei dependências desnecessárias

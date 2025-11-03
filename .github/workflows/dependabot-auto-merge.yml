@@ -24,9 +24,11 @@ jobs:
         
       - name: Run tests
         run: |
+          bun run format:check
+          bun run lint:check
           bun run build
           test -f dist/pegno.js
-          echo "✅ Build test passed"
+          echo "✅ All checks passed"
           
       - name: Check if PR is for patch/minor updates
         id: check-update

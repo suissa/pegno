@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://i.imgur.com/P1VL4bC.png" width="480" alt="Pegno logo"/>
+  <img src="https://i.imgur.com/IhXEEQM.png" width="680" alt="Pegno logo"/>
 </p>
 
 <p align="center">
