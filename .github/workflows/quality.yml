@@ -1,0 +1,70 @@
+name: Code Quality
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  quality:
+    name: Code Quality Check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+          
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+        
+      - name: TypeScript strict check
+        run: bun run tsc --noEmit --strict
+        
+      - name: Check file sizes
+        run: |
+          echo "📊 Verificando tamanhos dos arquivos..."
+          ls -lah pegno.ts
+          if [ -f dist/pegno.js ]; then
+            ls -lah dist/pegno.js
+          fi
+          
+      - name: Verify single file architecture
+        run: |
+          echo "🏗️ Verificando arquitetura de arquivo único..."
+          file_count=$(find . -name "*.ts" -not -path "./node_modules/*" -not -path "./site/*" | wc -l)
+          if [ $file_count -ne 1 ]; then
+            echo "❌ Erro: Encontrados $file_count arquivos .ts, esperado apenas 1 (pegno.ts)"
+            exit 1
+          fi
+          echo "✅ Arquitetura de arquivo único mantida"
+          
+      - name: Check dependencies
+        run: |
+          echo "📦 Verificando dependências mínimas..."
+          deps=$(bun pm ls --depth=0 | grep -c "├─\|└─" || echo "0")
+          echo "Dependências encontradas: $deps"
+          if [ $deps -gt 10 ]; then
+            echo "⚠️ Aviso: Muitas dependências ($deps), considere reduzir"
+          fi
+          
+      - name: Validate package.json
+        run: |
+          echo "📋 Validando package.json..."
+          bun run --silent -e "
+            const pkg = require('./package.json');
+            if (!pkg.bin || !pkg.bin.pegno) {
+              console.error('❌ Erro: bin.pegno não definido');
+              process.exit(1);
+            }
+            if (!pkg.engines || !pkg.engines.bun) {
+              console.error('❌ Erro: engines.bun não definido');
+              process.exit(1);
+            }
+            console.log('✅ package.json válido');
+          "
