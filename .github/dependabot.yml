@@ -1,0 +1,33 @@
+version: 2
+updates:
+  # Atualizar dependências do npm
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "suissa"
+    assignees:
+      - "suissa"
+    commit-message:
+      prefix: "⬆️"
+      include: "scope"
+    
+  # Atualizar GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 3
+    reviewers:
+      - "suissa"
+    assignees:
+      - "suissa"
+    commit-message:
+      prefix: "🔧"
+      include: "scope"
