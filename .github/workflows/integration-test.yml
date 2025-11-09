@@ -1,0 +1,304 @@
+name: Integration Test - Vite + Shadcn + Tailwind
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '0 2 * * 1'  # Segunda-feira às 02:00
+  workflow_dispatch:  # Permite execução manual
+
+jobs:
+  test-windows:
+    name: Test on Windows
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout Pegno
+        uses: actions/checkout@v4
+        
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+          
+      - name: Install Pegno dependencies
+        run: bun install --frozen-lockfile
+        
+      - name: Build Pegno
+        run: bun run build
+        
+      - name: Create test directory
+        run: |
+          New-Item -ItemType Directory -Force -Path "$env:TEMP\pegno-test-windows"
+          Set-Location "$env:TEMP\pegno-test-windows"
+        shell: pwsh
+        
+      - name: Initialize test project with Vite
+        run: |
+          cd $env:TEMP\pegno-test-windows
+          bun create vite test-app --template react-ts
+          cd test-app
+        shell: pwsh
+        
+      - name: Test Pegno install Tailwind
+        run: |
+          cd $env:TEMP\pegno-test-windows\test-app
+          node ${{ github.workspace }}/dist/pegno.js install tailwindcss postcss autoprefixer
+          if (-not (Test-Path "node_modules/tailwindcss")) {
+            Write-Error "Tailwind não foi instalado corretamente"
+            exit 1
+          }
+          Write-Host "✅ Tailwind instalado com sucesso"
+        shell: pwsh
+        
+      - name: Initialize Tailwind
+        run: |
+          cd $env:TEMP\pegno-test-windows\test-app
+          bunx tailwindcss init -p
+          if (-not (Test-Path "tailwind.config.js")) {
+            Write-Error "Tailwind config não foi criado"
+            exit 1
+          }
+          Write-Host "✅ Tailwind inicializado"
+        shell: pwsh
+        
+      - name: Test Pegno install Shadcn dependencies
+        run: |
+          cd $env:TEMP\pegno-test-windows\test-app
+          node ${{ github.workspace }}/dist/pegno.js install class-variance-authority clsx tailwind-merge lucide-react --dev
+          node ${{ github.workspace }}/dist/pegno.js install @radix-ui/react-slot
+          Write-Host "✅ Dependências Shadcn instaladas"
+        shell: pwsh
+        
+      - name: Create Shadcn config
+        run: |
+          cd $env:TEMP\pegno-test-windows\test-app
+          $config = @"
+          {
+            "style": "default",
+            "rsc": false,
+            "tsx": true,
+            "tailwind": {
+              "config": "tailwind.config.js",
+              "css": "src/index.css",
+              "baseColor": "slate",
+              "cssVariables": true
+            },
+            "aliases": {
+              "components": "@/components",
+              "utils": "@/lib/utils"
+            }
+          }
+          "@
+          New-Item -ItemType Directory -Force -Path "components.json"
+          $config | Out-File -FilePath "components.json" -Encoding utf8
+          Write-Host "✅ Shadcn config criado"
+        shell: pwsh
+        
+      - name: Verify installation
+        run: |
+          cd $env:TEMP\pegno-test-windows\test-app
+          Write-Host "📦 Verificando instalações..."
+          
+          $packages = @(
+            "tailwindcss",
+            "postcss",
+            "autoprefixer",
+            "class-variance-authority",
+            "clsx",
+            "tailwind-merge",
+            "lucide-react",
+            "@radix-ui/react-slot"
+          )
+          
+          foreach ($pkg in $packages) {
+            if (Test-Path "node_modules/$pkg") {
+              Write-Host "✅ $pkg instalado"
+            } else {
+              Write-Error "❌ $pkg NÃO instalado"
+              exit 1
+            }
+          }
+          
+          Write-Host "`n🎉 Todos os pacotes instalados com sucesso no Windows!"
+        shell: pwsh
+        
+      - name: Test build
+        run: |
+          cd $env:TEMP\pegno-test-windows\test-app
+          bun run build
+          if (-not (Test-Path "dist")) {
+            Write-Error "Build falhou"
+            exit 1
+          }
+          Write-Host "✅ Build executado com sucesso"
+        shell: pwsh
+
+  test-wsl:
+    name: Test on WSL (Ubuntu)
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout Pegno
+        uses: actions/checkout@v4
+        
+      - name: Setup WSL
+        uses: Vampire/setup-wsl@v3
+        with:
+          distribution: Ubuntu-22.04
+          
+      - name: Install Bun in WSL
+        shell: wsl-bash {0}
+        run: |
+          curl -fsSL https://bun.sh/install | bash
+          export BUN_INSTALL="$HOME/.bun"
+          export PATH="$BUN_INSTALL/bin:$PATH"
+          bun --version
+          
+      - name: Build Pegno in WSL
+        shell: wsl-bash {0}
+        run: |
+          export BUN_INSTALL="$HOME/.bun"
+          export PATH="$BUN_INSTALL/bin:$PATH"
+          cd /mnt/d/a/pegno/pegno || cd /mnt/c/actions-runner/_work/pegno/pegno || cd $GITHUB_WORKSPACE
+          bun install
+          bun run build
+          
+      - name: Create test directory in WSL
+        shell: wsl-bash {0}
+        run: |
+          export BUN_INSTALL="$HOME/.bun"
+          export PATH="$BUN_INSTALL/bin:$PATH"
+          mkdir -p /tmp/pegno-test-wsl
+          cd /tmp/pegno-test-wsl
+          
+      - name: Initialize test project with Vite in WSL
+        shell: wsl-bash {0}
+        run: |
+          export BUN_INSTALL="$HOME/.bun"
+          export PATH="$BUN_INSTALL/bin:$PATH"
+          cd /tmp/pegno-test-wsl
+          bun create vite test-app --template react-ts
+          cd test-app
+          
+      - name: Test Pegno install Tailwind in WSL
+        shell: wsl-bash {0}
+        run: |
+          export BUN_INSTALL="$HOME/.bun"
+          export PATH="$BUN_INSTALL/bin:$PATH"
+          cd /tmp/pegno-test-wsl/test-app
+          WORKSPACE=$(cd /mnt/d/a/pegno/pegno 2>/dev/null || cd /mnt/c/actions-runner/_work/pegno/pegno 2>/dev/null || echo $GITHUB_WORKSPACE)
+          node $WORKSPACE/dist/pegno.js install tailwindcss postcss autoprefixer
+          
+          if [ ! -d "node_modules/tailwindcss" ]; then
+            echo "❌ Tailwind não foi instalado corretamente"
+            exit 1
+          fi
+          echo "✅ Tailwind instalado com sucesso no WSL"
+          
+      - name: Initialize Tailwind in WSL
+        shell: wsl-bash {0}
+        run: |
+          export BUN_INSTALL="$HOME/.bun"
+          export PATH="$BUN_INSTALL/bin:$PATH"
+          cd /tmp/pegno-test-wsl/test-app
+          bunx tailwindcss init -p
+          
+          if [ ! -f "tailwind.config.js" ]; then
+            echo "❌ Tailwind config não foi criado"
+            exit 1
+          fi
+          echo "✅ Tailwind inicializado no WSL"
+          
+      - name: Test Pegno install Shadcn dependencies in WSL
+        shell: wsl-bash {0}
+        run: |
+          export BUN_INSTALL="$HOME/.bun"
+          export PATH="$BUN_INSTALL/bin:$PATH"
+          cd /tmp/pegno-test-wsl/test-app
+          WORKSPACE=$(cd /mnt/d/a/pegno/pegno 2>/dev/null || cd /mnt/c/actions-runner/_work/pegno/pegno 2>/dev/null || echo $GITHUB_WORKSPACE)
+          node $WORKSPACE/dist/pegno.js install class-variance-authority clsx tailwind-merge lucide-react --dev
+          node $WORKSPACE/dist/pegno.js install @radix-ui/react-slot
+          echo "✅ Dependências Shadcn instaladas no WSL"
+          
+      - name: Verify installation in WSL
+        shell: wsl-bash {0}
+        run: |
+          export BUN_INSTALL="$HOME/.bun"
+          export PATH="$BUN_INSTALL/bin:$PATH"
+          cd /tmp/pegno-test-wsl/test-app
+          echo "📦 Verificando instalações no WSL..."
+          
+          packages=(
+            "tailwindcss"
+            "postcss"
+            "autoprefixer"
+            "class-variance-authority"
+            "clsx"
+            "tailwind-merge"
+            "lucide-react"
+            "@radix-ui/react-slot"
+          )
+          
+          for pkg in "${packages[@]}"; do
+            if [ -d "node_modules/$pkg" ]; then
+              echo "✅ $pkg instalado"
+            else
+              echo "❌ $pkg NÃO instalado"
+              exit 1
+            fi
+          done
+          
+          echo ""
+          echo "🎉 Todos os pacotes instalados com sucesso no WSL!"
+          
+      - name: Test build in WSL
+        shell: wsl-bash {0}
+        run: |
+          export BUN_INSTALL="$HOME/.bun"
+          export PATH="$BUN_INSTALL/bin:$PATH"
+          cd /tmp/pegno-test-wsl/test-app
+          bun run build
+          
+          if [ ! -d "dist" ]; then
+            echo "❌ Build falhou"
+            exit 1
+          fi
+          echo "✅ Build executado com sucesso no WSL"
+
+  test-summary:
+    name: Test Summary
+    runs-on: ubuntu-latest
+    needs: [test-windows, test-wsl]
+    if: always()
+    
+    steps:
+      - name: Check test results
+        run: |
+          echo "## 📊 Resultados dos Testes de Integração" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Windows" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ needs.test-windows.result }}" == "success" ]; then
+            echo "✅ Vite + Shadcn + Tailwind instalado com sucesso" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Falha na instalação" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### WSL (Ubuntu)" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ needs.test-wsl.result }}" == "success" ]; then
+            echo "✅ Vite + Shadcn + Tailwind instalado com sucesso" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Falha na instalação" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          if [ "${{ needs.test-windows.result }}" == "success" ] && [ "${{ needs.test-wsl.result }}" == "success" ]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "🎉 **Todos os testes passaram!**" >> $GITHUB_STEP_SUMMARY
+            exit 0
+          else
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "⚠️ **Alguns testes falharam**" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi

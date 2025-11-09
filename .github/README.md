@@ -41,6 +41,15 @@ Este diretório contém todos os workflows automatizados do Pegno.
   - ✅ Testes automáticos antes do merge
   - 🔒 Aprovação automática para updates seguros
 
+### 🧪 Integration Test (`integration-test.yml`)
+- **Trigger**: Push, PRs, schedule semanal, manual
+- **Funcionalidades**:
+  - 🪟 Testes completos no Windows
+  - 🐧 Testes completos no WSL (Ubuntu)
+  - 📦 Validação de instalação Vite + Shadcn + Tailwind
+  - ✅ Verificação de build funcional
+  - 📊 Resumo automático dos resultados
+
 ## 🔧 Configuração Necessária
 
 ### Secrets do GitHub

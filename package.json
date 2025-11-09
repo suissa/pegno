@@ -15,7 +15,11 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "prebuild": "bun run format && bun run lint",
-    "build": "bun build pegno.ts --outdir dist --target bun"
+    "build": "bun build pegno.ts --outdir dist --target bun",
+    "test:integration": "pwsh -File test-integration.ps1 -All",
+    "test:integration:windows": "pwsh -File test-integration.ps1 -Windows",
+    "test:integration:wsl": "pwsh -File test-integration.ps1 -WSL",
+    "test:integration:linux": "bash test-integration.sh"
   },
   "keywords": [
     "bun",
