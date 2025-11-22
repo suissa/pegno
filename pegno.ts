@@ -465,7 +465,7 @@ function syncWorkspace(): void {
     const name = dir.split('__')[0];
     const dest = join('node_modules', name);
     rmSync(dest, { recursive: true, force: true });
-    exec(`cp "${src}/bun.lock" "${dest}"`);
+    // exec(`cp "${src}/bun.lock" "${dest}"`);
     exec(`cp -R "${src}" "${dest}"`);
     log(`📁 Sincronizado ${name}`);
   }
