@@ -1,6 +1,6 @@
 {
   "name": "pegno",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Gerenciador de workspace global de dependências para Bun — by Suissa 🧠",
   "type": "module",
   "bin": {
@@ -12,6 +12,7 @@
     "clean": "rm -rf node_modules bun.lock bun.lockb && bun pm cache clean",
     "lint": "eslint . --ext .ts --fix",
     "lint:check": "eslint . --ext .ts",
+    "lint:fix": "bun run fix-eslint.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "prebuild": "bun run format && bun run lint",

@@ -26,7 +26,7 @@ import readline from 'readline';
 // Configurações globais
 // ---------------------
 const workspace =
-  process.env.pegno_WORKSPACE?.trim() !== ''
+  process.env.pegno_WORKSPACE !== undefined && process.env.pegno_WORKSPACE.trim() !== ''
     ? process.env.pegno_WORKSPACE
     : join(os.homedir(), '.pegno_workspace/js');
 const tmpdir = join(os.tmpdir(), `pegno_install_${Date.now()}`);
