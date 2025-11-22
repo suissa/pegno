@@ -6,7 +6,6 @@
 Globalny menedżer zależności dla Bun, którego Bun zapomniał stworzyć
 </p>
 
-
 <p align="center">
   <a href="https://bun.sh" target="_blank"><img src="https://img.shields.io/badge/made%20for-bun-000000.svg?logo=bun" /></a>
   <img src="https://img.shields.io/badge/license-MIT-blue.svg" />
@@ -37,7 +36,7 @@ Pomysł narodził się, ponieważ Bun obiecał "szybkość i prostotę" — ale 
 
 Każdy projekt reinstaluje te same biblioteki. Każdy build pobiera ponownie. Każdy deweloper traci czas.
 
-**Pegno** rozwiązuje to, tworząc **globalny workspace** w twoim systemie, gdzie zależności są instalowane raz i ponownie wykorzystywane przez *symlinki* (lub kopie, jeśli wolisz).
+**Pegno** rozwiązuje to, tworząc **globalny workspace** w twoim systemie, gdzie zależności są instalowane raz i ponownie wykorzystywane przez _symlinki_ (lub kopie, jeśli wolisz).
 
 ---
 
@@ -60,6 +59,7 @@ Dodatkowo dodaje coś, czego nie oferuje żaden inny menedżer:
 ### 🧠 Mini-workspace'y ("presety")
 
 Możesz zapisywać zestawy zależności i stosować je w dowolnym projekcie:
+
 ```bash
 pegno axios fastify zod
 # Pyta, czy chcesz zapisać jako preset → wpisz "api"
@@ -72,17 +72,17 @@ pegno use api
 
 ## ⚡️ Główne funkcje
 
-| Funkcja | Opis |
-|----------|------------|
-| 💾 **Inteligentny Globalny Cache** | Każdy pakiet jest instalowany tylko raz w systemie. |
-| 🪄 **Automatyczne Symlinki** | Brak duplikacji `node_modules`, wszystko wskazuje na globalny cache. |
-| 📦 **Tryb kopiowania (`--copy`)** | Jeśli chcesz całkowicie izolowane buildy. |
-| 📚 **Mini-Workspace'y** | Twórz nazwane zestawy zależności i stosuj w sekundach. |
-| 🧩 **Kompatybilny z każdym projektem Bun** | Używa tylko natywnych API (`fs`, `os`, `path`, `child_process`). |
-| 🛠️ **Tryb `--dev`** | Dodaje pakiety bezpośrednio do `devDependencies`. |
-| 🧭 **Tryb `sync`** | Kopiuje cały globalny workspace do lokalnych `node_modules`. |
-| 🖼️ **Kolorowe logi (`kleur`)** | Jasny i zabawny feedback. |
-| 🤗 **Brak zewnętrznych zależności runtime** | Tylko `kleur` i Bun. |
+| Funkcja                                     | Opis                                                                 |
+| ------------------------------------------- | -------------------------------------------------------------------- |
+| 💾 **Inteligentny Globalny Cache**          | Każdy pakiet jest instalowany tylko raz w systemie.                  |
+| 🪄 **Automatyczne Symlinki**                | Brak duplikacji `node_modules`, wszystko wskazuje na globalny cache. |
+| 📦 **Tryb kopiowania (`--copy`)**           | Jeśli chcesz całkowicie izolowane buildy.                            |
+| 📚 **Mini-Workspace'y**                     | Twórz nazwane zestawy zależności i stosuj w sekundach.               |
+| 🧩 **Kompatybilny z każdym projektem Bun**  | Używa tylko natywnych API (`fs`, `os`, `path`, `child_process`).     |
+| 🛠️ **Tryb `--dev`**                         | Dodaje pakiety bezpośrednio do `devDependencies`.                    |
+| 🧭 **Tryb `sync`**                          | Kopiuje cały globalny workspace do lokalnych `node_modules`.         |
+| 🖼️ **Kolorowe logi (`kleur`)**              | Jasny i zabawny feedback.                                            |
+| 🤗 **Brak zewnętrznych zależności runtime** | Tylko `kleur` i Bun.                                                 |
 
 ---
 
@@ -98,11 +98,13 @@ npx pegno
 ```
 
 Sprawdź:
+
 ```bash
 pegno --help
 ```
 
 Oczekiwane wyjście:
+
 ```
 pegno CLI 1.3.0
 

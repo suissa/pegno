@@ -1,6 +1,6 @@
 {
   "name": "pegno",
-  "version": "1.0.0",
+  "version": "2.2.0",
   "description": "Gerenciador de workspace global de dependências para Bun — by Suissa 🧠",
   "type": "module",
   "bin": {
@@ -12,10 +12,15 @@
     "clean": "rm -rf node_modules bun.lock bun.lockb && bun pm cache clean",
     "lint": "eslint . --ext .ts --fix",
     "lint:check": "eslint . --ext .ts",
+    "lint:fix": "bun run fix-eslint.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "prebuild": "bun run format && bun run lint",
-    "build": "bun build pegno.ts --outdir dist --target bun"
+    "build": "bun build pegno.ts --outdir dist --target bun",
+    "test:integration": "pwsh -File test-integration.ps1 -All",
+    "test:integration:windows": "pwsh -File test-integration.ps1 -Windows",
+    "test:integration:wsl": "pwsh -File test-integration.ps1 -WSL",
+    "test:integration:linux": "bash test-integration.sh"
   },
   "keywords": [
     "bun",
@@ -34,20 +39,29 @@
     "dist",
     "README.md"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/suissa/pegno.git"
+  },
+  "bugs": {
+    "url": "https://github.com/suissa/pegno/issues"
+  },
+  "homepage": "https://github.com/suissa/pegno#readme",
   "devDependencies": {
-    "bun-types": "latest",
-    "typescript": "^5.6.0",
     "@types/node": "^24.9.2",
-    "eslint": "^9.0.0",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
-    "prettier": "^3.0.0"
+    "bun-types": "latest",
+    "eslint": "^9.0.0",
+    "prettier": "^3.0.0",
+    "typescript": "^5.6.0"
   },
   "dependencies": {
-    "kleur": "^4.1.5",
-    "bun-types": "latest",
-    "typescript": "^5.6.0",
+    "@eslint/js": "^9.39.1",
     "@types/node": "^24.9.2",
+    "bun-types": "latest",
+    "kleur": "^4.1.5",
+    "typescript": "^5.6.0",
     "undici-types": "~7.16.0"
   }
 }

@@ -6,7 +6,6 @@
 Bun'un yapmayı unuttuğu Bun için global bağımlılık yöneticisi
 </p>
 
-
 <p align="center">
   <a href="https://bun.sh" target="_blank"><img src="https://img.shields.io/badge/made%20for-bun-000000.svg?logo=bun" /></a>
   <img src="https://img.shields.io/badge/license-MIT-blue.svg" />
@@ -37,7 +36,7 @@ Bu fikir, Bun'un "hız ve basitlik" vaat etmesine rağmen, pratikte hala önemli
 
 Her proje aynı kütüphaneleri yeniden yükler. Her build yeniden indirir. Her geliştirici zaman kaybeder.
 
-**Pegno** bunu sisteminizde bir **global çalışma alanı** oluşturarak çözer, burada bağımlılıklar bir kez yüklenir ve *sembolik bağlantılar* (veya isterseniz kopyalar) aracılığıyla yeniden kullanılır.
+**Pegno** bunu sisteminizde bir **global çalışma alanı** oluşturarak çözer, burada bağımlılıklar bir kez yüklenir ve _sembolik bağlantılar_ (veya isterseniz kopyalar) aracılığıyla yeniden kullanılır.
 
 ---
 
@@ -60,6 +59,7 @@ Ayrıca, başka hiçbir yöneticinin sunmadığı bir şey ekler:
 ### 🧠 Mini çalışma alanları ("ön ayarlar")
 
 Bağımlılık setlerini kaydedebilir ve herhangi bir projeye uygulayabilirsiniz:
+
 ```bash
 pegno axios fastify zod
 # Ön ayar olarak kaydetmek isteyip istemediğinizi sorar → "api" yazın
@@ -72,17 +72,17 @@ pegno use api
 
 ## ⚡️ Ana özellikler
 
-| Özellik | Açıklama |
-|----------|------------|
-| 💾 **Akıllı Global Önbellek** | Her paket sistemde sadece bir kez yüklenir. |
-| 🪄 **Otomatik Sembolik Bağlantılar** | `node_modules` çoğaltması yok, her şey global önbelleği işaret eder. |
-| 📦 **Kopyalama modu (`--copy`)** | Tamamen izole buildler istiyorsanız. |
-| 📚 **Mini Çalışma Alanları** | Adlandırılmış bağımlılık setleri oluşturun ve saniyeler içinde yeniden uygulayın. |
-| 🧩 **Herhangi bir Bun projesi ile uyumlu** | Sadece yerel API'ler kullanır (`fs`, `os`, `path`, `child_process`). |
-| 🛠️ **`--dev` modu** | Paketleri doğrudan `devDependencies`'e ekler. |
-| 🧭 **`sync` modu** | Tüm global çalışma alanını yerel `node_modules`'e kopyalar. |
-| 🖼️ **Renkli loglar (`kleur`)** | Net ve eğlenceli geri bildirim. |
-| 🤗 **Harici çalışma zamanı bağımlılığı yok** | Sadece `kleur` ve Bun. |
+| Özellik                                      | Açıklama                                                                          |
+| -------------------------------------------- | --------------------------------------------------------------------------------- |
+| 💾 **Akıllı Global Önbellek**                | Her paket sistemde sadece bir kez yüklenir.                                       |
+| 🪄 **Otomatik Sembolik Bağlantılar**         | `node_modules` çoğaltması yok, her şey global önbelleği işaret eder.              |
+| 📦 **Kopyalama modu (`--copy`)**             | Tamamen izole buildler istiyorsanız.                                              |
+| 📚 **Mini Çalışma Alanları**                 | Adlandırılmış bağımlılık setleri oluşturun ve saniyeler içinde yeniden uygulayın. |
+| 🧩 **Herhangi bir Bun projesi ile uyumlu**   | Sadece yerel API'ler kullanır (`fs`, `os`, `path`, `child_process`).              |
+| 🛠️ **`--dev` modu**                          | Paketleri doğrudan `devDependencies`'e ekler.                                     |
+| 🧭 **`sync` modu**                           | Tüm global çalışma alanını yerel `node_modules`'e kopyalar.                       |
+| 🖼️ **Renkli loglar (`kleur`)**               | Net ve eğlenceli geri bildirim.                                                   |
+| 🤗 **Harici çalışma zamanı bağımlılığı yok** | Sadece `kleur` ve Bun.                                                            |
 
 ---
 
@@ -98,11 +98,13 @@ npx pegno
 ```
 
 Doğrula:
+
 ```bash
 pegno --help
 ```
 
 Beklenen çıktı:
+
 ```
 pegno CLI 1.3.0
 

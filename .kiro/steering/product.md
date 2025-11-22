@@ -9,6 +9,7 @@
 - Provides "mini-workspaces" (presets) to save and reapply dependency sets across projects
 
 ## Key Features
+
 - **Global Cache**: Each package installed once, reused everywhere
 - **Smart Linking**: Automatic symlinks to global cache (or copy mode with `--copy`)
 - **Mini-Workspaces**: Save dependency sets as named presets for instant reuse

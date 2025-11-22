@@ -38,6 +38,7 @@ pegno/
 ## Global Workspace Structure
 
 The tool creates external directories:
+
 ```
 ~/.pegno_workspace/
 ├── js/                 # Global package cache

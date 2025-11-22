@@ -17,7 +17,7 @@ import {
 import { join } from "path";
 import * as os from "os";
 
-// ../../../../../../../../home/suissa/.pegno_workspace/js/kleur___4.1.5/index.mjs
+// node_modules/kleur/index.mjs
 var FORCE_COLOR;
 var NODE_DISABLE_COLORS;
 var NO_COLOR;
@@ -112,36 +112,61 @@ function init(open, close) {
     return txt === undefined ? chain([open], [blk]) : $.enabled ? run([blk], txt + "") : txt + "";
   };
 }
-var kleur___4_1_default = $;
+var kleur_default = $;
 
 // pegno.ts
 import readline from "readline";
-var WORKSPACE = process.env.pegno_WORKSPACE || join(os.homedir(), ".pegno_workspace/js");
-var TMPDIR = join(os.tmpdir(), `pegno_install_${Date.now()}`);
-var PRESET_DIR = join(WORKSPACE, "..", "presets");
-ensureDir(PRESET_DIR);
+var workspace = process.env.pegno_WORKSPACE !== undefined && process.env.pegno_WORKSPACE.trim() !== "" ? process.env.pegno_WORKSPACE : join(os.homedir(), ".pegno_workspace/js");
+var tmpdir2 = join(os.tmpdir(), `pegno_install_${Date.now()}`);
+var presetDir = join(workspace, "..", "presets");
+ensureDir(presetDir);
 var args = process.argv.slice(2);
-var COPY_MODE = args.includes("--copy");
-var VERBOSE = args.includes("--verbose");
-var SYNC_MODE = args.includes("sync");
-var HELP = args.includes("--help");
-var IS_DEV = args.includes("--dev");
+var copyMode = args.includes("--copy");
+var verbose = args.includes("--verbose");
+var syncMode = args.includes("sync");
+var help = args.includes("--help");
+var isDev = args.includes("--dev");
+var installStartTime = 0;
+var uniquePackagesInstalled = 0;
 function log(...msg) {
-  if (VERBOSE)
-    console.log(kleur___4_1_default.cyan("[pegno]"), ...msg);
+  if (verbose) {
+    console.log(kleur_default.cyan("[pegno]"), ...msg);
+  }
 }
 function info(...msg) {
-  console.log(kleur___4_1_default.blue("[pegno]"), ...msg);
+  console.log(kleur_default.blue("[pegno]"), ...msg);
 }
 function warn(...msg) {
-  console.warn(kleur___4_1_default.yellow("[AVISO]"), ...msg);
+  console.warn(kleur_default.yellow("[AVISO]"), ...msg);
 }
 function error(...msg) {
-  console.error(kleur___4_1_default.red("[ERRO]"), ...msg);
+  console.error(kleur_default.red("[ERRO]"), ...msg);
+}
+function startTimer() {
+  installStartTime = Date.now();
+}
+function formatTime(ms) {
+  if (ms < 1000) {
+    return `${ms}ms`;
+  }
+  if (ms < 60000) {
+    return `${(ms / 1000).toFixed(1)}s`;
+  }
+  return `${(ms / 60000).toFixed(1)}min`;
+}
+function showTimingStats() {
+  if (installStartTime === 0 || uniquePackagesInstalled === 0) {
+    return;
+  }
+  const totalTime = Date.now() - installStartTime;
+  const avgTime = totalTime / uniquePackagesInstalled;
+  info(`\u23F1\uFE0F  Tempo total: ${kleur_default.green(formatTime(totalTime))}`);
+  info(`\uD83D\uDCCA M\xE9dia por depend\xEAncia: ${kleur_default.cyan(formatTime(avgTime))} (${kleur_default.gray(String(uniquePackagesInstalled) + " pacotes \xFAnicos")})`);
 }
 function ensureDir(path) {
-  if (!existsSync(path))
+  if (!existsSync(path)) {
     mkdirSync(path, { recursive: true });
+  }
 }
 function pkgDirname(pkg, ver) {
   const clean = pkg.replace(/[@/:]/g, "-");
@@ -156,11 +181,12 @@ function exec(cmd, cwd) {
   }
 }
 function listDirs(path) {
-  if (!existsSync(path))
+  if (!existsSync(path)) {
     return [];
+  }
   return readdirSync(path).filter((f) => statSync(join(path, f)).isDirectory());
 }
-function addToPackageJSON(name, version, isDev = false) {
+function addToPackageJSON(name, version, isDevDep = false) {
   const pkgPath = "package.json";
   let pkg = {};
   if (existsSync(pkgPath)) {
@@ -168,40 +194,43 @@ function addToPackageJSON(name, version, isDev = false) {
   } else {
     pkg = { name: "my-project", version: "1.0.0" };
   }
-  const key = isDev ? "devDependencies" : "dependencies";
-  if (!pkg[key])
-    pkg[key] = {};
-  pkg[key][name] = version;
+  const key = isDevDep ? "devDependencies" : "dependencies";
+  pkg[key] ??= {};
+  const deps = pkg[key];
+  deps[name] = version;
   writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
-  info(`\uD83E\uDDFE Adicionado ${kleur___4_1_default.cyan(name)}@${kleur___4_1_default.gray(version)} em ${kleur___4_1_default.yellow(key)}`);
+  info(`\uD83E\uDDFE Adicionado ${kleur_default.cyan(name)}@${kleur_default.gray(version)} em ${kleur_default.yellow(key)}`);
 }
 function ensureBinDir() {
-  const BIN = "node_modules/.bin";
-  if (!existsSync(BIN))
-    mkdirSync(BIN, { recursive: true });
-  return BIN;
+  const bin = "node_modules/.bin";
+  if (!existsSync(bin)) {
+    mkdirSync(bin, { recursive: true });
+  }
+  return bin;
 }
 function linkPackageBins(pkgName, pkgPathInNodeModules) {
   const pkgJsonPath = join(pkgPathInNodeModules, "package.json");
-  if (!existsSync(pkgJsonPath))
+  if (!existsSync(pkgJsonPath)) {
     return;
+  }
   const pkg = JSON.parse(readFileSync(pkgJsonPath, "utf8"));
   const bin = pkg.bin;
-  if (!bin)
+  if (bin === undefined) {
     return;
-  const BIN_DIR = ensureBinDir();
+  }
+  const binDir = ensureBinDir();
   const entries = typeof bin === "string" ? { [pkgName]: bin } : bin;
   for (const [binName, relTarget] of Object.entries(entries)) {
-    const src = join(pkgPathInNodeModules, relTarget);
+    const src = join(pkgPathInNodeModules, String(relTarget));
     if (!existsSync(src)) {
-      warn(`Bin n\xE3o encontrado para ${pkgName}: ${relTarget}`);
+      warn(`Bin n\xE3o encontrado para ${pkgName}: ${String(relTarget)}`);
       continue;
     }
-    const linkName = join(BIN_DIR, binName);
+    const linkName = join(binDir, binName);
     rmSync(linkName, { force: true });
     try {
       symlinkSync(src, linkName);
-      info(`\uD83D\uDD17 .bin: ${kleur___4_1_default.magenta(binName)} \u2192 ${kleur___4_1_default.gray(src)}`);
+      info(`\uD83D\uDD17 .bin: ${kleur_default.magenta(binName)} \u2192 ${kleur_default.gray(src)}`);
     } catch {
       warn(`Falha ao linkar .bin para ${pkgName}/${binName}`);
     }
@@ -223,57 +252,97 @@ function handlePkg(raw) {
   }
   const safeVer = version.replace(/[^0-9A-Za-z._-]/g, "_");
   const dir = pkgDirname(name, safeVer);
-  const target = join(WORKSPACE, dir);
-  ensureDir(WORKSPACE);
+  const target = join(workspace, dir);
+  ensureDir(workspace);
   if (!existsSync(target)) {
     info(`\u2B07\uFE0F  Baixando ${name}@${version} com Bun...`);
-    ensureDir(TMPDIR);
-    exec(`bun add "${name}@${version}" --no-save`, TMPDIR);
-    const pkgPath = join(TMPDIR, "node_modules", name);
+    const downloadStart = Date.now();
+    ensureDir(tmpdir2);
+    exec(`bun add "${name}@${version}" --no-save`, tmpdir2);
+    const pkgPath = join(tmpdir2, "node_modules", name);
     if (!existsSync(pkgPath)) {
       error(`Pacote ${name} n\xE3o encontrado ap\xF3s bun add.`);
       process.exit(1);
     }
     cpSync(pkgPath, target, { recursive: true });
-    info(`\uD83D\uDCE6 Copiado para ${kleur___4_1_default.green(target)}`);
+    cpSync("./bun.lock", target);
+    const downloadTime = Date.now() - downloadStart;
+    info(`\uD83D\uDCE6 Copiado para ${kleur_default.green(target)} ${kleur_default.gray(`(${formatTime(downloadTime)})`)}`);
+    uniquePackagesInstalled++;
   } else {
     log(`\u2705 Encontrado no workspace: ${name}@${version}`);
   }
   ensureDir("node_modules");
   const nodePath = join("node_modules", name);
   const nodeParent = join("node_modules", name.startsWith("@") ? name.split("/")[0] : "");
-  if (name.startsWith("@"))
+  if (name.startsWith("@")) {
     ensureDir(nodeParent);
+  }
   rmSync(nodePath, { recursive: true, force: true });
-  if (COPY_MODE) {
+  if (copyMode) {
     cpSync(target, nodePath, { recursive: true });
-    info(`\uD83D\uDCC1 Copiado ${kleur___4_1_default.magenta(name)} \u2192 node_modules`);
+    info(`\uD83D\uDCC1 Copiado ${kleur_default.magenta(name)} \u2192 node_modules`);
   } else {
     symlinkSync(target, nodePath, "dir");
-    info(`\uD83D\uDD17 Vinculado ${kleur___4_1_default.magenta(nodePath)} \u2192 ${kleur___4_1_default.gray(target)}`);
+    info(`\uD83D\uDD17 Vinculado ${kleur_default.magenta(nodePath)} \u2192 ${kleur_default.gray(target)}`);
   }
   linkPackageBins(name, nodePath);
-  addToPackageJSON(name, version, IS_DEV);
+  hydrateDepsOf(name);
+  addToPackageJSON(name, version, isDev);
+}
+function readPkgJson(dir) {
+  const p = join(dir, "package.json");
+  if (!existsSync(p)) {
+    return null;
+  }
+  try {
+    return JSON.parse(readFileSync(p, "utf8"));
+  } catch {
+    return null;
+  }
+}
+function hydrateDepsOf(name) {
+  const pkgDir = join("node_modules", name);
+  const pkg = readPkgJson(pkgDir);
+  if (pkg === null) {
+    warn(`N\xE3o achei package.json de ${name} para hidratar.`);
+    return;
+  }
+  const pkgDeps = pkg.dependencies !== undefined ? pkg.dependencies : {};
+  const direct = { ...pkgDeps };
+  const entries = Object.entries(direct);
+  if (entries.length === 0) {
+    log(`Sem deps diretas para ${name}.`);
+    return;
+  }
+  info(`\uD83D\uDCA7 Hidratando deps diretas de ${name}: ${entries.length} pacote(s)`);
+  for (const [depName, depVer] of entries) {
+    handlePkg(`${depName}@${String(depVer)}`);
+  }
 }
 async function askSavePreset() {
   const pkgPath = "package.json";
-  if (!existsSync(pkgPath))
+  if (!existsSync(pkgPath)) {
     return;
+  }
   const pkg = JSON.parse(readFileSync(pkgPath, "utf8"));
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
   return new Promise((resolve) => {
     rl.question("Deseja salvar estas depend\xEAncias como miniworkspace? (y/n) ", (ans) => {
-      if (ans.toLowerCase() !== "y")
+      if (ans.toLowerCase() !== "y") {
         return rl.close(), resolve();
+      }
       rl.question("Nome do miniworkspace: ", (name) => {
-        const path = join(PRESET_DIR, `${name}.json`);
+        const path = join(presetDir, `${name}.json`);
+        const deps = pkg.dependencies !== undefined ? pkg.dependencies : {};
+        const devDeps = pkg.devDependencies !== undefined ? pkg.devDependencies : {};
         const data = {
           name,
-          dependencies: pkg.dependencies || {},
-          devDependencies: pkg.devDependencies || {}
+          dependencies: deps,
+          devDependencies: devDeps
         };
         writeFileSync(path, JSON.stringify(data, null, 2));
-        info(`\u2705 Miniworkspace "${name}" salvo em ${kleur___4_1_default.gray(path)}`);
+        info(`\u2705 Miniworkspace "${name}" salvo em ${kleur_default.gray(path)}`);
         rl.close();
         resolve();
       });
@@ -281,84 +350,106 @@ async function askSavePreset() {
   });
 }
 function usePreset(name) {
-  const path = join(PRESET_DIR, `${name}.json`);
-  if (!existsSync(path))
+  const path = join(presetDir, `${name}.json`);
+  if (!existsSync(path)) {
     return error(`Miniworkspace "${name}" n\xE3o encontrado.`);
+  }
   const preset = JSON.parse(readFileSync(path, "utf8"));
-  info(`\uD83E\uDDE0 Aplicando miniworkspace "${preset.name}"...`);
-  const all = { ...preset.dependencies, ...preset.devDependencies };
-  for (const [pkg, ver] of Object.entries(all))
-    handlePkg(`${pkg}@${ver}`);
-  info(kleur___4_1_default.green(`\uD83D\uDE80 Miniworkspace "${preset.name}" aplicado!`));
+  info(`\uD83E\uDDE0 Aplicando miniworkspace "${String(preset.name)}"...`);
+  startTimer();
+  const deps = preset.dependencies !== undefined ? preset.dependencies : {};
+  const devDeps = preset.devDependencies !== undefined ? preset.devDependencies : {};
+  const all = { ...deps, ...devDeps };
+  for (const [pkg, ver] of Object.entries(all)) {
+    handlePkg(`${pkg}@${String(ver)}`);
+  }
+  showTimingStats();
+  info(kleur_default.green(`\uD83D\uDE80 Miniworkspace "${String(preset.name)}" aplicado!`));
 }
 function listPresets() {
-  const files = readdirSync(PRESET_DIR).filter((f) => f.endsWith(".json"));
-  if (!files.length)
+  const files = readdirSync(presetDir).filter((f) => f.endsWith(".json"));
+  if (files.length === 0) {
     return info("Nenhum miniworkspace salvo ainda.");
+  }
   info("\uD83D\uDCC2 Miniworkspaces dispon\xEDveis:");
   files.forEach((f) => console.log("  -", f.replace(".json", "")));
 }
 function installAll() {
-  ensureDir(WORKSPACE);
+  ensureDir(workspace);
   if (!existsSync("package.json")) {
     error("Nenhum package.json encontrado neste diret\xF3rio.");
     process.exit(1);
   }
   const pkg = JSON.parse(readFileSync("package.json", "utf8"));
-  const all = { ...pkg.dependencies, ...pkg.devDependencies };
-  const deps = Object.entries(all).map(([k, v]) => `${k}@${v}`);
-  if (!deps.length)
+  const pkgDeps = pkg.dependencies !== undefined ? pkg.dependencies : {};
+  const pkgDevDeps = pkg.devDependencies !== undefined ? pkg.devDependencies : {};
+  const all = { ...pkgDeps, ...pkgDevDeps };
+  const deps = Object.entries(all).map(([k, v]) => `${k}@${String(v)}`);
+  if (deps.length === 0) {
     return warn("Nenhuma depend\xEAncia encontrada em package.json.");
-  info(`\uD83D\uDCC1 Workspace: ${kleur___4_1_default.gray(WORKSPACE)}`);
-  for (const dep of deps)
+  }
+  info(`\uD83D\uDCC1 Workspace: ${kleur_default.gray(workspace)}`);
+  for (const dep of deps) {
     handlePkg(dep);
-  info(kleur___4_1_default.green("\uD83D\uDE80 Instala\xE7\xE3o conclu\xEDda!"));
+  }
+  info(kleur_default.green("\uD83D\uDE80 Instala\xE7\xE3o conclu\xEDda!"));
 }
 function showHelp() {
-  console.log(kleur___4_1_default.bold("pegno CLI 1.3.0"));
+  console.log(kleur_default.bold("pegno CLI 1.3.0"));
   console.log(`
-  ${kleur___4_1_default.cyan("Uso:")}
-    ${kleur___4_1_default.green("pegno")} ${kleur___4_1_default.yellow("axios@latest")}       ${kleur___4_1_default.gray("\u2192")} Instala pacote direto
-    ${kleur___4_1_default.green("pegno")} ${kleur___4_1_default.blue("--dev")} ${kleur___4_1_default.yellow("vitest")}       ${kleur___4_1_default.gray("\u2192")} Instala como devDependency
-    ${kleur___4_1_default.green("pegno")} ${kleur___4_1_default.magenta("use")} ${kleur___4_1_default.yellow("api")}            ${kleur___4_1_default.gray("\u2192")} Usa miniworkspace salvo
-    ${kleur___4_1_default.green("pegno")} ${kleur___4_1_default.magenta("list")}               ${kleur___4_1_default.gray("\u2192")} Lista miniworkspaces
-    ${kleur___4_1_default.green("pegno")} ${kleur___4_1_default.blue("--copy")}             ${kleur___4_1_default.gray("\u2192")} Copia ao inv\xE9s de linkar
-    ${kleur___4_1_default.green("pegno")} ${kleur___4_1_default.magenta("sync")}               ${kleur___4_1_default.gray("\u2192")} Copia todos do workspace para node_modules
-    ${kleur___4_1_default.green("pegno")} ${kleur___4_1_default.blue("--verbose")}          ${kleur___4_1_default.gray("\u2192")} Logs detalhados
-    ${kleur___4_1_default.green("pegno")} ${kleur___4_1_default.blue("--help")}             ${kleur___4_1_default.gray("\u2192")} Mostra esta ajuda
+  ${kleur_default.cyan("Uso:")}
+    ${kleur_default.green("pegno")} ${kleur_default.yellow("axios@latest")}       ${kleur_default.gray("\u2192")} Instala pacote direto
+    ${kleur_default.green("pegno")} ${kleur_default.blue("--dev")} ${kleur_default.yellow("vitest")}       ${kleur_default.gray("\u2192")} Instala como devDependency
+    ${kleur_default.green("pegno")} ${kleur_default.magenta("use")} ${kleur_default.yellow("api")}            ${kleur_default.gray("\u2192")} Usa miniworkspace salvo
+    ${kleur_default.green("pegno")} ${kleur_default.magenta("list")}               ${kleur_default.gray("\u2192")} Lista miniworkspaces
+    ${kleur_default.green("pegno")} ${kleur_default.blue("--copy")}             ${kleur_default.gray("\u2192")} Copia ao inv\xE9s de linkar
+    ${kleur_default.green("pegno")} ${kleur_default.magenta("sync")}               ${kleur_default.gray("\u2192")} Copia todos do workspace para node_modules
+    ${kleur_default.green("pegno")} ${kleur_default.blue("--verbose")}          ${kleur_default.gray("\u2192")} Logs detalhados
+    ${kleur_default.green("pegno")} ${kleur_default.blue("--help")}             ${kleur_default.gray("\u2192")} Mostra esta ajuda
   `);
 }
 (async () => {
-  if (HELP)
+  if (help) {
     return showHelp();
-  if (args[0] === "list")
+  }
+  if (args[0] === "list") {
     return listPresets();
-  if (args[0] === "use" && args[1])
+  }
+  if (args[0] === "use" && args[1] !== undefined) {
     return usePreset(args[1]);
-  if (SYNC_MODE)
+  }
+  if (syncMode) {
     return syncWorkspace();
+  }
   const pkgs = args.filter((a) => !a.startsWith("--"));
-  if (pkgs.length) {
-    for (const dep of pkgs)
+  if (pkgs.length > 0) {
+    startTimer();
+    for (const dep of pkgs) {
       handlePkg(dep);
+    }
+    showTimingStats();
     await askSavePreset();
   } else {
+    startTimer();
     installAll();
+    showTimingStats();
   }
 })();
 function syncWorkspace() {
-  ensureDir(WORKSPACE);
-  const all = listDirs(WORKSPACE);
-  if (!all.length)
+  ensureDir(workspace);
+  const all = listDirs(workspace);
+  if (all.length === 0) {
     return warn("Nenhum pacote encontrado no workspace global.");
+  }
   ensureDir("node_modules");
   for (const dir of all) {
-    const src = join(WORKSPACE, dir);
+    const src = join(workspace, dir);
     const name = dir.split("__")[0];
     const dest = join("node_modules", name);
     rmSync(dest, { recursive: true, force: true });
+    exec(`cp "${src}/bun.lock" "${dest}"`);
     exec(`cp -R "${src}" "${dest}"`);
     log(`\uD83D\uDCC1 Sincronizado ${name}`);
   }
-  info(kleur___4_1_default.green("\u2728 Workspace sincronizado com sucesso!"));
+  info(kleur_default.green("\u2728 Workspace sincronizado com sucesso!"));
 }

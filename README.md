@@ -1,4 +1,3 @@
-
 <p align="center">
   <img src="https://i.imgur.com/IhXEEQM.png" width="680" alt="Pegno logo"/>
 </p>
@@ -6,7 +5,6 @@
 <p align="center">
 O gerenciador global de dependências pro Bun que o Bun esqueceu de fazer
 </p>
-
 
 <p align="center">
   <a href="https://bun.sh" target="_blank"><img src="https://img.shields.io/badge/made%20for-bun-000000.svg?logo=bun" /></a>
@@ -18,7 +16,6 @@ O gerenciador global de dependências pro Bun que o Bun esqueceu de fazer
 </p>
 
 > “Um workspace global inteligente pra Bun, feito por quem cansou de esperar o Bun terminar o Bun.”
-
 
 ---
 
@@ -39,7 +36,7 @@ A ideia nasceu porque o Bun prometeu “velocidade e simplicidade”, mas, na pr
 
 Cada projeto reinstala as mesmas libs. Cada build baixa de novo. Cada dev perde tempo.
 
-O **Pegno** resolve isso criando um **workspace global** no seu sistema, onde as dependências são instaladas uma única vez e reaproveitadas por *symlinks* (ou cópias, se preferir).
+O **Pegno** resolve isso criando um **workspace global** no seu sistema, onde as dependências são instaladas uma única vez e reaproveitadas por _symlinks_ (ou cópias, se preferir).
 
 ---
 
@@ -62,6 +59,7 @@ Além disso, ele adiciona algo que nenhum outro gerenciador oferece:
 ### 📦 Mini-workspaces (os “presets”)
 
 Você pode salvar conjuntos de dependências e aplicá-los em qualquer projeto:
+
 ```bash
 pegno axios fastify zod
 # Pergunta se quer salvar como preset → digite "api"
@@ -74,17 +72,17 @@ pegno use api
 
 ## ⚡️ Principais recursos
 
-| Recurso | Descrição |
-|----------|------------|
-| 💾 **Cache Global Inteligente** | Cada pacote é instalado uma única vez no sistema. |
-| 🪄 **Symlinks automáticos** | Sem duplicação de `node_modules`, tudo aponta pro cache global. |
-| 📚 **Modo de cópia (`--copy`)** | Se quiser as dependências na `node_modules` também. |
-| 📦 **Mini-Workspaces** | Crie conjuntos de dependências nomeados e reaplique em segundos. |
-| 🧩 **Compatível com qualquer projeto Bun** | Usa apenas APIs nativas (`fs`, `os`, `path`, `child_process`). |
-| 🛠️ **`--dev` mode** | Adiciona pacotes direto em `devDependencies`. |
-| 🔁 **`sync` mode** | Copia todo o workspace global para `node_modules` local. |
-| 🎨 **Logs coloridos (`kleur`)** | Níveis, ícones e tempos de instalação para depuração rápida. |
-| 🤗 **Sem dependências externas de runtime** | Apenas `kleur` e Bun. 💯🚀🎯 |
+| Recurso                                     | Descrição                                                        |
+| ------------------------------------------- | ---------------------------------------------------------------- |
+| 💾 **Cache Global Inteligente**             | Cada pacote é instalado uma única vez no sistema.                |
+| 🪄 **Symlinks automáticos**                 | Sem duplicação de `node_modules`, tudo aponta pro cache global.  |
+| 📚 **Modo de cópia (`--copy`)**             | Se quiser as dependências na `node_modules` também.              |
+| 📦 **Mini-Workspaces**                      | Crie conjuntos de dependências nomeados e reaplique em segundos. |
+| 🧩 **Compatível com qualquer projeto Bun**  | Usa apenas APIs nativas (`fs`, `os`, `path`, `child_process`).   |
+| 🛠️ **`--dev` mode**                         | Adiciona pacotes direto em `devDependencies`.                    |
+| 🔁 **`sync` mode**                          | Copia todo o workspace global para `node_modules` local.         |
+| 🎨 **Logs coloridos (`kleur`)**             | Níveis, ícones e tempos de instalação para depuração rápida.     |
+| 🤗 **Sem dependências externas de runtime** | Apenas `kleur` e Bun. 💯🚀🎯                                     |
 
 ---
 
@@ -100,17 +98,20 @@ npx pegno
 ```
 
 Verifique:
+
 ```bash
 pegno --help
 ```
 
 **⚠️ Windows:** Se o comando não for reconhecido, adicione o diretório global do Bun ao PATH:
+
 ```powershell
 # Adicionar permanentemente ao PATH (PowerShell como Admin)
 [Environment]::SetEnvironmentVariable("Path", [Environment]::GetEnvironmentVariable("Path", "User") + ";$env:USERPROFILE\.bun\bin", "User")
 ```
 
 Saída esperada:
+
 ```
 pegno CLI 1.3.0
 

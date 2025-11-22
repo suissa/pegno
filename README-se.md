@@ -6,7 +6,6 @@
 Den globala beroendehanteraren för Bun som Bun glömde att skapa
 </p>
 
-
 <p align="center">
   <a href="https://bun.sh" target="_blank"><img src="https://img.shields.io/badge/made%20for-bun-000000.svg?logo=bun" /></a>
   <img src="https://img.shields.io/badge/license-MIT-blue.svg" />
@@ -37,7 +36,7 @@ Idén föddes eftersom Bun lovade "hastighet och enkelhet" — men i praktiken s
 
 Varje projekt ominstallerar samma bibliotek. Varje bygge laddar ner igen. Varje utvecklare slösar tid.
 
-**Pegno** löser detta genom att skapa en **global arbetsyta** i ditt system, där beroenden installeras en gång och återanvänds via *symboliska länkar* (eller kopior, om du föredrar).
+**Pegno** löser detta genom att skapa en **global arbetsyta** i ditt system, där beroenden installeras en gång och återanvänds via _symboliska länkar_ (eller kopior, om du föredrar).
 
 ---
 
@@ -60,6 +59,7 @@ Dessutom lägger det till något som ingen annan hanterare erbjuder:
 ### 🧠 Mini-arbetsytor ("förinställningar")
 
 Du kan spara beroendeuppsättningar och tillämpa dem på vilket projekt som helst:
+
 ```bash
 pegno axios fastify zod
 # Frågar om du vill spara som förinställning → skriv "api"
@@ -72,17 +72,17 @@ pegno use api
 
 ## ⚡️ Huvudfunktioner
 
-| Funktion | Beskrivning |
-|----------|------------|
-| 💾 **Intelligent Global Cache** | Varje paket installeras endast en gång i systemet. |
-| 🪄 **Automatiska Symboliska Länkar** | Ingen `node_modules` duplicering, allt pekar på global cache. |
-| 📦 **Kopieringsläge (`--copy`)** | Om du vill ha helt isolerade byggen. |
-| 📚 **Mini-Arbetsytor** | Skapa namngivna beroendeuppsättningar och återanvänd på sekunder. |
+| Funktion                               | Beskrivning                                                            |
+| -------------------------------------- | ---------------------------------------------------------------------- |
+| 💾 **Intelligent Global Cache**        | Varje paket installeras endast en gång i systemet.                     |
+| 🪄 **Automatiska Symboliska Länkar**   | Ingen `node_modules` duplicering, allt pekar på global cache.          |
+| 📦 **Kopieringsläge (`--copy`)**       | Om du vill ha helt isolerade byggen.                                   |
+| 📚 **Mini-Arbetsytor**                 | Skapa namngivna beroendeuppsättningar och återanvänd på sekunder.      |
 | 🧩 **Kompatibel med alla Bun-projekt** | Använder endast inbyggda API:er (`fs`, `os`, `path`, `child_process`). |
-| 🛠️ **`--dev` läge** | Lägger till paket direkt i `devDependencies`. |
-| 🧭 **`sync` läge** | Kopierar hela globala arbetsytan till lokala `node_modules`. |
-| 🖼️ **Färgade loggar (`kleur`)** | Tydlig och rolig återkoppling. |
-| 🤗 **Inga externa runtime-beroenden** | Endast `kleur` och Bun. |
+| 🛠️ **`--dev` läge**                    | Lägger till paket direkt i `devDependencies`.                          |
+| 🧭 **`sync` läge**                     | Kopierar hela globala arbetsytan till lokala `node_modules`.           |
+| 🖼️ **Färgade loggar (`kleur`)**        | Tydlig och rolig återkoppling.                                         |
+| 🤗 **Inga externa runtime-beroenden**  | Endast `kleur` och Bun.                                                |
 
 ---
 
@@ -98,11 +98,13 @@ npx pegno
 ```
 
 Verifiera:
+
 ```bash
 pegno --help
 ```
 
 Förväntad utdata:
+
 ```
 pegno CLI 1.3.0
 
