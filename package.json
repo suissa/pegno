@@ -1,6 +1,6 @@
 {
   "name": "pegno",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Gerenciador de workspace global de dependências para Bun — by Suissa 🧠",
   "type": "module",
   "bin": {
