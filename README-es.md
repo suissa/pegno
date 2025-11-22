@@ -36,7 +36,7 @@ La idea nació porque Bun prometió "velocidad y simplicidad", pero en la práct
 
 Cada proyecto reinstala las mismas librerías. Cada build descarga de nuevo. Cada dev pierde tiempo.
 
-**Pegno** resuelve esto creando un **workspace global** en tu sistema, donde las dependencias se instalan una sola vez y se reutilizan mediante *symlinks* (o copias, si prefieres).
+**Pegno** resuelve esto creando un **workspace global** en tu sistema, donde las dependencias se instalan una sola vez y se reutilizan mediante _symlinks_ (o copias, si prefieres).
 
 ---
 
@@ -52,17 +52,20 @@ npx pegno
 ```
 
 Verificar:
+
 ```bash
 pegno --help
 ```
 
 **⚠️ Windows:** Si el comando no es reconocido, añade el directorio global de Bun al PATH:
+
 ```powershell
 # Añadir permanentemente al PATH (PowerShell como Admin)
 [Environment]::SetEnvironmentVariable("Path", [Environment]::GetEnvironmentVariable("Path", "User") + ";$env:USERPROFILE\.bun\bin", "User")
 ```
 
 Salida esperada:
+
 ```
 pegno CLI 1.3.0
 
@@ -113,17 +116,17 @@ Windows requiere privilegios administrativos especiales para crear symlinks. El 
 
 ## ⚡️ Características principales
 
-| Característica | Descripción |
-|----------|------------|
-| 💾 **Caché Global Inteligente** | Cada paquete se instala una sola vez en el sistema. |
-| 🪄 **Symlinks automáticos** | Sin duplicación de `node_modules`, todo apunta al caché global. |
-| 📚 **Modo de copia (`--copy`)** | Si quieres las dependencias en `node_modules` también. |
-| 📦 **Mini-Workspaces** | Crea conjuntos de dependencias nombrados y reaplícalos en segundos. |
-| 🧩 **Compatible con cualquier proyecto Bun** | Usa solo APIs nativas (`fs`, `os`, `path`, `child_process`). |
-| 🛠️ **Modo `--dev`** | Añade paquetes directamente a `devDependencies`. |
-| 🔁 **Modo `sync`** | Copia todo el workspace global a `node_modules` local. |
-| 🎨 **Logs coloridos (`kleur`)** | Niveles, iconos y tiempos de instalación para depuración rápida. |
-| 🤗 **Sin dependencias externas de runtime** | Solo `kleur` y Bun. |
+| Característica                               | Descripción                                                         |
+| -------------------------------------------- | ------------------------------------------------------------------- |
+| 💾 **Caché Global Inteligente**              | Cada paquete se instala una sola vez en el sistema.                 |
+| 🪄 **Symlinks automáticos**                  | Sin duplicación de `node_modules`, todo apunta al caché global.     |
+| 📚 **Modo de copia (`--copy`)**              | Si quieres las dependencias en `node_modules` también.              |
+| 📦 **Mini-Workspaces**                       | Crea conjuntos de dependencias nombrados y reaplícalos en segundos. |
+| 🧩 **Compatible con cualquier proyecto Bun** | Usa solo APIs nativas (`fs`, `os`, `path`, `child_process`).        |
+| 🛠️ **Modo `--dev`**                          | Añade paquetes directamente a `devDependencies`.                    |
+| 🔁 **Modo `sync`**                           | Copia todo el workspace global a `node_modules` local.              |
+| 🎨 **Logs coloridos (`kleur`)**              | Niveles, iconos y tiempos de instalación para depuración rápida.    |
+| 🤗 **Sin dependencias externas de runtime**  | Solo `kleur` y Bun.                                                 |
 
 ---
 

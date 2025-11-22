@@ -6,7 +6,6 @@
 De globale dependency manager voor Bun die Bun vergat te maken
 </p>
 
-
 <p align="center">
   <a href="https://bun.sh" target="_blank"><img src="https://img.shields.io/badge/made%20for-bun-000000.svg?logo=bun" /></a>
   <img src="https://img.shields.io/badge/license-MIT-blue.svg" />
@@ -37,7 +36,7 @@ Het idee ontstond omdat Bun "snelheid en eenvoud" beloofde — maar in de prakti
 
 Elk project herinstalleert dezelfde bibliotheken. Elke build downloadt opnieuw. Elke ontwikkelaar verliest tijd.
 
-**Pegno** lost dit op door een **globale workspace** op je systeem te creëren, waar dependencies eenmaal geïnstalleerd worden en hergebruikt via *symlinks* (of kopieën, als je dat prefereert).
+**Pegno** lost dit op door een **globale workspace** op je systeem te creëren, waar dependencies eenmaal geïnstalleerd worden en hergebruikt via _symlinks_ (of kopieën, als je dat prefereert).
 
 ---
 
@@ -60,6 +59,7 @@ Daarnaast voegt het iets toe dat geen andere manager biedt:
 ### 🧠 Mini-workspaces (de "presets")
 
 Je kunt dependency sets opslaan en toepassen op elk project:
+
 ```bash
 pegno axios fastify zod
 # Vraagt of je wilt opslaan als preset → typ "api"
@@ -72,17 +72,17 @@ pegno use api
 
 ## ⚡️ Hoofdfuncties
 
-| Functie | Beschrijving |
-|----------|------------|
-| 💾 **Intelligente Globale Cache** | Elk package wordt slechts eenmaal op het systeem geïnstalleerd. |
-| 🪄 **Automatische Symlinks** | Geen `node_modules` duplicatie, alles wijst naar de globale cache. |
-| 📦 **Kopieer modus (`--copy`)** | Als je volledig geïsoleerde builds wilt. |
-| 📚 **Mini-Workspaces** | Creëer benoemde dependency sets en pas ze in seconden opnieuw toe. |
-| 🧩 **Compatibel met elk Bun project** | Gebruikt alleen native APIs (`fs`, `os`, `path`, `child_process`). |
-| 🛠️ **`--dev` modus** | Voegt packages direct toe aan `devDependencies`. |
-| 🧭 **`sync` modus** | Kopieert hele globale workspace naar lokale `node_modules`. |
-| 🎨 **Gekleurde logs (`kleur`)** | Niveaus, pictogrammen en installatietijden voor snelle debugging. |
-| 🤗 **Geen externe runtime dependencies** | Alleen `kleur` en Bun. 💯🚀🎯 |
+| Functie                                  | Beschrijving                                                       |
+| ---------------------------------------- | ------------------------------------------------------------------ |
+| 💾 **Intelligente Globale Cache**        | Elk package wordt slechts eenmaal op het systeem geïnstalleerd.    |
+| 🪄 **Automatische Symlinks**             | Geen `node_modules` duplicatie, alles wijst naar de globale cache. |
+| 📦 **Kopieer modus (`--copy`)**          | Als je volledig geïsoleerde builds wilt.                           |
+| 📚 **Mini-Workspaces**                   | Creëer benoemde dependency sets en pas ze in seconden opnieuw toe. |
+| 🧩 **Compatibel met elk Bun project**    | Gebruikt alleen native APIs (`fs`, `os`, `path`, `child_process`). |
+| 🛠️ **`--dev` modus**                     | Voegt packages direct toe aan `devDependencies`.                   |
+| 🧭 **`sync` modus**                      | Kopieert hele globale workspace naar lokale `node_modules`.        |
+| 🎨 **Gekleurde logs (`kleur`)**          | Niveaus, pictogrammen en installatietijden voor snelle debugging.  |
+| 🤗 **Geen externe runtime dependencies** | Alleen `kleur` en Bun. 💯🚀🎯                                      |
 
 ---
 
@@ -98,11 +98,13 @@ npx pegno
 ```
 
 Verifieer:
+
 ```bash
 pegno --help
 ```
 
 Verwachte output:
+
 ```
 pegno CLI 1.3.0
 

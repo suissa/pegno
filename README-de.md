@@ -36,7 +36,7 @@ Die Idee entstand, weil Bun "Geschwindigkeit und Einfachheit" versprach, aber in
 
 Jedes Projekt installiert dieselben Libs neu. Jeder Build lädt erneut herunter. Jeder Dev verliert Zeit.
 
-**Pegno** löst dies, indem es einen **globalen Workspace** auf Ihrem System erstellt, wo Dependencies einmal installiert und über *Symlinks* (oder Kopien, wenn Sie möchten) wiederverwendet werden.
+**Pegno** löst dies, indem es einen **globalen Workspace** auf Ihrem System erstellt, wo Dependencies einmal installiert und über _Symlinks_ (oder Kopien, wenn Sie möchten) wiederverwendet werden.
 
 ---
 
@@ -52,17 +52,20 @@ npx pegno
 ```
 
 Überprüfen:
+
 ```bash
 pegno --help
 ```
 
 **⚠️ Windows:** Wenn der Befehl nicht erkannt wird, fügen Sie das globale Bun-Verzeichnis zum PATH hinzu:
+
 ```powershell
 # Dauerhaft zum PATH hinzufügen (PowerShell als Admin)
 [Environment]::SetEnvironmentVariable("Path", [Environment]::GetEnvironmentVariable("Path", "User") + ";$env:USERPROFILE\.bun\bin", "User")
 ```
 
 Erwartete Ausgabe:
+
 ```
 pegno CLI 1.3.0
 
@@ -113,17 +116,17 @@ Windows erfordert spezielle Administratorrechte zum Erstellen von Symlinks. Der 
 
 ## ⚡️ Hauptfunktionen
 
-| Funktion | Beschreibung |
-|----------|------------|
-| 💾 **Intelligenter Globaler Cache** | Jedes Paket wird nur einmal im System installiert. |
-| 🪄 **Automatische Symlinks** | Keine `node_modules`-Duplikation, alles zeigt auf den globalen Cache. |
-| 📚 **Kopiermodus (`--copy`)** | Wenn Sie die Dependencies auch in `node_modules` haben möchten. |
-| 📦 **Mini-Workspaces** | Erstellen Sie benannte Dependency-Sets und wenden Sie sie in Sekunden erneut an. |
-| 🧩 **Kompatibel mit jedem Bun-Projekt** | Verwendet nur native APIs (`fs`, `os`, `path`, `child_process`). |
-| 🛠️ **`--dev`-Modus** | Fügt Pakete direkt zu `devDependencies` hinzu. |
-| 🔁 **`sync`-Modus** | Kopiert gesamten globalen Workspace zu lokalem `node_modules`. |
-| 🎨 **Farbige Logs (`kleur`)** | Level, Icons und Installationszeiten für schnelles Debugging. |
-| 🤗 **Keine externen Runtime-Dependencies** | Nur `kleur` und Bun. |
+| Funktion                                   | Beschreibung                                                                     |
+| ------------------------------------------ | -------------------------------------------------------------------------------- |
+| 💾 **Intelligenter Globaler Cache**        | Jedes Paket wird nur einmal im System installiert.                               |
+| 🪄 **Automatische Symlinks**               | Keine `node_modules`-Duplikation, alles zeigt auf den globalen Cache.            |
+| 📚 **Kopiermodus (`--copy`)**              | Wenn Sie die Dependencies auch in `node_modules` haben möchten.                  |
+| 📦 **Mini-Workspaces**                     | Erstellen Sie benannte Dependency-Sets und wenden Sie sie in Sekunden erneut an. |
+| 🧩 **Kompatibel mit jedem Bun-Projekt**    | Verwendet nur native APIs (`fs`, `os`, `path`, `child_process`).                 |
+| 🛠️ **`--dev`-Modus**                       | Fügt Pakete direkt zu `devDependencies` hinzu.                                   |
+| 🔁 **`sync`-Modus**                        | Kopiert gesamten globalen Workspace zu lokalem `node_modules`.                   |
+| 🎨 **Farbige Logs (`kleur`)**              | Level, Icons und Installationszeiten für schnelles Debugging.                    |
+| 🤗 **Keine externen Runtime-Dependencies** | Nur `kleur` und Bun.                                                             |
 
 ---
 

@@ -6,7 +6,6 @@
 Manajer dependensi global untuk Bun yang Bun lupa buat
 </p>
 
-
 <p align="center">
   <a href="https://bun.sh" target="_blank"><img src="https://img.shields.io/badge/made%20for-bun-000000.svg?logo=bun" /></a>
   <img src="https://img.shields.io/badge/license-MIT-blue.svg" />
@@ -37,7 +36,7 @@ Ide ini lahir karena Bun menjanjikan "kecepatan dan kesederhanaan" — tetapi da
 
 Setiap proyek menginstal ulang library yang sama. Setiap build mengunduh lagi. Setiap developer membuang waktu.
 
-**Pegno** menyelesaikan ini dengan membuat **workspace global** di sistem Anda, di mana dependensi diinstal sekali dan digunakan ulang melalui *symbolic links* (atau salinan, jika Anda suka).
+**Pegno** menyelesaikan ini dengan membuat **workspace global** di sistem Anda, di mana dependensi diinstal sekali dan digunakan ulang melalui _symbolic links_ (atau salinan, jika Anda suka).
 
 ---
 
@@ -60,6 +59,7 @@ Selain itu, ia menambahkan sesuatu yang tidak ditawarkan manajer lain:
 ### 🧠 Mini-workspace ("preset")
 
 Anda dapat menyimpan set dependensi dan menerapkannya ke proyek mana pun:
+
 ```bash
 pegno axios fastify zod
 # Menanyakan apakah Anda ingin menyimpan sebagai preset → ketik "api"
@@ -72,17 +72,17 @@ pegno use api
 
 ## ⚡️ Fitur utama
 
-| Fitur | Deskripsi |
-|----------|------------|
-| 💾 **Cache Global Cerdas** | Setiap paket diinstal hanya sekali di sistem. |
-| 🪄 **Symbolic Links Otomatis** | Tidak ada duplikasi `node_modules`, semuanya menunjuk ke cache global. |
-| 📦 **Mode copy (`--copy`)** | Jika Anda ingin build yang benar-benar terisolasi. |
-| 📚 **Mini-Workspace** | Buat set dependensi bernama dan terapkan ulang dalam hitungan detik. |
-| 🧩 **Kompatibel dengan proyek Bun apa pun** | Hanya menggunakan API native (`fs`, `os`, `path`, `child_process`). |
-| 🛠️ **Mode `--dev`** | Menambahkan paket langsung ke `devDependencies`. |
-| 🧭 **Mode `sync`** | Menyalin seluruh workspace global ke `node_modules` lokal. |
-| 🖼️ **Log berwarna (`kleur`)** | Umpan balik yang jelas dan menyenangkan. |
-| 🤗 **Tidak ada dependensi runtime eksternal** | Hanya `kleur` dan Bun. |
+| Fitur                                         | Deskripsi                                                              |
+| --------------------------------------------- | ---------------------------------------------------------------------- |
+| 💾 **Cache Global Cerdas**                    | Setiap paket diinstal hanya sekali di sistem.                          |
+| 🪄 **Symbolic Links Otomatis**                | Tidak ada duplikasi `node_modules`, semuanya menunjuk ke cache global. |
+| 📦 **Mode copy (`--copy`)**                   | Jika Anda ingin build yang benar-benar terisolasi.                     |
+| 📚 **Mini-Workspace**                         | Buat set dependensi bernama dan terapkan ulang dalam hitungan detik.   |
+| 🧩 **Kompatibel dengan proyek Bun apa pun**   | Hanya menggunakan API native (`fs`, `os`, `path`, `child_process`).    |
+| 🛠️ **Mode `--dev`**                           | Menambahkan paket langsung ke `devDependencies`.                       |
+| 🧭 **Mode `sync`**                            | Menyalin seluruh workspace global ke `node_modules` lokal.             |
+| 🖼️ **Log berwarna (`kleur`)**                 | Umpan balik yang jelas dan menyenangkan.                               |
+| 🤗 **Tidak ada dependensi runtime eksternal** | Hanya `kleur` dan Bun.                                                 |
 
 ---
 
@@ -98,11 +98,13 @@ npx pegno
 ```
 
 Verifikasi:
+
 ```bash
 pegno --help
 ```
 
 Output yang diharapkan:
+
 ```
 pegno CLI 1.3.0
 

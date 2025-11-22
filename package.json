@@ -39,19 +39,20 @@
     "README.md"
   ],
   "devDependencies": {
-    "bun-types": "latest",
-    "typescript": "^5.6.0",
     "@types/node": "^24.9.2",
-    "eslint": "^9.0.0",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
-    "prettier": "^3.0.0"
+    "bun-types": "latest",
+    "eslint": "^9.0.0",
+    "prettier": "^3.0.0",
+    "typescript": "^5.6.0"
   },
   "dependencies": {
-    "kleur": "^4.1.5",
-    "bun-types": "latest",
-    "typescript": "^5.6.0",
+    "@eslint/js": "^9.39.1",
     "@types/node": "^24.9.2",
+    "bun-types": "latest",
+    "kleur": "^4.1.5",
+    "typescript": "^5.6.0",
     "undici-types": "~7.16.0"
   }
 }

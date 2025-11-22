@@ -14,16 +14,19 @@ Os testes validam a capacidade do Pegno de instalar e configurar uma stack compl
 ## 🎯 Ambientes Testados
 
 ### ✅ Windows
+
 - Instalação nativa no Windows
 - PowerShell como shell padrão
 - Bun runtime
 
 ### ✅ WSL (Windows Subsystem for Linux)
+
 - Ubuntu 22.04 no WSL
 - Bash como shell
 - Bun runtime no ambiente Linux
 
 ### ✅ Linux
+
 - Distribuições Linux nativas
 - Bash como shell
 - Bun runtime
@@ -33,6 +36,7 @@ Os testes validam a capacidade do Pegno de instalar e configurar uma stack compl
 ### Pré-requisitos
 
 1. **Bun instalado** (>=1.1.0)
+
    ```bash
    curl -fsSL https://bun.sh/install | bash
    ```
@@ -45,6 +49,7 @@ Os testes validam a capacidade do Pegno de instalar e configurar uma stack compl
 ### Executar Todos os Testes
 
 #### Windows + WSL
+
 ```powershell
 bun run test:integration
 # ou
@@ -52,6 +57,7 @@ pwsh -File test-integration.ps1 -All
 ```
 
 #### Apenas Windows
+
 ```powershell
 bun run test:integration:windows
 # ou
@@ -59,6 +65,7 @@ pwsh -File test-integration.ps1 -Windows
 ```
 
 #### Apenas WSL
+
 ```powershell
 bun run test:integration:wsl
 # ou
@@ -66,6 +73,7 @@ pwsh -File test-integration.ps1 -WSL
 ```
 
 #### Linux Nativo
+
 ```bash
 bun run test:integration:linux
 # ou
@@ -75,32 +83,38 @@ bash test-integration.sh
 ## 📊 O Que os Testes Fazem
 
 ### 1. Preparação
+
 - Cria diretório temporário de teste
 - Inicializa projeto Vite com template React + TypeScript
 
 ### 2. Instalação Tailwind
+
 ```bash
 pegno install tailwindcss postcss autoprefixer
 bunx tailwindcss init -p
 ```
 
 ### 3. Instalação Shadcn Dependencies
+
 ```bash
 pegno install class-variance-authority clsx tailwind-merge lucide-react --dev
 pegno install @radix-ui/react-slot
 ```
 
 ### 4. Verificação
+
 - Confirma que todos os pacotes estão em `node_modules/`
 - Valida arquivos de configuração criados
 - Executa build do projeto
 
 ### 5. Limpeza
+
 - Remove diretórios temporários (opcional)
 
 ## 🔍 Estrutura dos Testes
 
 ### test-integration.ps1 (PowerShell)
+
 ```powershell
 # Testa Windows e WSL
 ./test-integration.ps1 -All
@@ -113,6 +127,7 @@ pegno install @radix-ui/react-slot
 ```
 
 ### test-integration.sh (Bash)
+
 ```bash
 # Testa Linux
 ./test-integration.sh
@@ -123,6 +138,7 @@ pegno install @radix-ui/react-slot
 Os testes são executados automaticamente no CI/CD:
 
 ### Triggers
+
 - Push para `main` ou `develop`
 - Pull requests para `main`
 - Agendamento semanal (segundas às 02:00)
@@ -132,9 +148,9 @@ Os testes são executados automaticamente no CI/CD:
 
 ```yaml
 jobs:
-  test-windows:    # Testa no Windows nativo
-  test-wsl:        # Testa no WSL (Ubuntu)
-  test-summary:    # Gera resumo dos resultados
+  test-windows: # Testa no Windows nativo
+  test-wsl: # Testa no WSL (Ubuntu)
+  test-summary: # Gera resumo dos resultados
 ```
 
 ### Visualizar Resultados
@@ -147,16 +163,16 @@ jobs:
 
 Os testes confirmam a instalação de:
 
-| Pacote | Tipo | Descrição |
-|--------|------|-----------|
-| `tailwindcss` | prod | Framework CSS |
-| `postcss` | prod | Processador CSS |
-| `autoprefixer` | prod | Plugin PostCSS |
-| `class-variance-authority` | dev | Utilitário para variantes |
-| `clsx` | dev | Utilitário para classes CSS |
-| `tailwind-merge` | dev | Merge de classes Tailwind |
-| `lucide-react` | dev | Ícones React |
-| `@radix-ui/react-slot` | prod | Primitivo Radix UI |
+| Pacote                     | Tipo | Descrição                   |
+| -------------------------- | ---- | --------------------------- |
+| `tailwindcss`              | prod | Framework CSS               |
+| `postcss`                  | prod | Processador CSS             |
+| `autoprefixer`             | prod | Plugin PostCSS              |
+| `class-variance-authority` | dev  | Utilitário para variantes   |
+| `clsx`                     | dev  | Utilitário para classes CSS |
+| `tailwind-merge`           | dev  | Merge de classes Tailwind   |
+| `lucide-react`             | dev  | Ícones React                |
+| `@radix-ui/react-slot`     | prod | Primitivo Radix UI          |
 
 ## ✅ Critérios de Sucesso
 
@@ -170,11 +186,13 @@ Um teste passa quando:
 ## ❌ Troubleshooting
 
 ### Erro: "Pegno não está buildado"
+
 ```bash
 bun run build
 ```
 
 ### Erro: "Bun não encontrado"
+
 ```bash
 # Windows
 irm bun.sh/install.ps1 | iex
@@ -184,17 +202,20 @@ curl -fsSL https://bun.sh/install | bash
 ```
 
 ### Erro: "WSL não está disponível"
+
 ```powershell
 # Habilitar WSL no Windows
 wsl --install
 ```
 
 ### Erro: "Tailwind não foi instalado"
+
 - Verifique se o Pegno está funcionando: `node dist/pegno.js --help`
 - Verifique conectividade de rede
 - Tente instalar manualmente: `bun add tailwindcss`
 
 ### Erro: "Build falhou"
+
 - Verifique logs do Vite
 - Confirme que todas as dependências foram instaladas
 - Tente executar `bun install` manualmente

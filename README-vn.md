@@ -6,7 +6,6 @@
 Trình quản lý dependency toàn cục cho Bun mà Bun đã quên tạo ra
 </p>
 
-
 <p align="center">
   <a href="https://bun.sh" target="_blank"><img src="https://img.shields.io/badge/made%20for-bun-000000.svg?logo=bun" /></a>
   <img src="https://img.shields.io/badge/license-MIT-blue.svg" />
@@ -37,7 +36,7 @@ Trình quản lý dependency toàn cục cho Bun mà Bun đã quên tạo ra
 
 Mỗi dự án đều cài đặt lại những thư viện giống nhau. Mỗi lần build đều tải xuống lại. Mỗi developer đều lãng phí thời gian.
 
-**Pegno** giải quyết điều này bằng cách tạo một **workspace toàn cục** trong hệ thống của bạn, nơi các dependency được cài đặt một lần và tái sử dụng qua *symbolic links* (hoặc copies nếu bạn muốn).
+**Pegno** giải quyết điều này bằng cách tạo một **workspace toàn cục** trong hệ thống của bạn, nơi các dependency được cài đặt một lần và tái sử dụng qua _symbolic links_ (hoặc copies nếu bạn muốn).
 
 ---
 
@@ -60,6 +59,7 @@ Ngoài ra, nó thêm vào thứ mà không có trình quản lý nào khác cung
 ### 🧠 Mini-workspace (các "preset")
 
 Bạn có thể lưu các bộ dependency và áp dụng chúng cho bất kỳ dự án nào:
+
 ```bash
 pegno axios fastify zod
 # Hỏi bạn có muốn lưu làm preset không → gõ "api"
@@ -72,17 +72,17 @@ pegno use api
 
 ## ⚡️ Tính năng chính
 
-| Tính năng | Mô tả |
-|----------|------------|
-| 💾 **Cache Toàn Cục Thông Minh** | Mỗi package chỉ được cài đặt một lần trong hệ thống. |
-| 🪄 **Symbolic Links Tự Động** | Không có sự trùng lặp `node_modules`, mọi thứ đều trỏ đến cache toàn cục. |
-| 📦 **Chế độ copy (`--copy`)** | Nếu bạn muốn các build hoàn toàn tách biệt. |
-| 📚 **Mini-Workspace** | Tạo các bộ dependency có tên và áp dụng lại trong vài giây. |
-| 🧩 **Tương thích với mọi dự án Bun** | Chỉ sử dụng các API gốc (`fs`, `os`, `path`, `child_process`). |
-| 🛠️ **Chế độ `--dev`** | Thêm package trực tiếp vào `devDependencies`. |
-| 🧭 **Chế độ `sync`** | Copy toàn bộ workspace toàn cục vào `node_modules` cục bộ. |
-| 🎨 **Logs màu sắc (`kleur`)** | Cấp độ, biểu tượng và thời gian cài đặt để debug nhanh chóng. |
-| 🤗 **Không có dependency runtime bên ngoài** | Chỉ có `kleur` và Bun. 💯🚀🎯 |
+| Tính năng                                    | Mô tả                                                                     |
+| -------------------------------------------- | ------------------------------------------------------------------------- |
+| 💾 **Cache Toàn Cục Thông Minh**             | Mỗi package chỉ được cài đặt một lần trong hệ thống.                      |
+| 🪄 **Symbolic Links Tự Động**                | Không có sự trùng lặp `node_modules`, mọi thứ đều trỏ đến cache toàn cục. |
+| 📦 **Chế độ copy (`--copy`)**                | Nếu bạn muốn các build hoàn toàn tách biệt.                               |
+| 📚 **Mini-Workspace**                        | Tạo các bộ dependency có tên và áp dụng lại trong vài giây.               |
+| 🧩 **Tương thích với mọi dự án Bun**         | Chỉ sử dụng các API gốc (`fs`, `os`, `path`, `child_process`).            |
+| 🛠️ **Chế độ `--dev`**                        | Thêm package trực tiếp vào `devDependencies`.                             |
+| 🧭 **Chế độ `sync`**                         | Copy toàn bộ workspace toàn cục vào `node_modules` cục bộ.                |
+| 🎨 **Logs màu sắc (`kleur`)**                | Cấp độ, biểu tượng và thời gian cài đặt để debug nhanh chóng.             |
+| 🤗 **Không có dependency runtime bên ngoài** | Chỉ có `kleur` và Bun. 💯🚀🎯                                             |
 
 ---
 
@@ -98,11 +98,13 @@ npx pegno
 ```
 
 Xác minh:
+
 ```bash
 pegno --help
 ```
 
 Kết quả mong đợi:
+
 ```
 pegno CLI 1.3.0
 
