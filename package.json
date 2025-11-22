@@ -1,6 +1,6 @@
 {
   "name": "pegno",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Gerenciador de workspace global de dependências para Bun — by Suissa 🧠",
   "type": "module",
   "bin": {
@@ -39,6 +39,14 @@
     "dist",
     "README.md"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/suissa/pegno.git"
+  },
+  "bugs": {
+    "url": "https://github.com/suissa/pegno/issues"
+  },
+  "homepage": "https://github.com/suissa/pegno#readme",
   "devDependencies": {
     "@types/node": "^24.9.2",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
