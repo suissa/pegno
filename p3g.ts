@@ -1,7 +1,8 @@
 #!/usr/bin/env bun
 /**
- * p3g.ts v0.1.0
+ * p3g.ts v0.2.0
  * CLI global de gerenciamento de dependências e mini-workspaces
+ * Compatível com Windows, Linux e macOS
  * Autor: Suissa 🧠
  */
 
@@ -25,6 +26,7 @@ import readline from 'readline';
 // ---------------------
 // Configurações globais
 // ---------------------
+const isWindows = os.platform() === 'win32';
 const workspace =
   process.env.p3g_WORKSPACE !== undefined && process.env.p3g_WORKSPACE.trim() !== ''
     ? process.env.p3g_WORKSPACE
@@ -34,11 +36,12 @@ const presetDir = join(workspace, '..', 'presets');
 ensureDir(presetDir);
 
 const args = process.argv.slice(2);
-const copyMode = args.includes('--copy');
+const copyMode = args.includes('--copy') || isWindows; // Force copy mode on Windows by default
 const verbose = args.includes('--verbose');
 const syncMode = args.includes('sync');
 const help = args.includes('--help');
 const isDev = args.includes('--dev');
+const forceSymlink = args.includes('--symlink'); // Override Windows default
 
 // ---------------------
 // Controle de tempo
@@ -121,6 +124,46 @@ function listDirs(path: string): string[] {
 }
 
 // ---------------------
+// Utilitários específicos do Windows
+// ---------------------
+function canCreateSymlinks(): boolean {
+  if (!isWindows) return true;
+  
+  try {
+    // Tenta criar um symlink de teste
+    const testDir = join(os.tmpdir(), 'p3g_symlink_test');
+    const testTarget = join(os.tmpdir(), 'p3g_symlink_target');
+    
+    ensureDir(testTarget);
+    symlinkSync(testTarget, testDir, 'dir');
+    rmSync(testDir, { force: true });
+    rmSync(testTarget, { force: true });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function createWindowsBinWrapper(binName: string, targetPath: string): void {
+  const binDir = ensureBinDir();
+  const cmdFile = join(binDir, `${binName}.cmd`);
+  const psFile = join(binDir, `${binName}.ps1`);
+  
+  // Cria wrapper .cmd para compatibilidade
+  const cmdContent = `@echo off
+node "${targetPath}" %*`;
+  
+  // Cria wrapper .ps1 para PowerShell
+  const psContent = `#!/usr/bin/env pwsh
+& node "${targetPath}" @args`;
+  
+  writeFileSync(cmdFile, cmdContent);
+  writeFileSync(psFile, psContent);
+  
+  info(`🔗 .bin (Windows): ${kleur.magenta(binName)} → ${kleur.gray(targetPath)}`);
+}
+
+// ---------------------
 // Atualiza package.json
 // ---------------------
 function addToPackageJSON(name: string, version: string, isDevDep = false): void {
@@ -163,8 +206,7 @@ function linkPackageBins(pkgName: string, pkgPathInNodeModules: string): void {
   }
 
   const binDir = ensureBinDir();
-
-  const entries = typeof bin === 'string' ? { [pkgName]: bin } : bin; // { binName: "dist/cli.js", ... }
+  const entries = typeof bin === 'string' ? { [pkgName]: bin } : bin;
 
   for (const [binName, relTarget] of Object.entries(entries)) {
     const src = join(pkgPathInNodeModules, String(relTarget));
@@ -173,16 +215,20 @@ function linkPackageBins(pkgName: string, pkgPathInNodeModules: string): void {
       continue;
     }
 
-    // nome do link no .bin → usa a key do bin ou o nome do pacote
-    const linkName = join(binDir, binName);
-    rmSync(linkName, { force: true });
+    if (isWindows) {
+      // No Windows, cria wrappers .cmd e .ps1
+      createWindowsBinWrapper(binName, src);
+    } else {
+      // Unix-like: cria symlink tradicional
+      const linkName = join(binDir, binName);
+      rmSync(linkName, { force: true });
 
-    try {
-      symlinkSync(src, linkName);
-      info(`🔗 .bin: ${kleur.magenta(binName)} → ${kleur.gray(src)}`);
-    } catch {
-      // fallback Windows (cria cópia .cmd não implementado aqui; manter simples em Linux)
-      warn(`Falha ao linkar .bin para ${pkgName}/${binName}`);
+      try {
+        symlinkSync(src, linkName);
+        info(`🔗 .bin: ${kleur.magenta(binName)} → ${kleur.gray(src)}`);
+      } catch {
+        warn(`Falha ao linkar .bin para ${pkgName}/${binName}`);
+      }
     }
   }
 }
@@ -245,16 +291,23 @@ function handlePkg(raw: string): void {
   // Remove o destino anterior
   rmSync(nodePath, { recursive: true, force: true });
 
-  if (copyMode) {
-    // Somente copiar no modo --copy (sem symlink)
-    cpSync(target, nodePath, { recursive: true });
-    info(`📁 Copiado ${kleur.magenta(name)} → node_modules`);
-  } else {
-    // Symlink no modo padrão
-    // Em alguns SOs, parent precisa existir (acima já garantimos)
-    symlinkSync(target, nodePath, 'dir');
+  const shouldUseSymlink = !copyMode && (forceSymlink || canCreateSymlinks());
 
-    info(`🔗 Vinculado ${kleur.magenta(nodePath)} → ${kleur.gray(target)}`);
+  if (shouldUseSymlink) {
+    // Symlink quando possível
+    try {
+      symlinkSync(target, nodePath, 'dir');
+      info(`🔗 Vinculado ${kleur.magenta(nodePath)} → ${kleur.gray(target)}`);
+    } catch (err) {
+      warn(`Falha ao criar symlink, usando cópia: ${String(err)}`);
+      cpSync(target, nodePath, { recursive: true });
+      info(`📁 Copiado ${kleur.magenta(name)} → node_modules (fallback)`);
+    }
+  } else {
+    // Modo cópia (padrão no Windows)
+    cpSync(target, nodePath, { recursive: true });
+    const mode = isWindows ? '(Windows)' : '(--copy)';
+    info(`📁 Copiado ${kleur.magenta(name)} → node_modules ${kleur.gray(mode)}`);
   }
 
   linkPackageBins(name, nodePath);
@@ -404,17 +457,23 @@ function installAll(): void {
 // Ajuda
 // ---------------------
 function showHelp(): void {
-  console.log(kleur.bold('p3g CLI 1.3.0'));
+  console.log(kleur.bold('p3g CLI 1.4.0 - Compatível com Windows'));
   console.log(`
   ${kleur.cyan('Uso:')}
     ${kleur.green('p3g')} ${kleur.yellow('axios@latest')}       ${kleur.gray('→')} Instala pacote direto
     ${kleur.green('p3g')} ${kleur.blue('--dev')} ${kleur.yellow('vitest')}       ${kleur.gray('→')} Instala como devDependency
     ${kleur.green('p3g')} ${kleur.magenta('use')} ${kleur.yellow('api')}            ${kleur.gray('→')} Usa miniworkspace salvo
     ${kleur.green('p3g')} ${kleur.magenta('list')}               ${kleur.gray('→')} Lista miniworkspaces
-    ${kleur.green('p3g')} ${kleur.blue('--copy')}             ${kleur.gray('→')} Copia ao invés de linkar
+    ${kleur.green('p3g')} ${kleur.blue('--copy')}             ${kleur.gray('→')} Força modo cópia (padrão no Windows)
+    ${kleur.green('p3g')} ${kleur.blue('--symlink')}          ${kleur.gray('→')} Força symlinks no Windows (requer privilégios)
     ${kleur.green('p3g')} ${kleur.magenta('sync')}               ${kleur.gray('→')} Copia todos do workspace para node_modules
     ${kleur.green('p3g')} ${kleur.blue('--verbose')}          ${kleur.gray('→')} Logs detalhados
     ${kleur.green('p3g')} ${kleur.blue('--help')}             ${kleur.gray('→')} Mostra esta ajuda
+
+  ${kleur.cyan('Notas do Windows:')}
+    • Modo cópia é usado por padrão (mais compatível)
+    • Use ${kleur.blue('--symlink')} para forçar symlinks (requer modo desenvolvedor ou admin)
+    • Binários são criados como .cmd e .ps1 automaticamente
   `);
 }
 
@@ -465,8 +524,14 @@ function syncWorkspace(): void {
     const name = dir.split('__')[0];
     const dest = join('node_modules', name);
     rmSync(dest, { recursive: true, force: true });
-    // exec(`cp "${src}/bun.lock" "${dest}"`);
-    exec(`cp -R "${src}" "${dest}"`);
+    
+    if (isWindows) {
+      // Windows: usa cpSync nativo do Node.js
+      cpSync(src, dest, { recursive: true });
+    } else {
+      // Unix: usa comando cp para melhor performance
+      exec(`cp -R "${src}" "${dest}"`);
+    }
     log(`📁 Sincronizado ${name}`);
   }
   info(kleur.green('✨ Workspace sincronizado com sucesso!'));

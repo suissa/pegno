@@ -1,0 +1,31 @@
+{
+  "name": "p3g-windows",
+  "version": "0.2.0",
+  "description": "Configuração específica para Windows do p3g",
+  "platform": "win32",
+  "features": {
+    "symlinks": {
+      "enabled": false,
+      "requiresPrivileges": true,
+      "fallbackToCopy": true
+    },
+    "binWrappers": {
+      "createCmd": true,
+      "createPs1": true,
+      "createBat": false
+    },
+    "pathSeparator": "\\",
+    "defaultWorkspace": "%USERPROFILE%\\.p3g_workspace"
+  },
+  "compatibility": {
+    "windows10": true,
+    "windows11": true,
+    "powershell": "5.1+",
+    "cmd": true,
+    "wsl": true
+  },
+  "installation": {
+    "methods": ["powershell", "manual", "chocolatey"],
+    "requirements": ["bun>=1.1.0", "node>=18.0.0"]
+  }
+}

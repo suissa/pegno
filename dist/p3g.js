@@ -116,16 +116,18 @@ var kleur_default = $;
 
 // p3g.ts
 import readline from "readline";
+var isWindows = os.platform() === "win32";
 var workspace = process.env.p3g_WORKSPACE !== undefined && process.env.p3g_WORKSPACE.trim() !== "" ? process.env.p3g_WORKSPACE : join(os.homedir(), ".p3g_workspace/js");
 var tmpdir2 = join(os.tmpdir(), `p3g_install_${Date.now()}`);
 var presetDir = join(workspace, "..", "presets");
 ensureDir(presetDir);
 var args = process.argv.slice(2);
-var copyMode = args.includes("--copy");
+var copyMode = args.includes("--copy") || isWindows;
 var verbose = args.includes("--verbose");
 var syncMode = args.includes("sync");
 var help = args.includes("--help");
 var isDev = args.includes("--dev");
+var forceSymlink = args.includes("--symlink");
 var installStartTime = 0;
 var uniquePackagesInstalled = 0;
 function log(...msg) {
@@ -186,6 +188,33 @@ function listDirs(path) {
   }
   return readdirSync(path).filter((f) => statSync(join(path, f)).isDirectory());
 }
+function canCreateSymlinks() {
+  if (!isWindows)
+    return true;
+  try {
+    const testDir = join(os.tmpdir(), "p3g_symlink_test");
+    const testTarget = join(os.tmpdir(), "p3g_symlink_target");
+    ensureDir(testTarget);
+    symlinkSync(testTarget, testDir, "dir");
+    rmSync(testDir, { force: true });
+    rmSync(testTarget, { force: true });
+    return true;
+  } catch {
+    return false;
+  }
+}
+function createWindowsBinWrapper(binName, targetPath) {
+  const binDir = ensureBinDir();
+  const cmdFile = join(binDir, `${binName}.cmd`);
+  const psFile = join(binDir, `${binName}.ps1`);
+  const cmdContent = `@echo off
+node "${targetPath}" %*`;
+  const psContent = `#!/usr/bin/env pwsh
+& node "${targetPath}" @args`;
+  writeFileSync(cmdFile, cmdContent);
+  writeFileSync(psFile, psContent);
+  info(`\uD83D\uDD17 .bin (Windows): ${kleur_default.magenta(binName)} \u2192 ${kleur_default.gray(targetPath)}`);
+}
 function addToPackageJSON(name, version, isDevDep = false) {
   const pkgPath = "package.json";
   let pkg = {};
@@ -226,13 +255,17 @@ function linkPackageBins(pkgName, pkgPathInNodeModules) {
       warn(`Bin n\xE3o encontrado para ${pkgName}: ${String(relTarget)}`);
       continue;
     }
-    const linkName = join(binDir, binName);
-    rmSync(linkName, { force: true });
-    try {
-      symlinkSync(src, linkName);
-      info(`\uD83D\uDD17 .bin: ${kleur_default.magenta(binName)} \u2192 ${kleur_default.gray(src)}`);
-    } catch {
-      warn(`Falha ao linkar .bin para ${pkgName}/${binName}`);
+    if (isWindows) {
+      createWindowsBinWrapper(binName, src);
+    } else {
+      const linkName = join(binDir, binName);
+      rmSync(linkName, { force: true });
+      try {
+        symlinkSync(src, linkName);
+        info(`\uD83D\uDD17 .bin: ${kleur_default.magenta(binName)} \u2192 ${kleur_default.gray(src)}`);
+      } catch {
+        warn(`Falha ao linkar .bin para ${pkgName}/${binName}`);
+      }
     }
   }
 }
@@ -278,12 +311,20 @@ function handlePkg(raw) {
     ensureDir(nodeParent);
   }
   rmSync(nodePath, { recursive: true, force: true });
-  if (copyMode) {
-    cpSync(target, nodePath, { recursive: true });
-    info(`\uD83D\uDCC1 Copiado ${kleur_default.magenta(name)} \u2192 node_modules`);
+  const shouldUseSymlink = !copyMode && (forceSymlink || canCreateSymlinks());
+  if (shouldUseSymlink) {
+    try {
+      symlinkSync(target, nodePath, "dir");
+      info(`\uD83D\uDD17 Vinculado ${kleur_default.magenta(nodePath)} \u2192 ${kleur_default.gray(target)}`);
+    } catch (err) {
+      warn(`Falha ao criar symlink, usando c\xF3pia: ${String(err)}`);
+      cpSync(target, nodePath, { recursive: true });
+      info(`\uD83D\uDCC1 Copiado ${kleur_default.magenta(name)} \u2192 node_modules (fallback)`);
+    }
   } else {
-    symlinkSync(target, nodePath, "dir");
-    info(`\uD83D\uDD17 Vinculado ${kleur_default.magenta(nodePath)} \u2192 ${kleur_default.gray(target)}`);
+    cpSync(target, nodePath, { recursive: true });
+    const mode = isWindows ? "(Windows)" : "(--copy)";
+    info(`\uD83D\uDCC1 Copiado ${kleur_default.magenta(name)} \u2192 node_modules ${kleur_default.gray(mode)}`);
   }
   linkPackageBins(name, nodePath);
   hydrateDepsOf(name);
@@ -394,17 +435,23 @@ function installAll() {
   info(kleur_default.green("\uD83D\uDE80 Instala\xE7\xE3o conclu\xEDda!"));
 }
 function showHelp() {
-  console.log(kleur_default.bold("p3g CLI 1.3.0"));
+  console.log(kleur_default.bold("p3g CLI 1.4.0 - Compat\xEDvel com Windows"));
   console.log(`
   ${kleur_default.cyan("Uso:")}
     ${kleur_default.green("p3g")} ${kleur_default.yellow("axios@latest")}       ${kleur_default.gray("\u2192")} Instala pacote direto
     ${kleur_default.green("p3g")} ${kleur_default.blue("--dev")} ${kleur_default.yellow("vitest")}       ${kleur_default.gray("\u2192")} Instala como devDependency
     ${kleur_default.green("p3g")} ${kleur_default.magenta("use")} ${kleur_default.yellow("api")}            ${kleur_default.gray("\u2192")} Usa miniworkspace salvo
     ${kleur_default.green("p3g")} ${kleur_default.magenta("list")}               ${kleur_default.gray("\u2192")} Lista miniworkspaces
-    ${kleur_default.green("p3g")} ${kleur_default.blue("--copy")}             ${kleur_default.gray("\u2192")} Copia ao inv\xE9s de linkar
+    ${kleur_default.green("p3g")} ${kleur_default.blue("--copy")}             ${kleur_default.gray("\u2192")} For\xE7a modo c\xF3pia (padr\xE3o no Windows)
+    ${kleur_default.green("p3g")} ${kleur_default.blue("--symlink")}          ${kleur_default.gray("\u2192")} For\xE7a symlinks no Windows (requer privil\xE9gios)
     ${kleur_default.green("p3g")} ${kleur_default.magenta("sync")}               ${kleur_default.gray("\u2192")} Copia todos do workspace para node_modules
     ${kleur_default.green("p3g")} ${kleur_default.blue("--verbose")}          ${kleur_default.gray("\u2192")} Logs detalhados
     ${kleur_default.green("p3g")} ${kleur_default.blue("--help")}             ${kleur_default.gray("\u2192")} Mostra esta ajuda
+
+  ${kleur_default.cyan("Notas do Windows:")}
+    \u2022 Modo c\xF3pia \xE9 usado por padr\xE3o (mais compat\xEDvel)
+    \u2022 Use ${kleur_default.blue("--symlink")} para for\xE7ar symlinks (requer modo desenvolvedor ou admin)
+    \u2022 Bin\xE1rios s\xE3o criados como .cmd e .ps1 automaticamente
   `);
 }
 (async () => {
@@ -446,7 +493,11 @@ function syncWorkspace() {
     const name = dir.split("__")[0];
     const dest = join("node_modules", name);
     rmSync(dest, { recursive: true, force: true });
-    exec(`cp -R "${src}" "${dest}"`);
+    if (isWindows) {
+      cpSync(src, dest, { recursive: true });
+    } else {
+      exec(`cp -R "${src}" "${dest}"`);
+    }
     log(`\uD83D\uDCC1 Sincronizado ${name}`);
   }
   info(kleur_default.green("\u2728 Workspace sincronizado com sucesso!"));

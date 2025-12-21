@@ -1,1 +1,70 @@
 node_modules
+
+# Build outputs
+dist/
+*.js.map
+
+# Bun
+bun.lockb
+.bun/
+
+# OS specific
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Windows specific
+*.cmd
+*.bat
+*.ps1.bak
+$RECYCLE.BIN/
+
+# Test artifacts
+test-project/
+*.test.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# Dependency directories
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env
+.env.test
+.env.production
+.env.local
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
