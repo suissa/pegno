@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://i.imgur.com/IhXEEQM.png" width="680" alt="Pegno logo"/>
+  <img src="https://i.imgur.com/IhXEEQM.png" width="680" alt="p3g logo"/>
 </p>
 
 <p align="center">
@@ -9,8 +9,8 @@ Il gestore globale di dipendenze per Bun che Bun ha dimenticato di fare
 <p align="center">
   <a href="https://bun.sh" target="_blank"><img src="https://img.shields.io/badge/made%20for-bun-000000.svg?logo=bun" /></a>
   <img src="https://img.shields.io/badge/license-MIT-blue.svg" />
-  <a href="https://www.npmjs.com/package/pegno" target="_blank">
-    <img src="https://img.shields.io/npm/v/pegno.svg" />
+  <a href="https://www.npmjs.com/package/p3g" target="_blank">
+    <img src="https://img.shields.io/npm/v/p3g.svg" />
   </a>
   <img src="https://img.shields.io/badge/TypeScript-Ready-3178c6.svg" />
 </p>
@@ -26,35 +26,35 @@ Il gestore globale di dipendenze per Bun che Bun ha dimenticato di fare
 ---
 
 <p align="center">
-  <h1 align="center">Cos'è <br /><img src="https://i.imgur.com/P1VL4bC.png" height="80" alt="Pegno logo"/><br />?</h1>
+  <h1 align="center">Cos'è <br /><img src="https://i.imgur.com/P1VL4bC.png" height="80" alt="p3g logo"/><br />?</h1>
 </p>
 
-**Pegno** è un gestore di dipendenze con **cache globale**, **auto-link**, **mini-workspace** e **modalità di sincronizzazione istantanea**, realizzato al 100% in **Bun + TypeScript**.
+**p3g** è un gestore di dipendenze con **cache globale**, **auto-link**, **mini-workspace** e **modalità di sincronizzazione istantanea**, realizzato al 100% in **Bun + TypeScript**.
 
 L'idea è nata perché Bun ha promesso "velocità e semplicità", ma in pratica manca ancora uno strato essenziale:  
 **riutilizzo reale delle dipendenze tra progetti**.
 
 Ogni progetto reinstalla le stesse librerie. Ogni build scarica di nuovo. Ogni dev perde tempo.
 
-**Pegno** risolve questo creando un **workspace globale** sul tuo sistema, dove le dipendenze vengono installate una sola volta e riutilizzate tramite _symlink_ (o copie, se preferisci).
+**p3g** risolve questo creando un **workspace globale** sul tuo sistema, dove le dipendenze vengono installate una sola volta e riutilizzate tramite _symlink_ (o copie, se preferisci).
 
 ---
 
 ## 🚀 Installazione
 
 ```bash
-bun add -g pegno
+bun add -g p3g
 
-npm i -g pegno
+npm i -g p3g
 
 # o eseguendo direttamente
-npx pegno
+npx p3g
 ```
 
 Verificare:
 
 ```bash
-pegno --help
+p3g --help
 ```
 
 **⚠️ Windows:** Se il comando non viene riconosciuto, aggiungi la directory globale di Bun al PATH:
@@ -67,16 +67,16 @@ pegno --help
 Output atteso:
 
 ```
-pegno CLI 1.3.0
+p3g CLI 1.3.0
 
 Uso:
-  pegno axios@latest   → Installa pacchetto direttamente
-  pegno use api        → Usa miniworkspace salvato
-  pegno list           → Elenca miniworkspace
-  pegno --dev          → Installa come devDependency
-  pegno --copy         → Copia invece di collegare
-  pegno sync           → Copia tutto il workspace globale
-  pegno --verbose      → Log dettagliati
+  p3g axios@latest   → Installa pacchetto direttamente
+  p3g use api        → Usa miniworkspace salvato
+  p3g list           → Elenca miniworkspace
+  p3g --dev          → Installa come devDependency
+  p3g --copy         → Copia invece di collegare
+  p3g sync           → Copia tutto il workspace globale
+  p3g --verbose      → Log dettagliati
 ```
 
 ---
@@ -85,16 +85,16 @@ Uso:
 
 ```bash
 # Installa axios globalmente e collega al progetto corrente
-pegno axios
+p3g axios
 
 # Installa più pacchetti
-pegno fastify zod openai
+p3g fastify zod openai
 
 # Aggiunge pacchetti di sviluppo
-pegno --dev vitest typescript
+p3g --dev vitest typescript
 
 # Crea e salva un mini-workspace
-pegno use api
+p3g use api
 ```
 
 ### 🪟 Utenti Windows
@@ -103,10 +103,10 @@ Su Windows, si raccomanda di usare la modalità `--copy` a causa delle restrizio
 
 ```bash
 # Windows: usa --copy per evitare errori di permessi
-pegno --copy axios fastify zod
+p3g --copy axios fastify zod
 
 # Modalità dev su Windows
-pegno --dev --copy vitest typescript
+p3g --dev --copy vitest typescript
 ```
 
 **Perché usare `--copy` su Windows?**  
@@ -134,7 +134,7 @@ Windows richiede privilegi amministrativi speciali per creare symlink. La modali
 
 **SuissAI**  
 Sviluppatore senior appassionato di architetture distribuite, resilienti e IA.  
-Creatore dell'ecosistema **Full Agentic Stack**, **Atomic Behavior Types**, e ora… **Pegno**.
+Creatore dell'ecosistema **Full Agentic Stack**, **Atomic Behavior Types**, e ora… **p3g**.
 
 ---
 

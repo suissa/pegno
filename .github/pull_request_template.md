@@ -34,7 +34,7 @@ Descreva os testes que você executou para verificar suas mudanças.
 - [ ] Eu fiz mudanças correspondentes na documentação
 - [ ] Minhas mudanças não geram novos warnings de lint/TypeScript
 - [ ] O build passa localmente com minhas mudanças
-- [ ] Mantive a arquitetura de arquivo único (pegno.ts)
+- [ ] Mantive a arquitetura de arquivo único (p3g.ts)
 - [ ] Não adicionei dependências desnecessárias
 
 ## 🔗 Issues Relacionadas

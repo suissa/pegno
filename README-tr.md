@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://i.imgur.com/IhXEEQM.png" width="680" alt="Pegno logo"/>
+  <img src="https://i.imgur.com/IhXEEQM.png" width="680" alt="p3g logo"/>
 </p>
 
 <p align="center">
@@ -9,8 +9,8 @@ Bun'un yapmayı unuttuğu Bun için global bağımlılık yöneticisi
 <p align="center">
   <a href="https://bun.sh" target="_blank"><img src="https://img.shields.io/badge/made%20for-bun-000000.svg?logo=bun" /></a>
   <img src="https://img.shields.io/badge/license-MIT-blue.svg" />
-  <a href="https://www.npmjs.com/package/pegno" target="_blank">
-    <img src="https://img.shields.io/npm/v/pegno.svg" />
+  <a href="https://www.npmjs.com/package/p3g" target="_blank">
+    <img src="https://img.shields.io/npm/v/p3g.svg" />
   </a>
   <img src="https://img.shields.io/badge/TypeScript-Ready-3178c6.svg" />
 </p>
@@ -26,17 +26,17 @@ Bun'un yapmayı unuttuğu Bun için global bağımlılık yöneticisi
 ---
 
 <p align="center">
-  <h1 align="center"><br /><img src="https://i.imgur.com/P1VL4bC.png" height="80" alt="Pegno logo"/><br /> nedir?</h1>
+  <h1 align="center"><br /><img src="https://i.imgur.com/P1VL4bC.png" height="80" alt="p3g logo"/><br /> nedir?</h1>
 </p>
 
-**Pegno**, **global önbellek**, **otomatik bağlantı**, **mini çalışma alanları** ve **anlık senkronizasyon modu** ile bir bağımlılık yöneticisidir — %100 **Bun + TypeScript** ile inşa edilmiştir.
+**p3g**, **global önbellek**, **otomatik bağlantı**, **mini çalışma alanları** ve **anlık senkronizasyon modu** ile bir bağımlılık yöneticisidir — %100 **Bun + TypeScript** ile inşa edilmiştir.
 
 Bu fikir, Bun'un "hız ve basitlik" vaat etmesine rağmen, pratikte hala önemli bir katmanın eksik olması nedeniyle doğdu:  
 **projeler arası bağımlılıkların gerçek yeniden kullanımı**.
 
 Her proje aynı kütüphaneleri yeniden yükler. Her build yeniden indirir. Her geliştirici zaman kaybeder.
 
-**Pegno** bunu sisteminizde bir **global çalışma alanı** oluşturarak çözer, burada bağımlılıklar bir kez yüklenir ve _sembolik bağlantılar_ (veya isterseniz kopyalar) aracılığıyla yeniden kullanılır.
+**p3g** bunu sisteminizde bir **global çalışma alanı** oluşturarak çözer, burada bağımlılıklar bir kez yüklenir ve _sembolik bağlantılar_ (veya isterseniz kopyalar) aracılığıyla yeniden kullanılır.
 
 ---
 
@@ -47,12 +47,12 @@ Ama **tek başına** hızlı yeterli değil.
 
 npm ve pnpm, geleceğin **paylaşılan önbellek ve paket atomikliği** olduğunu zaten anladı — ama Bun hala kilit dosyalarına ve gereksiz yeniden yüklemeye bağımlı.
 
-**Pegno** felsefesi basit:
+**p3g** felsefesi basit:
 
 > **Kod geçici, önbellek sonsuzdur.**
 
 Bir projede `axios@latest` yüklediğinizde, neden başka bir projede tekrar indiresiniz?  
-**Pegno** global bir depo (`~/.pegno_workspace/js`) oluşturur ve paketleri doğrudan projelere bağlar — bir bağımlılık beyni gibi.
+**p3g** global bir depo (`~/.p3g_workspace/js`) oluşturur ve paketleri doğrudan projelere bağlar — bir bağımlılık beyni gibi.
 
 Ayrıca, başka hiçbir yöneticinin sunmadığı bir şey ekler:
 
@@ -61,10 +61,10 @@ Ayrıca, başka hiçbir yöneticinin sunmadığı bir şey ekler:
 Bağımlılık setlerini kaydedebilir ve herhangi bir projeye uygulayabilirsiniz:
 
 ```bash
-pegno axios fastify zod
+p3g axios fastify zod
 # Ön ayar olarak kaydetmek isteyip istemediğinizi sorar → "api" yazın
 
-pegno use api
+p3g use api
 # her şeyi anında yeniden yükler
 ```
 
@@ -89,33 +89,33 @@ pegno use api
 ## 🚀 Kurulum
 
 ```bash
-bun add -g pegno
+bun add -g p3g
 
-npm i -g pegno
+npm i -g p3g
 
 # veya doğrudan çalıştır
-npx pegno
+npx p3g
 ```
 
 Doğrula:
 
 ```bash
-pegno --help
+p3g --help
 ```
 
 Beklenen çıktı:
 
 ```
-pegno CLI 1.3.0
+p3g CLI 1.3.0
 
 Kullanım:
-  pegno axios@latest   → Paketi doğrudan yükler
-  pegno use api        → Kaydedilmiş mini çalışma alanını kullanır
-  pegno list           → Mini çalışma alanlarını listeler
-  pegno --dev          → devDependency olarak yükler
-  pegno --copy         → Bağlamak yerine kopyalar
-  pegno sync           → Tüm global çalışma alanını kopyalar
-  pegno --verbose      → Ayrıntılı loglar
+  p3g axios@latest   → Paketi doğrudan yükler
+  p3g use api        → Kaydedilmiş mini çalışma alanını kullanır
+  p3g list           → Mini çalışma alanlarını listeler
+  p3g --dev          → devDependency olarak yükler
+  p3g --copy         → Bağlamak yerine kopyalar
+  p3g sync           → Tüm global çalışma alanını kopyalar
+  p3g --verbose      → Ayrıntılı loglar
 ```
 
 ---
@@ -124,26 +124,26 @@ Kullanım:
 
 ```bash
 # axios'u global olarak yükler ve mevcut projeye bağlar
-pegno axios
+p3g axios
 
 # Birden fazla paket yükler
-pegno fastify zod openai
+p3g fastify zod openai
 
 # Geliştirme paketleri ekler
-pegno --dev vitest typescript
+p3g --dev vitest typescript
 
 # Mini çalışma alanı oluşturur ve kaydeder
-pegno use api
+p3g use api
 ```
 
 ---
 
 ## 📁 İç yapı
 
-Pegno otomatik olarak oluşturur:
+p3g otomatik olarak oluşturur:
 
 ```
-~/.pegno/
+~/.p3g/
 ├── js/
 │   ├── axios__latest/
 │   ├── fastify__5.0.0/
@@ -172,11 +172,11 @@ Proje üç ilkeyi takip eder:
 ## 🔮 Yol haritası
 
 - [ ] Hash tabanlı kayıt (paket sağlama toplamı + sürüm)
-- [ ] Etkileşimli CLI UI (`pegno ui`)
+- [ ] Etkileşimli CLI UI (`p3g ui`)
 
 ---
 
-## 💬 Neden "Pegno"?
+## 💬 Neden "p3g"?
 
 Çünkü **her araç iyi bir provokasyona ihtiyaç duyar.**  
 Fikir "modülünü yakalar" ama akıllıca —  
@@ -191,7 +191,7 @@ provokatif, esprili ve işlevsel.
 
 **Suissera da Bahia**  
 Dağıtık, dayanıklı mimariler ve AI konusunda tutkulu kıdemli geliştirici.  
-**Full Agentic Stack**, **EnzyChop.Tech**, **Virion.Delivery** ekosisteminin yaratıcısı ve şimdi… **Pegno**.
+**Full Agentic Stack**, **EnzyChop.Tech**, **Virion.Delivery** ekosisteminin yaratıcısı ve şimdi… **p3g**.
 
 ---
 

@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://i.imgur.com/IhXEEQM.png" width="680" alt="Pegno logo"/>
+  <img src="https://i.imgur.com/IhXEEQM.png" width="680" alt="p3g logo"/>
 </p>
 
 <p align="center">
@@ -9,8 +9,8 @@ Den globala beroendehanteraren för Bun som Bun glömde att skapa
 <p align="center">
   <a href="https://bun.sh" target="_blank"><img src="https://img.shields.io/badge/made%20for-bun-000000.svg?logo=bun" /></a>
   <img src="https://img.shields.io/badge/license-MIT-blue.svg" />
-  <a href="https://www.npmjs.com/package/pegno" target="_blank">
-    <img src="https://img.shields.io/npm/v/pegno.svg" />
+  <a href="https://www.npmjs.com/package/p3g" target="_blank">
+    <img src="https://img.shields.io/npm/v/p3g.svg" />
   </a>
   <img src="https://img.shields.io/badge/TypeScript-Ready-3178c6.svg" />
 </p>
@@ -26,17 +26,17 @@ Den globala beroendehanteraren för Bun som Bun glömde att skapa
 ---
 
 <p align="center">
-  <h1 align="center">Vad är <br /><img src="https://i.imgur.com/P1VL4bC.png" height="80" alt="Pegno logo"/><br />?</h1>
+  <h1 align="center">Vad är <br /><img src="https://i.imgur.com/P1VL4bC.png" height="80" alt="p3g logo"/><br />?</h1>
 </p>
 
-**Pegno** är en beroendehanterare med **global cache**, **auto-länkning**, **mini-arbetsytor** och **omedelbart synkroniseringsläge** — byggd 100% i **Bun + TypeScript**.
+**p3g** är en beroendehanterare med **global cache**, **auto-länkning**, **mini-arbetsytor** och **omedelbart synkroniseringsläge** — byggd 100% i **Bun + TypeScript**.
 
 Idén föddes eftersom Bun lovade "hastighet och enkelhet" — men i praktiken saknas fortfarande ett väsentligt lager:  
 **verklig återanvändning av beroenden mellan projekt**.
 
 Varje projekt ominstallerar samma bibliotek. Varje bygge laddar ner igen. Varje utvecklare slösar tid.
 
-**Pegno** löser detta genom att skapa en **global arbetsyta** i ditt system, där beroenden installeras en gång och återanvänds via _symboliska länkar_ (eller kopior, om du föredrar).
+**p3g** löser detta genom att skapa en **global arbetsyta** i ditt system, där beroenden installeras en gång och återanvänds via _symboliska länkar_ (eller kopior, om du föredrar).
 
 ---
 
@@ -47,12 +47,12 @@ Men snabb **ensam** räcker inte.
 
 npm och pnpm har redan förstått att framtiden är **delad cache och paketatomicitet** — men Bun är fortfarande beroende av låsfiler och redundant ominstallation.
 
-**Pegno**s filosofi är enkel:
+**p3g**s filosofi är enkel:
 
 > **Kod är tillfällig, cache är evig.**
 
 När du installerar `axios@latest` i ett projekt, varför ladda ner det igen i ett annat?  
-**Pegno** skapar ett globalt förråd (`~/.pegno_workspace/js`) och länkar paket direkt till projekt — som en beroendehjärna.
+**p3g** skapar ett globalt förråd (`~/.p3g_workspace/js`) och länkar paket direkt till projekt — som en beroendehjärna.
 
 Dessutom lägger det till något som ingen annan hanterare erbjuder:
 
@@ -61,10 +61,10 @@ Dessutom lägger det till något som ingen annan hanterare erbjuder:
 Du kan spara beroendeuppsättningar och tillämpa dem på vilket projekt som helst:
 
 ```bash
-pegno axios fastify zod
+p3g axios fastify zod
 # Frågar om du vill spara som förinställning → skriv "api"
 
-pegno use api
+p3g use api
 # installerar allt igen omedelbart
 ```
 
@@ -89,33 +89,33 @@ pegno use api
 ## 🚀 Installation
 
 ```bash
-bun add -g pegno
+bun add -g p3g
 
-npm i -g pegno
+npm i -g p3g
 
 # eller kör direkt
-npx pegno
+npx p3g
 ```
 
 Verifiera:
 
 ```bash
-pegno --help
+p3g --help
 ```
 
 Förväntad utdata:
 
 ```
-pegno CLI 1.3.0
+p3g CLI 1.3.0
 
 Användning:
-  pegno axios@latest   → Installerar paket direkt
-  pegno use api        → Använder sparad miniarbetsyta
-  pegno list           → Listar miniarbetsytor
-  pegno --dev          → Installerar som devDependency
-  pegno --copy         → Kopierar istället för att länka
-  pegno sync           → Kopierar hela globala arbetsytan
-  pegno --verbose      → Detaljerade loggar
+  p3g axios@latest   → Installerar paket direkt
+  p3g use api        → Använder sparad miniarbetsyta
+  p3g list           → Listar miniarbetsytor
+  p3g --dev          → Installerar som devDependency
+  p3g --copy         → Kopierar istället för att länka
+  p3g sync           → Kopierar hela globala arbetsytan
+  p3g --verbose      → Detaljerade loggar
 ```
 
 ---
@@ -124,26 +124,26 @@ Användning:
 
 ```bash
 # Installerar axios globalt och länkar till aktuellt projekt
-pegno axios
+p3g axios
 
 # Installerar flera paket
-pegno fastify zod openai
+p3g fastify zod openai
 
 # Lägger till utvecklingspaket
-pegno --dev vitest typescript
+p3g --dev vitest typescript
 
 # Skapar och sparar en mini-arbetsyta
-pegno use api
+p3g use api
 ```
 
 ---
 
 ## 📁 Intern struktur
 
-Pegno skapar automatiskt:
+p3g skapar automatiskt:
 
 ```
-~/.pegno/
+~/.p3g/
 ├── js/
 │   ├── axios__latest/
 │   ├── fastify__5.0.0/
@@ -172,11 +172,11 @@ Projektet följer tre principer:
 ## 🔮 Färdplan
 
 - [ ] Hash-baserat register (paketets kontrollsumma + version)
-- [ ] Interaktivt CLI-gränssnitt (`pegno ui`)
+- [ ] Interaktivt CLI-gränssnitt (`p3g ui`)
 
 ---
 
-## 💬 Varför "Pegno"?
+## 💬 Varför "p3g"?
 
 För att **varje verktyg behöver en bra provokation.**  
 Idén är att det "griper din modul", men intelligent —  
@@ -191,7 +191,7 @@ provokativ, humoristisk och funktionell.
 
 **Suissera da Bahia**  
 Senior utvecklare passionerad om distribuerade, motståndskraftiga arkitekturer och AI.  
-Skapare av **Full Agentic Stack**, **EnzyChop.Tech**, **Virion.Delivery** ekosystemet, och nu… **Pegno**.
+Skapare av **Full Agentic Stack**, **EnzyChop.Tech**, **Virion.Delivery** ekosystemet, och nu… **p3g**.
 
 ---
 

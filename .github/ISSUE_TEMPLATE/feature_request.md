@@ -1,6 +1,6 @@
 ---
 name: ✨ Feature Request
-about: Sugerir uma nova funcionalidade para o Pegno
+about: Sugerir uma nova funcionalidade para o p3g
 title: '[FEATURE] '
 labels: 'enhancement'
 assignees: 'suissa'
@@ -36,7 +36,7 @@ Se possível, forneça um exemplo de como a funcionalidade funcionaria:
 
 ```bash
 # Exemplo de comando
-pegno nova-funcionalidade --opcao valor
+p3g nova-funcionalidade --opcao valor
 ```
 
 ## 📝 Contexto Adicional

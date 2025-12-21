@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://i.imgur.com/IhXEEQM.png" width="680" alt="Pegno logo"/>
+  <img src="https://i.imgur.com/IhXEEQM.png" width="680" alt="p3g logo"/>
 </p>
 
 <p align="center">
@@ -9,8 +9,8 @@ Trình quản lý dependency toàn cục cho Bun mà Bun đã quên tạo ra
 <p align="center">
   <a href="https://bun.sh" target="_blank"><img src="https://img.shields.io/badge/made%20for-bun-000000.svg?logo=bun" /></a>
   <img src="https://img.shields.io/badge/license-MIT-blue.svg" />
-  <a href="https://www.npmjs.com/package/pegno" target="_blank">
-    <img src="https://img.shields.io/npm/v/pegno.svg" />
+  <a href="https://www.npmjs.com/package/p3g" target="_blank">
+    <img src="https://img.shields.io/npm/v/p3g.svg" />
   </a>
   <img src="https://img.shields.io/badge/TypeScript-Ready-3178c6.svg" />
 </p>
@@ -26,17 +26,17 @@ Trình quản lý dependency toàn cục cho Bun mà Bun đã quên tạo ra
 ---
 
 <p align="center">
-  <h1 align="center"><br /><img src="https://i.imgur.com/P1VL4bC.png" height="80" alt="Pegno logo"/><br /> là gì?</h1>
+  <h1 align="center"><br /><img src="https://i.imgur.com/P1VL4bC.png" height="80" alt="p3g logo"/><br /> là gì?</h1>
 </p>
 
-**Pegno** là một trình quản lý dependency với **cache toàn cục**, **tự động liên kết**, **mini-workspace** và **chế độ đồng bộ tức thì** — được xây dựng 100% bằng **Bun + TypeScript**.
+**p3g** là một trình quản lý dependency với **cache toàn cục**, **tự động liên kết**, **mini-workspace** và **chế độ đồng bộ tức thì** — được xây dựng 100% bằng **Bun + TypeScript**.
 
 Ý tưởng ra đời vì Bun hứa hẹn "tốc độ và đơn giản" — nhưng trong thực tế, vẫn thiếu một lớp quan trọng:  
 **tái sử dụng thực sự các dependency giữa các dự án**.
 
 Mỗi dự án đều cài đặt lại những thư viện giống nhau. Mỗi lần build đều tải xuống lại. Mỗi developer đều lãng phí thời gian.
 
-**Pegno** giải quyết điều này bằng cách tạo một **workspace toàn cục** trong hệ thống của bạn, nơi các dependency được cài đặt một lần và tái sử dụng qua _symbolic links_ (hoặc copies nếu bạn muốn).
+**p3g** giải quyết điều này bằng cách tạo một **workspace toàn cục** trong hệ thống của bạn, nơi các dependency được cài đặt một lần và tái sử dụng qua _symbolic links_ (hoặc copies nếu bạn muốn).
 
 ---
 
@@ -47,12 +47,12 @@ Nhưng nhanh **một mình** thì chưa đủ.
 
 npm và pnpm đã hiểu rằng tương lai là **cache chia sẻ và tính nguyên tử của package** — nhưng Bun vẫn phụ thuộc vào lockfiles và cài đặt lại dư thừa.
 
-Triết lý của **Pegno** rất đơn giản:
+Triết lý của **p3g** rất đơn giản:
 
 > **Code là tạm thời, cache là vĩnh cửu.**
 
 Khi bạn cài đặt `axios@latest` trong một dự án, tại sao phải tải xuống lại trong dự án khác?  
-**Pegno** tạo một kho toàn cục (`~/.pegno_workspace/js`) và liên kết các package trực tiếp đến dự án — như một bộ não dependency.
+**p3g** tạo một kho toàn cục (`~/.p3g_workspace/js`) và liên kết các package trực tiếp đến dự án — như một bộ não dependency.
 
 Ngoài ra, nó thêm vào thứ mà không có trình quản lý nào khác cung cấp:
 
@@ -61,10 +61,10 @@ Ngoài ra, nó thêm vào thứ mà không có trình quản lý nào khác cung
 Bạn có thể lưu các bộ dependency và áp dụng chúng cho bất kỳ dự án nào:
 
 ```bash
-pegno axios fastify zod
+p3g axios fastify zod
 # Hỏi bạn có muốn lưu làm preset không → gõ "api"
 
-pegno use api
+p3g use api
 # cài đặt lại mọi thứ ngay lập tức
 ```
 
@@ -89,33 +89,33 @@ pegno use api
 ## 🚀 Cài đặt
 
 ```bash
-bun add -g pegno
+bun add -g p3g
 
-npm i -g pegno
+npm i -g p3g
 
 # hoặc chạy trực tiếp
-npx pegno
+npx p3g
 ```
 
 Xác minh:
 
 ```bash
-pegno --help
+p3g --help
 ```
 
 Kết quả mong đợi:
 
 ```
-pegno CLI 1.3.0
+p3g CLI 1.3.0
 
 Cách sử dụng:
-  pegno axios@latest   → Cài đặt package trực tiếp
-  pegno use api        → Sử dụng miniworkspace đã lưu
-  pegno list           → Liệt kê các miniworkspace
-  pegno --dev          → Cài đặt như devDependency
-  pegno --copy         → Copy thay vì liên kết
-  pegno sync           → Copy toàn bộ workspace toàn cục
-  pegno --verbose      → Logs chi tiết
+  p3g axios@latest   → Cài đặt package trực tiếp
+  p3g use api        → Sử dụng miniworkspace đã lưu
+  p3g list           → Liệt kê các miniworkspace
+  p3g --dev          → Cài đặt như devDependency
+  p3g --copy         → Copy thay vì liên kết
+  p3g sync           → Copy toàn bộ workspace toàn cục
+  p3g --verbose      → Logs chi tiết
 ```
 
 ---
@@ -124,26 +124,26 @@ Cách sử dụng:
 
 ```bash
 # Cài đặt axios toàn cục và liên kết đến dự án hiện tại
-pegno axios
+p3g axios
 
 # Cài đặt nhiều package
-pegno fastify zod openai
+p3g fastify zod openai
 
 # Thêm các package phát triển
-pegno --dev vitest typescript
+p3g --dev vitest typescript
 
 # Tạo và lưu một mini-workspace
-pegno use api
+p3g use api
 ```
 
 ---
 
 ## 📁 Cấu trúc nội bộ
 
-Pegno tự động tạo:
+p3g tự động tạo:
 
 ```
-~/.pegno/
+~/.p3g/
 ├── js/
 │   ├── axios__latest/
 │   ├── fastify__5.0.0/
@@ -171,15 +171,15 @@ Dự án tuân theo ba nguyên tắc:
 
 ## 🔮 Lộ trình
 
-- [ ] Hỗ trợ đa ngôn ngữ (`.pegno/py`, `.pegno/rust`)
+- [ ] Hỗ trợ đa ngôn ngữ (`.p3g/py`, `.p3g/rust`)
 - [ ] Registry dựa trên hash (checksum package + version)
 - [ ] Đồng bộ phân tán qua IPFS hoặc NFS
-- [ ] UI CLI tương tác (`pegno ui`)
-- [ ] Tích hợp với `pegno.json` cục bộ
+- [ ] UI CLI tương tác (`p3g ui`)
+- [ ] Tích hợp với `p3g.json` cục bộ
 
 ---
 
-## 💬 Tại sao "Pegno"?
+## 💬 Tại sao "p3g"?
 
 Vì **mọi công cụ đều cần một sự khiêu khích tốt.**  
 Ý tưởng là nó "nắm lấy module của bạn", nhưng một cách thông minh —  
@@ -194,7 +194,7 @@ khiêu khích, hài hước và chức năng.
 
 **Suissera da Bahia**  
 Developer senior đam mê về kiến trúc phân tán, có khả năng phục hồi và AI.  
-Người tạo ra hệ sinh thái **Full Agentic Stack**, **EnzyChop.Tech**, **Virion.Delivery**, và bây giờ… **Pegno**.
+Người tạo ra hệ sinh thái **Full Agentic Stack**, **EnzyChop.Tech**, **Virion.Delivery**, và bây giờ… **p3g**.
 
 ---
 

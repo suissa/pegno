@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://i.imgur.com/IhXEEQM.png" width="680" alt="Pegno logo"/>
+  <img src="https://i.imgur.com/IhXEEQM.png" width="680" alt="p3g logo"/>
 </p>
 
 <p align="center">
@@ -9,8 +9,8 @@ BunがBunを作り忘れたBun用グローバル依存関係マネージャー
 <p align="center">
   <a href="https://bun.sh" target="_blank"><img src="https://img.shields.io/badge/made%20for-bun-000000.svg?logo=bun" /></a>
   <img src="https://img.shields.io/badge/license-MIT-blue.svg" />
-  <a href="https://www.npmjs.com/package/pegno" target="_blank">
-    <img src="https://img.shields.io/npm/v/pegno.svg" />
+  <a href="https://www.npmjs.com/package/p3g" target="_blank">
+    <img src="https://img.shields.io/npm/v/p3g.svg" />
   </a>
   <img src="https://img.shields.io/badge/TypeScript-Ready-3178c6.svg" />
 </p>
@@ -26,35 +26,35 @@ BunがBunを作り忘れたBun用グローバル依存関係マネージャー
 ---
 
 <p align="center">
-  <h1 align="center"><br /><img src="https://i.imgur.com/P1VL4bC.png" height="80" alt="Pegno logo"/><br />とは？</h1>
+  <h1 align="center"><br /><img src="https://i.imgur.com/P1VL4bC.png" height="80" alt="p3g logo"/><br />とは？</h1>
 </p>
 
-**Pegno**は**グローバルキャッシュ**、**オートリンク**、**ミニワークスペース**、**インスタント同期モード**を備えた依存関係マネージャーで、100% **Bun + TypeScript**で作られています。
+**p3g**は**グローバルキャッシュ**、**オートリンク**、**ミニワークスペース**、**インスタント同期モード**を備えた依存関係マネージャーで、100% **Bun + TypeScript**で作られています。
 
 このアイデアは、Bunが「速度とシンプルさ」を約束したものの、実際にはまだ重要な層が欠けているからです：  
 **プロジェクト間での依存関係の真の再利用**。
 
 各プロジェクトが同じライブラリを再インストールします。各ビルドが再ダウンロードします。各開発者が時間を無駄にします。
 
-**Pegno**は、システム上に**グローバルワークスペース**を作成し、依存関係を一度だけインストールして*シンボリックリンク*（またはお好みでコピー）で再利用することでこれを解決します。
+**p3g**は、システム上に**グローバルワークスペース**を作成し、依存関係を一度だけインストールして*シンボリックリンク*（またはお好みでコピー）で再利用することでこれを解決します。
 
 ---
 
 ## 🚀 インストール
 
 ```bash
-bun add -g pegno
+bun add -g p3g
 
-npm i -g pegno
+npm i -g p3g
 
 # または直接実行
-npx pegno
+npx p3g
 ```
 
 確認：
 
 ```bash
-pegno --help
+p3g --help
 ```
 
 **⚠️ Windows:** コマンドが認識されない場合、BunのグローバルディレクトリをPATHに追加してください：
@@ -67,16 +67,16 @@ pegno --help
 期待される出力：
 
 ```
-pegno CLI 1.3.0
+p3g CLI 1.3.0
 
 使用法:
-  pegno axios@latest   → パッケージを直接インストール
-  pegno use api        → 保存されたミニワークスペースを使用
-  pegno list           → ミニワークスペースをリスト
-  pegno --dev          → devDependencyとしてインストール
-  pegno --copy         → リンクの代わりにコピー
-  pegno sync           → グローバルワークスペース全体をコピー
-  pegno --verbose      → 詳細ログ
+  p3g axios@latest   → パッケージを直接インストール
+  p3g use api        → 保存されたミニワークスペースを使用
+  p3g list           → ミニワークスペースをリスト
+  p3g --dev          → devDependencyとしてインストール
+  p3g --copy         → リンクの代わりにコピー
+  p3g sync           → グローバルワークスペース全体をコピー
+  p3g --verbose      → 詳細ログ
 ```
 
 ---
@@ -85,16 +85,16 @@ pegno CLI 1.3.0
 
 ```bash
 # axiosをグローバルにインストールし、現在のプロジェクトにリンク
-pegno axios
+p3g axios
 
 # 複数のパッケージをインストール
-pegno fastify zod openai
+p3g fastify zod openai
 
 # 開発パッケージを追加
-pegno --dev vitest typescript
+p3g --dev vitest typescript
 
 # ミニワークスペースを作成・保存
-pegno use api
+p3g use api
 ```
 
 ### 🪟 Windowsユーザー
@@ -103,10 +103,10 @@ Windowsでは、シンボリックリンク作成の権限制限により`--copy
 
 ```bash
 # Windows: 権限エラーを避けるため--copyを使用
-pegno --copy axios fastify zod
+p3g --copy axios fastify zod
 
 # WindowsでのDevモード
-pegno --dev --copy vitest typescript
+p3g --dev --copy vitest typescript
 ```
 
 **なぜWindowsで`--copy`を使うのか？**  
@@ -134,7 +134,7 @@ Windowsはシンボリックリンクの作成に特別な管理者権限を必�
 
 **SuissAI**  
 分散型、レジリエントアーキテクチャとAIに情熱を注ぐシニア開発者。  
-**Full Agentic Stack**、**Atomic Behavior Types**エコシステムの創造者、そして今…**Pegno**。
+**Full Agentic Stack**、**Atomic Behavior Types**エコシステムの創造者、そして今…**p3g**。
 
 ---
 

@@ -27,7 +27,7 @@ jobs:
           bun run format:check
           bun run lint:check
           bun run build
-          test -f dist/pegno.js
+          test -f dist/p3g.js
           echo "✅ All checks passed"
           
       - name: Check if PR is for patch/minor updates

@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://i.imgur.com/IhXEEQM.png" width="680" alt="Pegno logo"/>
+  <img src="https://i.imgur.com/IhXEEQM.png" width="680" alt="p3g logo"/>
 </p>
 
 <p align="center">
@@ -9,8 +9,8 @@ Der globale Dependency-Manager für Bun, den Bun vergessen hat zu machen
 <p align="center">
   <a href="https://bun.sh" target="_blank"><img src="https://img.shields.io/badge/made%20for-bun-000000.svg?logo=bun" /></a>
   <img src="https://img.shields.io/badge/license-MIT-blue.svg" />
-  <a href="https://www.npmjs.com/package/pegno" target="_blank">
-    <img src="https://img.shields.io/npm/v/pegno.svg" />
+  <a href="https://www.npmjs.com/package/p3g" target="_blank">
+    <img src="https://img.shields.io/npm/v/p3g.svg" />
   </a>
   <img src="https://img.shields.io/badge/TypeScript-Ready-3178c6.svg" />
 </p>
@@ -26,35 +26,35 @@ Der globale Dependency-Manager für Bun, den Bun vergessen hat zu machen
 ---
 
 <p align="center">
-  <h1 align="center">Was ist <br /><img src="https://i.imgur.com/P1VL4bC.png" height="80" alt="Pegno logo"/><br />?</h1>
+  <h1 align="center">Was ist <br /><img src="https://i.imgur.com/P1VL4bC.png" height="80" alt="p3g logo"/><br />?</h1>
 </p>
 
-**Pegno** ist ein Dependency-Manager mit **globalem Cache**, **Auto-Link**, **Mini-Workspaces** und **Instant-Sync-Modus**, zu 100% in **Bun + TypeScript** erstellt.
+**p3g** ist ein Dependency-Manager mit **globalem Cache**, **Auto-Link**, **Mini-Workspaces** und **Instant-Sync-Modus**, zu 100% in **Bun + TypeScript** erstellt.
 
 Die Idee entstand, weil Bun "Geschwindigkeit und Einfachheit" versprach, aber in der Praxis fehlt noch eine wesentliche Schicht:  
 **echte Wiederverwendung von Dependencies zwischen Projekten**.
 
 Jedes Projekt installiert dieselben Libs neu. Jeder Build lädt erneut herunter. Jeder Dev verliert Zeit.
 
-**Pegno** löst dies, indem es einen **globalen Workspace** auf Ihrem System erstellt, wo Dependencies einmal installiert und über _Symlinks_ (oder Kopien, wenn Sie möchten) wiederverwendet werden.
+**p3g** löst dies, indem es einen **globalen Workspace** auf Ihrem System erstellt, wo Dependencies einmal installiert und über _Symlinks_ (oder Kopien, wenn Sie möchten) wiederverwendet werden.
 
 ---
 
 ## 🚀 Installation
 
 ```bash
-bun add -g pegno
+bun add -g p3g
 
-npm i -g pegno
+npm i -g p3g
 
 # oder direkt ausführen
-npx pegno
+npx p3g
 ```
 
 Überprüfen:
 
 ```bash
-pegno --help
+p3g --help
 ```
 
 **⚠️ Windows:** Wenn der Befehl nicht erkannt wird, fügen Sie das globale Bun-Verzeichnis zum PATH hinzu:
@@ -67,16 +67,16 @@ pegno --help
 Erwartete Ausgabe:
 
 ```
-pegno CLI 1.3.0
+p3g CLI 1.3.0
 
 Verwendung:
-  pegno axios@latest   → Installiert Paket direkt
-  pegno use api        → Verwendet gespeicherten Miniworkspace
-  pegno list           → Listet Miniworkspaces auf
-  pegno --dev          → Installiert als devDependency
-  pegno --copy         → Kopiert statt zu verlinken
-  pegno sync           → Kopiert gesamten globalen Workspace
-  pegno --verbose      → Detaillierte Logs
+  p3g axios@latest   → Installiert Paket direkt
+  p3g use api        → Verwendet gespeicherten Miniworkspace
+  p3g list           → Listet Miniworkspaces auf
+  p3g --dev          → Installiert als devDependency
+  p3g --copy         → Kopiert statt zu verlinken
+  p3g sync           → Kopiert gesamten globalen Workspace
+  p3g --verbose      → Detaillierte Logs
 ```
 
 ---
@@ -85,16 +85,16 @@ Verwendung:
 
 ```bash
 # Installiert axios global und verlinkt zum aktuellen Projekt
-pegno axios
+p3g axios
 
 # Installiert mehrere Pakete
-pegno fastify zod openai
+p3g fastify zod openai
 
 # Fügt Entwicklungspakete hinzu
-pegno --dev vitest typescript
+p3g --dev vitest typescript
 
 # Erstellt und speichert einen Mini-Workspace
-pegno use api
+p3g use api
 ```
 
 ### 🪟 Windows-Benutzer
@@ -103,10 +103,10 @@ Unter Windows wird empfohlen, den `--copy`-Modus zu verwenden, da es Berechtigun
 
 ```bash
 # Windows: verwenden Sie --copy, um Berechtigungsfehler zu vermeiden
-pegno --copy axios fastify zod
+p3g --copy axios fastify zod
 
 # Dev-Modus unter Windows
-pegno --dev --copy vitest typescript
+p3g --dev --copy vitest typescript
 ```
 
 **Warum `--copy` unter Windows verwenden?**  
@@ -134,7 +134,7 @@ Windows erfordert spezielle Administratorrechte zum Erstellen von Symlinks. Der 
 
 **SuissAI**  
 Senior-Entwickler mit Leidenschaft für verteilte, resiliente Architekturen und KI.  
-Schöpfer des **Full Agentic Stack**, **Atomic Behavior Types** Ökosystems und jetzt… **Pegno**.
+Schöpfer des **Full Agentic Stack**, **Atomic Behavior Types** Ökosystems und jetzt… **p3g**.
 
 ---
 

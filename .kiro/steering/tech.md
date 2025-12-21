@@ -24,8 +24,8 @@ bun run start        # Run directly
 ### Building
 
 ```bash
-bun build pegno.ts --outdir dist --target bun
-bun build pegno.ts --outdir dist --target node
+bun build p3g.ts --outdir dist --target bun
+bun build p3g.ts --outdir dist --target node
 ```
 
 ### Maintenance

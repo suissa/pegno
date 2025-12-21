@@ -15,7 +15,7 @@ jobs:
     runs-on: windows-latest
     
     steps:
-      - name: Checkout Pegno
+      - name: Checkout p3g
         uses: actions/checkout@v4
         
       - name: Setup Bun
@@ -23,29 +23,29 @@ jobs:
         with:
           bun-version: latest
           
-      - name: Install Pegno dependencies
+      - name: Install p3g dependencies
         run: bun install --frozen-lockfile
         
-      - name: Build Pegno
+      - name: Build p3g
         run: bun run build
         
       - name: Create test directory
         run: |
-          New-Item -ItemType Directory -Force -Path "$env:TEMP\pegno-test-windows"
-          Set-Location "$env:TEMP\pegno-test-windows"
+          New-Item -ItemType Directory -Force -Path "$env:TEMP\p3g-test-windows"
+          Set-Location "$env:TEMP\p3g-test-windows"
         shell: pwsh
         
       - name: Initialize test project with Vite
         run: |
-          cd $env:TEMP\pegno-test-windows
+          cd $env:TEMP\p3g-test-windows
           bun create vite test-app --template react-ts
           cd test-app
         shell: pwsh
         
-      - name: Test Pegno install Tailwind
+      - name: Test p3g install Tailwind
         run: |
-          cd $env:TEMP\pegno-test-windows\test-app
-          node ${{ github.workspace }}/dist/pegno.js install tailwindcss postcss autoprefixer
+          cd $env:TEMP\p3g-test-windows\test-app
+          node ${{ github.workspace }}/dist/p3g.js install tailwindcss postcss autoprefixer
           if (-not (Test-Path "node_modules/tailwindcss")) {
             Write-Error "Tailwind não foi instalado corretamente"
             exit 1
@@ -55,7 +55,7 @@ jobs:
         
       - name: Initialize Tailwind
         run: |
-          cd $env:TEMP\pegno-test-windows\test-app
+          cd $env:TEMP\p3g-test-windows\test-app
           bunx tailwindcss init -p
           if (-not (Test-Path "tailwind.config.js")) {
             Write-Error "Tailwind config não foi criado"
@@ -64,17 +64,17 @@ jobs:
           Write-Host "✅ Tailwind inicializado"
         shell: pwsh
         
-      - name: Test Pegno install Shadcn dependencies
+      - name: Test p3g install Shadcn dependencies
         run: |
-          cd $env:TEMP\pegno-test-windows\test-app
-          node ${{ github.workspace }}/dist/pegno.js install class-variance-authority clsx tailwind-merge lucide-react --dev
-          node ${{ github.workspace }}/dist/pegno.js install @radix-ui/react-slot
+          cd $env:TEMP\p3g-test-windows\test-app
+          node ${{ github.workspace }}/dist/p3g.js install class-variance-authority clsx tailwind-merge lucide-react --dev
+          node ${{ github.workspace }}/dist/p3g.js install @radix-ui/react-slot
           Write-Host "✅ Dependências Shadcn instaladas"
         shell: pwsh
         
       - name: Create Shadcn config
         run: |
-          cd $env:TEMP\pegno-test-windows\test-app
+          cd $env:TEMP\p3g-test-windows\test-app
           $config = @"
           {
             "style": "default",
@@ -99,7 +99,7 @@ jobs:
         
       - name: Verify installation
         run: |
-          cd $env:TEMP\pegno-test-windows\test-app
+          cd $env:TEMP\p3g-test-windows\test-app
           Write-Host "📦 Verificando instalações..."
           
           $packages = @(
@@ -127,7 +127,7 @@ jobs:
         
       - name: Test build
         run: |
-          cd $env:TEMP\pegno-test-windows\test-app
+          cd $env:TEMP\p3g-test-windows\test-app
           bun run build
           if (-not (Test-Path "dist")) {
             Write-Error "Build falhou"
@@ -141,7 +141,7 @@ jobs:
     runs-on: windows-latest
     
     steps:
-      - name: Checkout Pegno
+      - name: Checkout p3g
         uses: actions/checkout@v4
         
       - name: Setup WSL
@@ -157,12 +157,12 @@ jobs:
           export PATH="$BUN_INSTALL/bin:$PATH"
           bun --version
           
-      - name: Build Pegno in WSL
+      - name: Build p3g in WSL
         shell: wsl-bash {0}
         run: |
           export BUN_INSTALL="$HOME/.bun"
           export PATH="$BUN_INSTALL/bin:$PATH"
-          cd /mnt/d/a/pegno/pegno || cd /mnt/c/actions-runner/_work/pegno/pegno || cd $GITHUB_WORKSPACE
+          cd /mnt/d/a/p3g/p3g || cd /mnt/c/actions-runner/_work/p3g/p3g || cd $GITHUB_WORKSPACE
           bun install
           bun run build
           
@@ -171,26 +171,26 @@ jobs:
         run: |
           export BUN_INSTALL="$HOME/.bun"
           export PATH="$BUN_INSTALL/bin:$PATH"
-          mkdir -p /tmp/pegno-test-wsl
-          cd /tmp/pegno-test-wsl
+          mkdir -p /tmp/p3g-test-wsl
+          cd /tmp/p3g-test-wsl
           
       - name: Initialize test project with Vite in WSL
         shell: wsl-bash {0}
         run: |
           export BUN_INSTALL="$HOME/.bun"
           export PATH="$BUN_INSTALL/bin:$PATH"
-          cd /tmp/pegno-test-wsl
+          cd /tmp/p3g-test-wsl
           bun create vite test-app --template react-ts
           cd test-app
           
-      - name: Test Pegno install Tailwind in WSL
+      - name: Test p3g install Tailwind in WSL
         shell: wsl-bash {0}
         run: |
           export BUN_INSTALL="$HOME/.bun"
           export PATH="$BUN_INSTALL/bin:$PATH"
-          cd /tmp/pegno-test-wsl/test-app
-          WORKSPACE=$(cd /mnt/d/a/pegno/pegno 2>/dev/null || cd /mnt/c/actions-runner/_work/pegno/pegno 2>/dev/null || echo $GITHUB_WORKSPACE)
-          node $WORKSPACE/dist/pegno.js install tailwindcss postcss autoprefixer
+          cd /tmp/p3g-test-wsl/test-app
+          WORKSPACE=$(cd /mnt/d/a/p3g/p3g 2>/dev/null || cd /mnt/c/actions-runner/_work/p3g/p3g 2>/dev/null || echo $GITHUB_WORKSPACE)
+          node $WORKSPACE/dist/p3g.js install tailwindcss postcss autoprefixer
           
           if [ ! -d "node_modules/tailwindcss" ]; then
             echo "❌ Tailwind não foi instalado corretamente"
@@ -203,7 +203,7 @@ jobs:
         run: |
           export BUN_INSTALL="$HOME/.bun"
           export PATH="$BUN_INSTALL/bin:$PATH"
-          cd /tmp/pegno-test-wsl/test-app
+          cd /tmp/p3g-test-wsl/test-app
           bunx tailwindcss init -p
           
           if [ ! -f "tailwind.config.js" ]; then
@@ -212,15 +212,15 @@ jobs:
           fi
           echo "✅ Tailwind inicializado no WSL"
           
-      - name: Test Pegno install Shadcn dependencies in WSL
+      - name: Test p3g install Shadcn dependencies in WSL
         shell: wsl-bash {0}
         run: |
           export BUN_INSTALL="$HOME/.bun"
           export PATH="$BUN_INSTALL/bin:$PATH"
-          cd /tmp/pegno-test-wsl/test-app
-          WORKSPACE=$(cd /mnt/d/a/pegno/pegno 2>/dev/null || cd /mnt/c/actions-runner/_work/pegno/pegno 2>/dev/null || echo $GITHUB_WORKSPACE)
-          node $WORKSPACE/dist/pegno.js install class-variance-authority clsx tailwind-merge lucide-react --dev
-          node $WORKSPACE/dist/pegno.js install @radix-ui/react-slot
+          cd /tmp/p3g-test-wsl/test-app
+          WORKSPACE=$(cd /mnt/d/a/p3g/p3g 2>/dev/null || cd /mnt/c/actions-runner/_work/p3g/p3g 2>/dev/null || echo $GITHUB_WORKSPACE)
+          node $WORKSPACE/dist/p3g.js install class-variance-authority clsx tailwind-merge lucide-react --dev
+          node $WORKSPACE/dist/p3g.js install @radix-ui/react-slot
           echo "✅ Dependências Shadcn instaladas no WSL"
           
       - name: Verify installation in WSL
@@ -228,7 +228,7 @@ jobs:
         run: |
           export BUN_INSTALL="$HOME/.bun"
           export PATH="$BUN_INSTALL/bin:$PATH"
-          cd /tmp/pegno-test-wsl/test-app
+          cd /tmp/p3g-test-wsl/test-app
           echo "📦 Verificando instalações no WSL..."
           
           packages=(
@@ -259,7 +259,7 @@ jobs:
         run: |
           export BUN_INSTALL="$HOME/.bun"
           export PATH="$BUN_INSTALL/bin:$PATH"
-          cd /tmp/pegno-test-wsl/test-app
+          cd /tmp/p3g-test-wsl/test-app
           bun run build
           
           if [ ! -d "dist" ]; then

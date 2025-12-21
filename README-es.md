@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://i.imgur.com/IhXEEQM.png" width="680" alt="Pegno logo"/>
+  <img src="https://i.imgur.com/IhXEEQM.png" width="680" alt="p3g logo"/>
 </p>
 
 <p align="center">
@@ -9,8 +9,8 @@ El gestor global de dependencias para Bun que Bun olvidó hacer
 <p align="center">
   <a href="https://bun.sh" target="_blank"><img src="https://img.shields.io/badge/made%20for-bun-000000.svg?logo=bun" /></a>
   <img src="https://img.shields.io/badge/license-MIT-blue.svg" />
-  <a href="https://www.npmjs.com/package/pegno" target="_blank">
-    <img src="https://img.shields.io/npm/v/pegno.svg" />
+  <a href="https://www.npmjs.com/package/p3g" target="_blank">
+    <img src="https://img.shields.io/npm/v/p3g.svg" />
   </a>
   <img src="https://img.shields.io/badge/TypeScript-Ready-3178c6.svg" />
 </p>
@@ -26,35 +26,35 @@ El gestor global de dependencias para Bun que Bun olvidó hacer
 ---
 
 <p align="center">
-  <h1 align="center">¿Qué es <br /><img src="https://i.imgur.com/P1VL4bC.png" height="80" alt="Pegno logo"/><br />?</h1>
+  <h1 align="center">¿Qué es <br /><img src="https://i.imgur.com/P1VL4bC.png" height="80" alt="p3g logo"/><br />?</h1>
 </p>
 
-**Pegno** es un gestor de dependencias con **caché global**, **auto-enlace**, **mini-workspaces** y **modo de sincronización instantánea**, hecho 100% en **Bun + TypeScript**.
+**p3g** es un gestor de dependencias con **caché global**, **auto-enlace**, **mini-workspaces** y **modo de sincronización instantánea**, hecho 100% en **Bun + TypeScript**.
 
 La idea nació porque Bun prometió "velocidad y simplicidad", pero en la práctica, aún falta una capa esencial:  
 **reutilización real de dependencias entre proyectos**.
 
 Cada proyecto reinstala las mismas librerías. Cada build descarga de nuevo. Cada dev pierde tiempo.
 
-**Pegno** resuelve esto creando un **workspace global** en tu sistema, donde las dependencias se instalan una sola vez y se reutilizan mediante _symlinks_ (o copias, si prefieres).
+**p3g** resuelve esto creando un **workspace global** en tu sistema, donde las dependencias se instalan una sola vez y se reutilizan mediante _symlinks_ (o copias, si prefieres).
 
 ---
 
 ## 🚀 Instalación
 
 ```bash
-bun add -g pegno
+bun add -g p3g
 
-npm i -g pegno
+npm i -g p3g
 
 # o ejecutando directamente
-npx pegno
+npx p3g
 ```
 
 Verificar:
 
 ```bash
-pegno --help
+p3g --help
 ```
 
 **⚠️ Windows:** Si el comando no es reconocido, añade el directorio global de Bun al PATH:
@@ -67,16 +67,16 @@ pegno --help
 Salida esperada:
 
 ```
-pegno CLI 1.3.0
+p3g CLI 1.3.0
 
 Uso:
-  pegno axios@latest   → Instala paquete directamente
-  pegno use api        → Usa miniworkspace guardado
-  pegno list           → Lista miniworkspaces
-  pegno --dev          → Instala como devDependency
-  pegno --copy         → Copia en lugar de enlazar
-  pegno sync           → Copia todo el workspace global
-  pegno --verbose      → Logs detallados
+  p3g axios@latest   → Instala paquete directamente
+  p3g use api        → Usa miniworkspace guardado
+  p3g list           → Lista miniworkspaces
+  p3g --dev          → Instala como devDependency
+  p3g --copy         → Copia en lugar de enlazar
+  p3g sync           → Copia todo el workspace global
+  p3g --verbose      → Logs detallados
 ```
 
 ---
@@ -85,16 +85,16 @@ Uso:
 
 ```bash
 # Instala axios globalmente y enlaza al proyecto actual
-pegno axios
+p3g axios
 
 # Instala múltiples paquetes
-pegno fastify zod openai
+p3g fastify zod openai
 
 # Añade paquetes de desarrollo
-pegno --dev vitest typescript
+p3g --dev vitest typescript
 
 # Crea y guarda un mini-workspace
-pegno use api
+p3g use api
 ```
 
 ### 🪟 Usuarios de Windows
@@ -103,10 +103,10 @@ En Windows, se recomienda usar el modo `--copy` debido a las restricciones de pe
 
 ```bash
 # Windows: usa --copy para evitar errores de permisos
-pegno --copy axios fastify zod
+p3g --copy axios fastify zod
 
 # Modo dev en Windows
-pegno --dev --copy vitest typescript
+p3g --dev --copy vitest typescript
 ```
 
 **¿Por qué usar `--copy` en Windows?**  
@@ -134,7 +134,7 @@ Windows requiere privilegios administrativos especiales para crear symlinks. El 
 
 **SuissAI**  
 Desarrollador senior apasionado por arquitecturas distribuidas, resilientes e IA.  
-Creador del ecosistema **Full Agentic Stack**, **Atomic Behavior Types**, y ahora… **Pegno**.
+Creador del ecosistema **Full Agentic Stack**, **Atomic Behavior Types**, y ahora… **p3g**.
 
 ---
 

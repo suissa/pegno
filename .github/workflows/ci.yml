@@ -39,8 +39,8 @@ jobs:
         
       - name: Test build output
         run: |
-          test -f dist/pegno.js
-          node dist/pegno.js --help || echo "Build test completed"
+          test -f dist/p3g.js
+          node dist/p3g.js --help || echo "Build test completed"
           
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4

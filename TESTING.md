@@ -1,10 +1,10 @@
-# 🧪 Testes de Integração Pegno
+# 🧪 Testes de Integração p3g
 
-Este documento descreve os testes de integração do Pegno para validar a instalação completa de stacks modernas de desenvolvimento.
+Este documento descreve os testes de integração do p3g para validar a instalação completa de stacks modernas de desenvolvimento.
 
 ## 📋 O Que é Testado
 
-Os testes validam a capacidade do Pegno de instalar e configurar uma stack completa:
+Os testes validam a capacidade do p3g de instalar e configurar uma stack completa:
 
 - **Vite** - Build tool e dev server
 - **Tailwind CSS** - Framework CSS utility-first
@@ -41,7 +41,7 @@ Os testes validam a capacidade do Pegno de instalar e configurar uma stack compl
    curl -fsSL https://bun.sh/install | bash
    ```
 
-2. **Pegno buildado**
+2. **p3g buildado**
    ```bash
    bun run build
    ```
@@ -90,15 +90,15 @@ bash test-integration.sh
 ### 2. Instalação Tailwind
 
 ```bash
-pegno install tailwindcss postcss autoprefixer
+p3g install tailwindcss postcss autoprefixer
 bunx tailwindcss init -p
 ```
 
 ### 3. Instalação Shadcn Dependencies
 
 ```bash
-pegno install class-variance-authority clsx tailwind-merge lucide-react --dev
-pegno install @radix-ui/react-slot
+p3g install class-variance-authority clsx tailwind-merge lucide-react --dev
+p3g install @radix-ui/react-slot
 ```
 
 ### 4. Verificação
@@ -185,7 +185,7 @@ Um teste passa quando:
 
 ## ❌ Troubleshooting
 
-### Erro: "Pegno não está buildado"
+### Erro: "p3g não está buildado"
 
 ```bash
 bun run build
@@ -210,7 +210,7 @@ wsl --install
 
 ### Erro: "Tailwind não foi instalado"
 
-- Verifique se o Pegno está funcionando: `node dist/pegno.js --help`
+- Verifique se o p3g está funcionando: `node dist/p3g.js --help`
 - Verifique conectividade de rede
 - Tente instalar manualmente: `bun add tailwindcss`
 

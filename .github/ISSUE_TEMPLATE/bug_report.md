@@ -1,6 +1,6 @@
 ---
 name: 🐛 Bug Report
-about: Reportar um bug no Pegno
+about: Reportar um bug no p3g
 title: '[BUG] '
 labels: 'bug'
 assignees: 'suissa'
@@ -13,7 +13,7 @@ Uma descrição clara e concisa do que é o bug.
 ## 🔄 Como Reproduzir
 
 Passos para reproduzir o comportamento:
-1. Execute `pegno ...`
+1. Execute `p3g ...`
 2. Veja o erro '...'
 3. Scroll down to '....'
 4. Veja o erro
@@ -30,7 +30,7 @@ Se aplicável, adicione screenshots para ajudar a explicar seu problema.
 
 - OS: [ex: Windows 11, macOS 14, Ubuntu 22.04]
 - Bun Version: [ex: 1.1.0]
-- Pegno Version: [ex: 1.0.0]
+- p3g Version: [ex: 1.0.0]
 - Node.js Version (se aplicável): [ex: 20.0.0]
 
 ## 📋 Logs

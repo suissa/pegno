@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://i.imgur.com/IhXEEQM.png" width="680" alt="Pegno logo"/>
+  <img src="https://i.imgur.com/IhXEEQM.png" width="680" alt="p3g logo"/>
 </p>
 
 <p align="center">
@@ -9,8 +9,8 @@ De globale dependency manager voor Bun die Bun vergat te maken
 <p align="center">
   <a href="https://bun.sh" target="_blank"><img src="https://img.shields.io/badge/made%20for-bun-000000.svg?logo=bun" /></a>
   <img src="https://img.shields.io/badge/license-MIT-blue.svg" />
-  <a href="https://www.npmjs.com/package/pegno" target="_blank">
-    <img src="https://img.shields.io/npm/v/pegno.svg" />
+  <a href="https://www.npmjs.com/package/p3g" target="_blank">
+    <img src="https://img.shields.io/npm/v/p3g.svg" />
   </a>
   <img src="https://img.shields.io/badge/TypeScript-Ready-3178c6.svg" />
 </p>
@@ -26,17 +26,17 @@ De globale dependency manager voor Bun die Bun vergat te maken
 ---
 
 <p align="center">
-  <h1 align="center">Wat is <br /><img src="https://i.imgur.com/P1VL4bC.png" height="80" alt="Pegno logo"/><br />?</h1>
+  <h1 align="center">Wat is <br /><img src="https://i.imgur.com/P1VL4bC.png" height="80" alt="p3g logo"/><br />?</h1>
 </p>
 
-**Pegno** is een dependency manager met **globale cache**, **auto-link**, **mini-workspaces** en **instant sync modus** — 100% gebouwd in **Bun + TypeScript**.
+**p3g** is een dependency manager met **globale cache**, **auto-link**, **mini-workspaces** en **instant sync modus** — 100% gebouwd in **Bun + TypeScript**.
 
 Het idee ontstond omdat Bun "snelheid en eenvoud" beloofde — maar in de praktijk ontbreekt er nog een essentiële laag:  
 **echte hergebruik van dependencies tussen projecten**.
 
 Elk project herinstalleert dezelfde bibliotheken. Elke build downloadt opnieuw. Elke ontwikkelaar verliest tijd.
 
-**Pegno** lost dit op door een **globale workspace** op je systeem te creëren, waar dependencies eenmaal geïnstalleerd worden en hergebruikt via _symlinks_ (of kopieën, als je dat prefereert).
+**p3g** lost dit op door een **globale workspace** op je systeem te creëren, waar dependencies eenmaal geïnstalleerd worden en hergebruikt via _symlinks_ (of kopieën, als je dat prefereert).
 
 ---
 
@@ -47,12 +47,12 @@ Maar snel **alleen** is niet genoeg.
 
 npm en pnpm hebben al begrepen dat de toekomst **gedeelde cache en package atomiciteit** is — maar Bun hangt nog steeds af van lockfiles en redundante herinstallatie.
 
-De **Pegno** filosofie is simpel:
+De **p3g** filosofie is simpel:
 
 > **Code is tijdelijk, cache is eeuwig.**
 
 Wanneer je `axios@latest` in een project installeert, waarom zou je het opnieuw downloaden in een ander?  
-**Pegno** creëert een globale repository (`~/.pegno_workspace/js`) en linkt packages direct naar projecten — als een dependency brein.
+**p3g** creëert een globale repository (`~/.p3g_workspace/js`) en linkt packages direct naar projecten — als een dependency brein.
 
 Daarnaast voegt het iets toe dat geen andere manager biedt:
 
@@ -61,10 +61,10 @@ Daarnaast voegt het iets toe dat geen andere manager biedt:
 Je kunt dependency sets opslaan en toepassen op elk project:
 
 ```bash
-pegno axios fastify zod
+p3g axios fastify zod
 # Vraagt of je wilt opslaan als preset → typ "api"
 
-pegno use api
+p3g use api
 # installeert alles opnieuw instantaan
 ```
 
@@ -89,33 +89,33 @@ pegno use api
 ## 🚀 Installatie
 
 ```bash
-bun add -g pegno
+bun add -g p3g
 
-npm i -g pegno
+npm i -g p3g
 
 # of direct uitvoeren
-npx pegno
+npx p3g
 ```
 
 Verifieer:
 
 ```bash
-pegno --help
+p3g --help
 ```
 
 Verwachte output:
 
 ```
-pegno CLI 1.3.0
+p3g CLI 1.3.0
 
 Gebruik:
-  pegno axios@latest   → Installeert package direct
-  pegno use api        → Gebruikt opgeslagen miniworkspace
-  pegno list           → Toont miniworkspaces
-  pegno --dev          → Installeert als devDependency
-  pegno --copy         → Kopieert in plaats van linken
-  pegno sync           → Kopieert hele globale workspace
-  pegno --verbose      → Gedetailleerde logs
+  p3g axios@latest   → Installeert package direct
+  p3g use api        → Gebruikt opgeslagen miniworkspace
+  p3g list           → Toont miniworkspaces
+  p3g --dev          → Installeert als devDependency
+  p3g --copy         → Kopieert in plaats van linken
+  p3g sync           → Kopieert hele globale workspace
+  p3g --verbose      → Gedetailleerde logs
 ```
 
 ---
@@ -124,26 +124,26 @@ Gebruik:
 
 ```bash
 # Installeert axios globaal en linkt naar huidige project
-pegno axios
+p3g axios
 
 # Installeert meerdere packages
-pegno fastify zod openai
+p3g fastify zod openai
 
 # Voegt ontwikkelings packages toe
-pegno --dev vitest typescript
+p3g --dev vitest typescript
 
 # Creëert en slaat een mini-workspace op
-pegno use api
+p3g use api
 ```
 
 ---
 
 ## 📁 Interne structuur
 
-Pegno creëert automatisch:
+p3g creëert automatisch:
 
 ```
-~/.pegno/
+~/.p3g/
 ├── js/
 │   ├── axios__latest/
 │   ├── fastify__5.0.0/
@@ -172,11 +172,11 @@ Het project volgt drie principes:
 ## 🔮 Roadmap
 
 - [ ] Hash-gebaseerde registry (package checksum + versie)
-- [ ] Interactieve CLI UI (`pegno ui`)
+- [ ] Interactieve CLI UI (`p3g ui`)
 
 ---
 
-## 💬 Waarom "Pegno"?
+## 💬 Waarom "p3g"?
 
 Omdat **elke tool een goede provocatie nodig heeft.**  
 Het idee is dat het "je module pakt", maar op een intelligente manier —  
@@ -191,7 +191,7 @@ provocerend, humorvol en functioneel.
 
 **SuissAI**  
 Senior ontwikkelaar gepassioneerd door gedistribueerde, veerkrachtige architecturen en AI.  
-Maker van het **Full Agentic Stack**, **Atomic Behavior Types** ecosysteem, en nu… **Pegno**.
+Maker van het **Full Agentic Stack**, **Atomic Behavior Types** ecosysteem, en nu… **p3g**.
 
 ---
 

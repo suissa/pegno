@@ -1,11 +1,11 @@
 # Product Overview
 
-**Pegno** is a global dependency manager for Bun that creates intelligent caching and workspace management.
+**p3g** is a global dependency manager for Bun that creates intelligent caching and workspace management.
 
 ## Core Purpose
 
 - Eliminates redundant package installations across projects
-- Creates a global workspace (`~/.pegno_workspace/js`) where dependencies are installed once and reused via symlinks
+- Creates a global workspace (`~/.p3g_workspace/js`) where dependencies are installed once and reused via symlinks
 - Provides "mini-workspaces" (presets) to save and reapply dependency sets across projects
 
 ## Key Features

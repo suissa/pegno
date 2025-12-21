@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://i.imgur.com/IhXEEQM.png" width="680" alt="Pegno logo"/>
+  <img src="https://i.imgur.com/IhXEEQM.png" width="680" alt="p3g logo"/>
 </p>
 
 <p align="center">
@@ -8,7 +8,7 @@
 
 [![Bun](https://img.shields.io/badge/made%20for-bun-000000.svg?logo=bun)](https://bun.sh)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![npm version](https://img.shields.io/badge/npm-v/pegno.svg)](https://www.npmjs.com/package/pegno)
+[![npm version](https://img.shields.io/badge/npm-v/p3g.svg)](https://www.npmjs.com/package/p3g)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Ready-3178c6.svg)](https://www.typescriptlang.org/)
 
 > "סביבת עבודה גלובלית חכמה עבור Bun, שנוצרה על ידי מישהו שנמאס לו לחכות ש-Bun יסיים את Bun."
@@ -22,17 +22,17 @@
 ---
 
 <p align="center">
-  <h1 align="center">מה זה <br /><img src="https://i.imgur.com/P1VL4bC.png" height="80" alt="Pegno logo"/><br />?</h1>
+  <h1 align="center">מה זה <br /><img src="https://i.imgur.com/P1VL4bC.png" height="80" alt="p3g logo"/><br />?</h1>
 </p>
 
-**Pegno** הוא מנהל תלויות עם **מטמון גלובלי**, **קישור אוטומטי**, **מיני-סביבות עבודה** ו**מצב סינכרון מיידי** — בנוי 100% ב-**Bun + TypeScript**.
+**p3g** הוא מנהל תלויות עם **מטמון גלובלי**, **קישור אוטומטי**, **מיני-סביבות עבודה** ו**מצב סינכרון מיידי** — בנוי 100% ב-**Bun + TypeScript**.
 
 הרעיון נולד כי Bun הבטיח "מהירות ופשטות" — אבל בפועל, עדיין חסרה שכבה חיונית:  
 **שימוש חוזר אמיתי של תלויות בין פרויקטים**.
 
 כל פרויקט מתקין מחדש את אותן ספריות. כל build מוריד מחדש. כל מפתח מבזבז זמן.
 
-**Pegno** פותר את זה על ידי יצירת **סביבת עבודה גלובלית** במערכת שלך, שבה תלויות מותקנות פעם אחת ונעשה בהן שימוש חוזר דרך _קישורים סימבוליים_ (או עותקים, אם אתה מעדיף).
+**p3g** פותר את זה על ידי יצירת **סביבת עבודה גלובלית** במערכת שלך, שבה תלויות מותקנות פעם אחת ונעשה בהן שימוש חוזר דרך _קישורים סימבוליים_ (או עותקים, אם אתה מעדיף).
 
 ---
 
@@ -43,12 +43,12 @@ Bun מהיר.
 
 npm ו-pnpm כבר הבינו שהעתיד הוא **מטמון משותף ואטומיות של חבילות** — אבל Bun עדיין תלוי בקבצי נעילה והתקנה מחדש מיותרת.
 
-הפילוסופיה של **Pegno** פשוטה:
+הפילוסופיה של **p3g** פשוטה:
 
 > **קוד הוא זמני, מטמון הוא נצחי.**
 
 כשאתה מתקין `axios@latest` בפרויקט אחד, למה להוריד אותו שוב באחר?  
-**Pegno** יוצר מאגר גלובלי (`~/.pegno_workspace/js`) ומקשר חבילות ישירות לפרויקטים — כמו מוח תלויות.
+**p3g** יוצר מאגר גלובלי (`~/.p3g_workspace/js`) ומקשר חבילות ישירות לפרויקטים — כמו מוח תלויות.
 
 בנוסף, הוא מוסיף משהו שאף מנהל אחר לא מציע:
 
@@ -57,10 +57,10 @@ npm ו-pnpm כבר הבינו שהעתיד הוא **מטמון משותף ואט
 אתה יכול לשמור סטים של תלויות ולהחיל אותם על כל פרויקט:
 
 ```bash
-pegno axios fastify zod
+p3g axios fastify zod
 # שואל אם אתה רוצה לשמור כפריסט → הקלד "api"
 
-pegno use api
+p3g use api
 # מתקין הכל מחדש מיידית
 ```
 
@@ -85,33 +85,33 @@ pegno use api
 ## 🚀 התקנה
 
 ```bash
-bun add -g pegno
+bun add -g p3g
 
-npm i -g pegno
+npm i -g p3g
 
 # או הרץ ישירות
-npx pegno
+npx p3g
 ```
 
 אמת:
 
 ```bash
-pegno --help
+p3g --help
 ```
 
 פלט צפוי:
 
 ```
-pegno CLI 1.3.0
+p3g CLI 1.3.0
 
 שימוש:
-  pegno axios@latest   → מתקין חבילה ישירות
-  pegno use api        → משתמש במיני-סביבת עבודה שמורה
-  pegno list           → מציג רשימת מיני-סביבות עבודה
-  pegno --dev          → מתקין כ-devDependency
-  pegno --copy         → מעתיק במקום לקשר
-  pegno sync           → מעתיק את כל סביבת העבודה הגלובלית
-  pegno --verbose      → לוגים מפורטים
+  p3g axios@latest   → מתקין חבילה ישירות
+  p3g use api        → משתמש במיני-סביבת עבודה שמורה
+  p3g list           → מציג רשימת מיני-סביבות עבודה
+  p3g --dev          → מתקין כ-devDependency
+  p3g --copy         → מעתיק במקום לקשר
+  p3g sync           → מעתיק את כל סביבת העבודה הגלובלית
+  p3g --verbose      → לוגים מפורטים
 ```
 
 ---
@@ -120,26 +120,26 @@ pegno CLI 1.3.0
 
 ```bash
 # מתקין axios גלובלית ומקשר לפרויקט הנוכחי
-pegno axios
+p3g axios
 
 # מתקין חבילות מרובות
-pegno fastify zod openai
+p3g fastify zod openai
 
 # מוסיף חבילות פיתוח
-pegno --dev vitest typescript
+p3g --dev vitest typescript
 
 # יוצר ושומר מיני-סביבת עבודה
-pegno use api
+p3g use api
 ```
 
 ---
 
 ## 📁 מבנה פנימי
 
-Pegno יוצר אוטומטית:
+p3g יוצר אוטומטית:
 
 ```
-~/.pegno/
+~/.p3g/
 ├── js/
 │   ├── axios__latest/
 │   ├── fastify__5.0.0/
@@ -167,15 +167,15 @@ Pegno יוצר אוטומטית:
 
 ## 🔮 מפת דרכים
 
-- [ ] תמיכה בשפות מרובות (`.pegno/py`, `.pegno/rust`)
+- [ ] תמיכה בשפות מרובות (`.p3g/py`, `.p3g/rust`)
 - [ ] רישום מבוסס hash (checksum של חבילה + גרסה)
 - [ ] סינכרון מבוזר דרך IPFS או NFS
-- [ ] UI CLI אינטראקטיבי (`pegno ui`)
-- [ ] אינטגרציה עם `pegno.json` מקומי
+- [ ] UI CLI אינטראקטיבי (`p3g ui`)
+- [ ] אינטגרציה עם `p3g.json` מקומי
 
 ---
 
-## 💬 למה "Pegno"?
+## 💬 למה "p3g"?
 
 כי **כל כלי צריך פרובוקציה טובה.**  
 הרעיון הוא שהוא "תופס את המודול שלך", אבל בחכמה —  
@@ -190,7 +190,7 @@ Pegno יוצר אוטומטית:
 
 **Suissera da Bahia**  
 מפתח בכיר הנלהב מארכיטקטורות מבוזרות, עמידות ו-AI.  
-יוצר האקוסיסטם **Full Agentic Stack**, **EnzyChop.Tech**, **Virion.Delivery**, ועכשיו… **Pegno**.
+יוצר האקוסיסטם **Full Agentic Stack**, **EnzyChop.Tech**, **Virion.Delivery**, ועכשיו… **p3g**.
 
 ---
 

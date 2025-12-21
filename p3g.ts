@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 /**
- * pegno.ts v1.3.0
+ * p3g.ts v0.1.0
  * CLI global de gerenciamento de dependências e mini-workspaces
  * Autor: Suissa 🧠
  */
@@ -26,10 +26,10 @@ import readline from 'readline';
 // Configurações globais
 // ---------------------
 const workspace =
-  process.env.pegno_WORKSPACE !== undefined && process.env.pegno_WORKSPACE.trim() !== ''
-    ? process.env.pegno_WORKSPACE
-    : join(os.homedir(), '.pegno_workspace/js');
-const tmpdir = join(os.tmpdir(), `pegno_install_${Date.now()}`);
+  process.env.p3g_WORKSPACE !== undefined && process.env.p3g_WORKSPACE.trim() !== ''
+    ? process.env.p3g_WORKSPACE
+    : join(os.homedir(), '.p3g_workspace/js');
+const tmpdir = join(os.tmpdir(), `p3g_install_${Date.now()}`);
 const presetDir = join(workspace, '..', 'presets');
 ensureDir(presetDir);
 
@@ -51,11 +51,11 @@ let uniquePackagesInstalled = 0;
 // ---------------------
 function log(...msg: unknown[]): void {
   if (verbose) {
-    console.log(kleur.cyan('[pegno]'), ...msg);
+    console.log(kleur.cyan('[p3g]'), ...msg);
   }
 }
 function info(...msg: unknown[]): void {
-  console.log(kleur.blue('[pegno]'), ...msg);
+  console.log(kleur.blue('[p3g]'), ...msg);
 }
 function warn(...msg: unknown[]): void {
   console.warn(kleur.yellow('[AVISO]'), ...msg);
@@ -404,17 +404,17 @@ function installAll(): void {
 // Ajuda
 // ---------------------
 function showHelp(): void {
-  console.log(kleur.bold('pegno CLI 1.3.0'));
+  console.log(kleur.bold('p3g CLI 1.3.0'));
   console.log(`
   ${kleur.cyan('Uso:')}
-    ${kleur.green('pegno')} ${kleur.yellow('axios@latest')}       ${kleur.gray('→')} Instala pacote direto
-    ${kleur.green('pegno')} ${kleur.blue('--dev')} ${kleur.yellow('vitest')}       ${kleur.gray('→')} Instala como devDependency
-    ${kleur.green('pegno')} ${kleur.magenta('use')} ${kleur.yellow('api')}            ${kleur.gray('→')} Usa miniworkspace salvo
-    ${kleur.green('pegno')} ${kleur.magenta('list')}               ${kleur.gray('→')} Lista miniworkspaces
-    ${kleur.green('pegno')} ${kleur.blue('--copy')}             ${kleur.gray('→')} Copia ao invés de linkar
-    ${kleur.green('pegno')} ${kleur.magenta('sync')}               ${kleur.gray('→')} Copia todos do workspace para node_modules
-    ${kleur.green('pegno')} ${kleur.blue('--verbose')}          ${kleur.gray('→')} Logs detalhados
-    ${kleur.green('pegno')} ${kleur.blue('--help')}             ${kleur.gray('→')} Mostra esta ajuda
+    ${kleur.green('p3g')} ${kleur.yellow('axios@latest')}       ${kleur.gray('→')} Instala pacote direto
+    ${kleur.green('p3g')} ${kleur.blue('--dev')} ${kleur.yellow('vitest')}       ${kleur.gray('→')} Instala como devDependency
+    ${kleur.green('p3g')} ${kleur.magenta('use')} ${kleur.yellow('api')}            ${kleur.gray('→')} Usa miniworkspace salvo
+    ${kleur.green('p3g')} ${kleur.magenta('list')}               ${kleur.gray('→')} Lista miniworkspaces
+    ${kleur.green('p3g')} ${kleur.blue('--copy')}             ${kleur.gray('→')} Copia ao invés de linkar
+    ${kleur.green('p3g')} ${kleur.magenta('sync')}               ${kleur.gray('→')} Copia todos do workspace para node_modules
+    ${kleur.green('p3g')} ${kleur.blue('--verbose')}          ${kleur.gray('→')} Logs detalhados
+    ${kleur.green('p3g')} ${kleur.blue('--help')}             ${kleur.gray('→')} Mostra esta ajuda
   `);
 }
 

@@ -1,6 +1,6 @@
 # 🤖 GitHub Actions Workflows
 
-Este diretório contém todos os workflows automatizados do Pegno.
+Este diretório contém todos os workflows automatizados do p3g.
 
 ## 📋 Workflows Disponíveis
 
@@ -112,7 +112,7 @@ O Dependabot está configurado para:
 ## 🛠️ Troubleshooting
 
 ### Build Falhando
-- Verifique se `pegno.ts` compila localmente
+- Verifique se `p3g.ts` compila localmente
 - Confirme que `bun run build` funciona
 - Verifique se não há dependências quebradas
 

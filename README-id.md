@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://i.imgur.com/IhXEEQM.png" width="680" alt="Pegno logo"/>
+  <img src="https://i.imgur.com/IhXEEQM.png" width="680" alt="p3g logo"/>
 </p>
 
 <p align="center">
@@ -9,8 +9,8 @@ Manajer dependensi global untuk Bun yang Bun lupa buat
 <p align="center">
   <a href="https://bun.sh" target="_blank"><img src="https://img.shields.io/badge/made%20for-bun-000000.svg?logo=bun" /></a>
   <img src="https://img.shields.io/badge/license-MIT-blue.svg" />
-  <a href="https://www.npmjs.com/package/pegno" target="_blank">
-    <img src="https://img.shields.io/npm/v/pegno.svg" />
+  <a href="https://www.npmjs.com/package/p3g" target="_blank">
+    <img src="https://img.shields.io/npm/v/p3g.svg" />
   </a>
   <img src="https://img.shields.io/badge/TypeScript-Ready-3178c6.svg" />
 </p>
@@ -26,17 +26,17 @@ Manajer dependensi global untuk Bun yang Bun lupa buat
 ---
 
 <p align="center">
-  <h1 align="center">Apa itu <br /><img src="https://i.imgur.com/P1VL4bC.png" height="80" alt="Pegno logo"/><br />?</h1>
+  <h1 align="center">Apa itu <br /><img src="https://i.imgur.com/P1VL4bC.png" height="80" alt="p3g logo"/><br />?</h1>
 </p>
 
-**Pegno** adalah manajer dependensi dengan **cache global**, **auto-link**, **mini-workspace** dan **mode sinkronisasi instan** — dibangun 100% dengan **Bun + TypeScript**.
+**p3g** adalah manajer dependensi dengan **cache global**, **auto-link**, **mini-workspace** dan **mode sinkronisasi instan** — dibangun 100% dengan **Bun + TypeScript**.
 
 Ide ini lahir karena Bun menjanjikan "kecepatan dan kesederhanaan" — tetapi dalam praktiknya, masih ada lapisan penting yang hilang:  
 **penggunaan ulang dependensi yang nyata antar proyek**.
 
 Setiap proyek menginstal ulang library yang sama. Setiap build mengunduh lagi. Setiap developer membuang waktu.
 
-**Pegno** menyelesaikan ini dengan membuat **workspace global** di sistem Anda, di mana dependensi diinstal sekali dan digunakan ulang melalui _symbolic links_ (atau salinan, jika Anda suka).
+**p3g** menyelesaikan ini dengan membuat **workspace global** di sistem Anda, di mana dependensi diinstal sekali dan digunakan ulang melalui _symbolic links_ (atau salinan, jika Anda suka).
 
 ---
 
@@ -47,12 +47,12 @@ Tapi cepat **sendiri** tidak cukup.
 
 npm dan pnpm sudah memahami bahwa masa depan adalah **cache bersama dan atomisitas paket** — tetapi Bun masih bergantung pada lockfiles dan instalasi ulang yang berlebihan.
 
-Filosofi **Pegno** sederhana:
+Filosofi **p3g** sederhana:
 
 > **Kode bersifat sementara, cache bersifat abadi.**
 
 Ketika Anda menginstal `axios@latest` di satu proyek, mengapa mengunduhnya lagi di proyek lain?  
-**Pegno** membuat repositori global (`~/.pegno_workspace/js`) dan menghubungkan paket langsung ke proyek — seperti otak dependensi.
+**p3g** membuat repositori global (`~/.p3g_workspace/js`) dan menghubungkan paket langsung ke proyek — seperti otak dependensi.
 
 Selain itu, ia menambahkan sesuatu yang tidak ditawarkan manajer lain:
 
@@ -61,10 +61,10 @@ Selain itu, ia menambahkan sesuatu yang tidak ditawarkan manajer lain:
 Anda dapat menyimpan set dependensi dan menerapkannya ke proyek mana pun:
 
 ```bash
-pegno axios fastify zod
+p3g axios fastify zod
 # Menanyakan apakah Anda ingin menyimpan sebagai preset → ketik "api"
 
-pegno use api
+p3g use api
 # menginstal semuanya lagi secara instan
 ```
 
@@ -89,33 +89,33 @@ pegno use api
 ## 🚀 Instalasi
 
 ```bash
-bun add -g pegno
+bun add -g p3g
 
-npm i -g pegno
+npm i -g p3g
 
 # atau jalankan langsung
-npx pegno
+npx p3g
 ```
 
 Verifikasi:
 
 ```bash
-pegno --help
+p3g --help
 ```
 
 Output yang diharapkan:
 
 ```
-pegno CLI 1.3.0
+p3g CLI 1.3.0
 
 Penggunaan:
-  pegno axios@latest   → Menginstal paket langsung
-  pegno use api        → Menggunakan miniworkspace yang disimpan
-  pegno list           → Menampilkan daftar miniworkspace
-  pegno --dev          → Menginstal sebagai devDependency
-  pegno --copy         → Menyalin alih-alih menghubungkan
-  pegno sync           → Menyalin seluruh workspace global
-  pegno --verbose      → Log detail
+  p3g axios@latest   → Menginstal paket langsung
+  p3g use api        → Menggunakan miniworkspace yang disimpan
+  p3g list           → Menampilkan daftar miniworkspace
+  p3g --dev          → Menginstal sebagai devDependency
+  p3g --copy         → Menyalin alih-alih menghubungkan
+  p3g sync           → Menyalin seluruh workspace global
+  p3g --verbose      → Log detail
 ```
 
 ---
@@ -124,26 +124,26 @@ Penggunaan:
 
 ```bash
 # Menginstal axios secara global dan menghubungkan ke proyek saat ini
-pegno axios
+p3g axios
 
 # Menginstal beberapa paket
-pegno fastify zod openai
+p3g fastify zod openai
 
 # Menambahkan paket pengembangan
-pegno --dev vitest typescript
+p3g --dev vitest typescript
 
 # Membuat dan menyimpan mini-workspace
-pegno use api
+p3g use api
 ```
 
 ---
 
 ## 📁 Struktur internal
 
-Pegno secara otomatis membuat:
+p3g secara otomatis membuat:
 
 ```
-~/.pegno/
+~/.p3g/
 ├── js/
 │   ├── axios__latest/
 │   ├── fastify__5.0.0/
@@ -171,15 +171,15 @@ Proyek mengikuti tiga prinsip:
 
 ## 🔮 Roadmap
 
-- [ ] Dukungan multi-bahasa (`.pegno/py`, `.pegno/rust`)
+- [ ] Dukungan multi-bahasa (`.p3g/py`, `.p3g/rust`)
 - [ ] Registry berbasis hash (checksum paket + versi)
 - [ ] Sinkronisasi terdistribusi melalui IPFS atau NFS
-- [ ] UI CLI interaktif (`pegno ui`)
-- [ ] Integrasi dengan `pegno.json` lokal
+- [ ] UI CLI interaktif (`p3g ui`)
+- [ ] Integrasi dengan `p3g.json` lokal
 
 ---
 
-## 💬 Mengapa "Pegno"?
+## 💬 Mengapa "p3g"?
 
 Karena **setiap alat membutuhkan provokasi yang baik.**  
 Idenya adalah ia "mengambil modul Anda", tetapi dengan cerdas —  
@@ -194,7 +194,7 @@ provokatif, humoris, dan fungsional.
 
 **Suissera da Bahia**  
 Developer senior yang bersemangat tentang arsitektur terdistribusi, resilient, dan AI.  
-Pencipta ekosistem **Full Agentic Stack**, **EnzyChop.Tech**, **Virion.Delivery**, dan sekarang… **Pegno**.
+Pencipta ekosistem **Full Agentic Stack**, **EnzyChop.Tech**, **Virion.Delivery**, dan sekarang… **p3g**.
 
 ---
 

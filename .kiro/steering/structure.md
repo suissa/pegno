@@ -3,8 +3,8 @@
 ## Root Directory Layout
 
 ```
-pegno/
-├── pegno.ts          # Main CLI application (single file)
+p3g/
+├── p3g.ts          # Main CLI application (single file)
 ├── package.json         # Project metadata and scripts
 ├── tsconfig.json        # TypeScript configuration
 ├── README.md            # Documentation
@@ -16,7 +16,7 @@ pegno/
 
 ## Key Files
 
-### `pegno.ts`
+### `p3g.ts`
 
 - Single-file CLI application (~300 lines)
 - Contains all functionality: installation, linking, presets, sync
@@ -25,7 +25,7 @@ pegno/
 
 ### `package.json`
 
-- Defines CLI binary as `./dist/pegno.js`
+- Defines CLI binary as `./dist/p3g.js`
 - Minimal dependencies (only `kleur` for runtime)
 - Bun-specific scripts and engine requirements
 
@@ -40,7 +40,7 @@ pegno/
 The tool creates external directories:
 
 ```
-~/.pegno_workspace/
+~/.p3g_workspace/
 ├── js/                 # Global package cache
 │   ├── axios__latest/
 │   └── fastify__5.0.0/
