@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 // @bun
 
-// pegno.ts
+// p3g.ts
 import { execSync } from "child_process";
 import {
   existsSync,
@@ -114,7 +114,7 @@ function init(open, close) {
 }
 var kleur_default = $;
 
-// pegno.ts
+// p3g.ts
 import readline from "readline";
 var workspace = process.env.pegno_WORKSPACE !== undefined && process.env.pegno_WORKSPACE.trim() !== "" ? process.env.pegno_WORKSPACE : join(os.homedir(), ".pegno_workspace/js");
 var tmpdir2 = join(os.tmpdir(), `pegno_install_${Date.now()}`);
