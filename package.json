@@ -1,14 +1,14 @@
 {
-  "name": "pegno",
-  "version": "2.3.0",
+  "name": "p3g",
+  "version": "0.1.0",
   "description": "Gerenciador de workspace global de dependências para Bun — by Suissa 🧠",
   "type": "module",
   "bin": {
-    "pegno": "./dist/pegno.js"
+    "p3g": "./dist/p3g.js"
   },
   "scripts": {
-    "dev": "bun run --watch pegno.ts",
-    "start": "bun run pegno.ts",
+    "dev": "bun run --watch p3g.ts",
+    "start": "bun run p3g.ts",
     "clean": "rm -rf node_modules bun.lock bun.lockb && bun pm cache clean",
     "lint": "eslint . --ext .ts --fix",
     "lint:check": "eslint . --ext .ts",
@@ -16,7 +16,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "prebuild": "bun run format && bun run lint",
-    "build": "bun build pegno.ts --outdir dist --target bun",
+    "build": "bun build p3g.ts --outdir dist --target bun",
     "test:integration": "pwsh -File test-integration.ps1 -All",
     "test:integration:windows": "pwsh -File test-integration.ps1 -Windows",
     "test:integration:wsl": "pwsh -File test-integration.ps1 -WSL",
@@ -27,7 +27,7 @@
     "workspace",
     "dependency-cache",
     "global-workspace",
-    "pegno",
+    "p3g",
     "suissera"
   ],
   "author": "Suissa <inmybox@suissai.dev>",
@@ -41,12 +41,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/suissa/pegno.git"
+    "url": "git+https://github.com/suissa/p3g.git"
   },
   "bugs": {
-    "url": "https://github.com/suissa/pegno/issues"
+    "url": "https://github.com/suissa/p3g/issues"
   },
-  "homepage": "https://github.com/suissa/pegno#readme",
+  "homepage": "https://github.com/suissa/p3g#readme",
   "devDependencies": {
     "@types/node": "^24.9.2",
     "@typescript-eslint/eslint-plugin": "^8.0.0",

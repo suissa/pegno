@@ -225,7 +225,7 @@ function handlePkg(raw: string): void {
       process.exit(1);
     }
     cpSync(pkgPath, target, { recursive: true });
-    cpSync('./bun.lock', target);
+    // cpSync('./bun.lock', target);
     const downloadTime = Date.now() - downloadStart;
     info(`📦 Copiado para ${kleur.green(target)} ${kleur.gray(`(${formatTime(downloadTime)})`)}`);
     uniquePackagesInstalled++;

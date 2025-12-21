@@ -265,7 +265,6 @@ function handlePkg(raw) {
       process.exit(1);
     }
     cpSync(pkgPath, target, { recursive: true });
-    cpSync("./bun.lock", target);
     const downloadTime = Date.now() - downloadStart;
     info(`\uD83D\uDCE6 Copiado para ${kleur_default.green(target)} ${kleur_default.gray(`(${formatTime(downloadTime)})`)}`);
     uniquePackagesInstalled++;
@@ -447,7 +446,6 @@ function syncWorkspace() {
     const name = dir.split("__")[0];
     const dest = join("node_modules", name);
     rmSync(dest, { recursive: true, force: true });
-    exec(`cp "${src}/bun.lock" "${dest}"`);
     exec(`cp -R "${src}" "${dest}"`);
     log(`\uD83D\uDCC1 Sincronizado ${name}`);
   }
