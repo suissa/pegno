@@ -1,6 +1,6 @@
 {
   "name": "p3g",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Gerenciador de workspace global de dependências para Bun — by Suissa 🧠",
   "type": "module",
   "bin": {
