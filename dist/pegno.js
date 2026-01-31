@@ -14,7 +14,7 @@ import {
   statSync,
   writeFileSync
 } from "fs";
-import { join } from "path";
+import { join, relative } from "path";
 import * as os from "os";
 
 // node_modules/kleur/index.mjs
@@ -227,12 +227,32 @@ function linkPackageBins(pkgName, pkgPathInNodeModules) {
       continue;
     }
     const linkName = join(binDir, binName);
-    rmSync(linkName, { force: true });
-    try {
-      symlinkSync(src, linkName);
-      info(`\uD83D\uDD17 .bin: ${kleur_default.magenta(binName)} \u2192 ${kleur_default.gray(src)}`);
-    } catch {
-      warn(`Falha ao linkar .bin para ${pkgName}/${binName}`);
+    if (os.platform() === "win32") {
+      const cmdLink = `${linkName}.cmd`;
+      const ps1Link = `${linkName}.ps1`;
+      rmSync(linkName, { force: true });
+      rmSync(cmdLink, { force: true });
+      rmSync(ps1Link, { force: true });
+      const relPath = relative(binDir, src);
+      const runWithBun = `bun "%~dp0\\${relPath}" %*`;
+      writeFileSync(cmdLink, `@echo off\r
+${runWithBun}\r
+`);
+      const shContent = `#!/bin/sh
+basedir=$(dirname "$(echo "$0" | sed -e 's,\\\\,/,g')")
+
+bun "$basedir/${relPath.replace(/\\/g, "/")}" "$@"
+`;
+      writeFileSync(linkName, shContent);
+      info(`\uD83D\uDD17 .bin (shim): ${kleur_default.magenta(binName)}`);
+    } else {
+      rmSync(linkName, { force: true });
+      try {
+        symlinkSync(src, linkName);
+        info(`\uD83D\uDD17 .bin: ${kleur_default.magenta(binName)} \u2192 ${kleur_default.gray(src)}`);
+      } catch {
+        warn(`Falha ao linkar .bin para ${pkgName}/${binName}`);
+      }
     }
   }
 }
@@ -283,7 +303,8 @@ function handlePkg(raw) {
     cpSync(target, nodePath, { recursive: true });
     info(`\uD83D\uDCC1 Copiado ${kleur_default.magenta(name)} \u2192 node_modules`);
   } else {
-    symlinkSync(target, nodePath, "dir");
+    const type = os.platform() === "win32" ? "junction" : "dir";
+    symlinkSync(target, nodePath, type);
     info(`\uD83D\uDD17 Vinculado ${kleur_default.magenta(nodePath)} \u2192 ${kleur_default.gray(target)}`);
   }
   linkPackageBins(name, nodePath);

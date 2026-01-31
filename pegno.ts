@@ -17,7 +17,7 @@ import {
   statSync,
   writeFileSync,
 } from 'fs';
-import { join } from 'path';
+import { join, relative } from 'path';
 import * as os from 'os';
 import kleur from 'kleur';
 import readline from 'readline';
@@ -175,14 +175,39 @@ function linkPackageBins(pkgName: string, pkgPathInNodeModules: string): void {
 
     // nome do link no .bin → usa a key do bin ou o nome do pacote
     const linkName = join(binDir, binName);
-    rmSync(linkName, { force: true });
 
-    try {
-      symlinkSync(src, linkName);
-      info(`🔗 .bin: ${kleur.magenta(binName)} → ${kleur.gray(src)}`);
-    } catch {
-      // fallback Windows (cria cópia .cmd não implementado aqui; manter simples em Linux)
-      warn(`Falha ao linkar .bin para ${pkgName}/${binName}`);
+    if (os.platform() === 'win32') {
+      const cmdLink = `${linkName}.cmd`;
+      const ps1Link = `${linkName}.ps1`;
+      rmSync(linkName, { force: true });
+      rmSync(cmdLink, { force: true });
+      rmSync(ps1Link, { force: true });
+
+      const relPath = relative(binDir, src);
+      const runWithBun = `bun "%~dp0\\${relPath}" %*`;
+
+      // .cmd shim
+      writeFileSync(cmdLink, `@echo off\r\n${runWithBun}\r\n`);
+
+      // Sh shim (Git Bash)
+      const shContent = `#!/bin/sh
+basedir=$(dirname "$(echo "$0" | sed -e 's,\\\\,/,g')")
+
+bun "$basedir/${relPath.replace(/\\/g, '/')}" "$@"
+`;
+      writeFileSync(linkName, shContent);
+
+      info(`🔗 .bin (shim): ${kleur.magenta(binName)}`);
+    } else {
+      rmSync(linkName, { force: true });
+
+      try {
+        symlinkSync(src, linkName);
+        info(`🔗 .bin: ${kleur.magenta(binName)} → ${kleur.gray(src)}`);
+      } catch {
+        // fallback Windows (cria cópia .cmd não implementado aqui; manter simples em Linux)
+        warn(`Falha ao linkar .bin para ${pkgName}/${binName}`);
+      }
     }
   }
 }
@@ -252,7 +277,8 @@ function handlePkg(raw: string): void {
   } else {
     // Symlink no modo padrão
     // Em alguns SOs, parent precisa existir (acima já garantimos)
-    symlinkSync(target, nodePath, 'dir');
+    const type = os.platform() === 'win32' ? 'junction' : 'dir';
+    symlinkSync(target, nodePath, type);
 
     info(`🔗 Vinculado ${kleur.magenta(nodePath)} → ${kleur.gray(target)}`);
   }
