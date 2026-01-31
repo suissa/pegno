@@ -285,7 +285,9 @@ function handlePkg(raw) {
       process.exit(1);
     }
     cpSync(pkgPath, target, { recursive: true });
-    cpSync("./bun.lock", target);
+    try {
+      cpSync(join(tmpdir2, "bun.lock"), target);
+    } catch {}
     const downloadTime = Date.now() - downloadStart;
     info(`\uD83D\uDCE6 Copiado para ${kleur_default.green(target)} ${kleur_default.gray(`(${formatTime(downloadTime)})`)}`);
     uniquePackagesInstalled++;

@@ -13,7 +13,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmitOnError": false,
-    "types": ["node", "DOM", "bun-types"],
+    "types": ["node", "bun-types"],
     "lib": ["ESNext", "DOM"],
     "declaration": false
   },
