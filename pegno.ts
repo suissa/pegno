@@ -159,6 +159,9 @@ function linkPackageBins(pkgName: string, pkgPathInNodeModules: string): void {
   const pkg = JSON.parse(readFileSync(pkgJsonPath, 'utf8')) as Record<string, unknown>;
   const bin = pkg.bin as string | Record<string, string> | undefined;
   if (bin === undefined) {
+    if (verbose) {
+      warn(`Sem "bin" em ${pkgName}/package.json`);
+    }
     return;
   }
 

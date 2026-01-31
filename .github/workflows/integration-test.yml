@@ -45,7 +45,8 @@ jobs:
       - name: Test Pegno install Tailwind
         run: |
           cd $env:TEMP\pegno-test-windows\test-app
-          node ${{ github.workspace }}/dist/pegno.js install tailwindcss@3 postcss autoprefixer
+          node ${{ github.workspace }}/dist/pegno.js install tailwindcss@3 postcss autoprefixer --verbose
+          Get-Content node_modules/tailwindcss/package.json
           if (-not (Test-Path "node_modules/tailwindcss")) {
             Write-Error "Tailwind não foi instalado corretamente"
             exit 1
