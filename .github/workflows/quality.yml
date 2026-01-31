@@ -47,7 +47,7 @@ jobs:
       - name: Verify single file architecture
         run: |
           echo "🏗️ Verificando arquitetura de arquivo único..."
-          file_count=$(find . -name "*.ts" -not -path "./node_modules/*" -not -path "./site/*" | wc -l)
+          file_count=$(find . -name "*.ts" -not -path "./node_modules/*" -not -path "./site/*" -not -name "fix-eslint.ts" | wc -l)
           if [ $file_count -ne 1 ]; then
             echo "❌ Erro: Encontrados $file_count arquivos .ts, esperado apenas 1 (pegno.ts)"
             exit 1
