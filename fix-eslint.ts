@@ -19,7 +19,7 @@ function runEslint(file: string): string {
     execSync(`npx eslint ${file}`, { encoding: 'utf-8' });
     return '';
   } catch (error: unknown) {
-    if (error && typeof error === 'object' && 'stdout' in error) {
+    if (error !== null && typeof error === 'object' && 'stdout' in error) {
       return String((error as { stdout: unknown }).stdout);
     }
     return '';
@@ -63,7 +63,8 @@ function fixLongLines(content: string, errors: EslintError[]): string {
       if (parts.length === 2) {
         const condition = parts[0].trim();
         const [truePart, falsePart] = parts[1].split(':').map(p => p.trim());
-        lines[lineIndex] = `${indent}${condition}\n${indent}  ? ${truePart}\n${indent}  : ${falsePart}`;
+        lines[lineIndex] =
+          `${indent}${condition}\n${indent}  ? ${truePart}\n${indent}  : ${falsePart}`;
       }
     }
   }
