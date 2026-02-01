@@ -19,8 +19,8 @@ import {
 } from 'fs';
 import { join, relative } from 'path';
 import * as os from 'os';
-import kleur from 'kleur';
-import readline from 'readline';
+import kleur from './packages/kleur/index.js';
+import { question } from './packages/readline/index.js';
 
 // ---------------------
 // Configurações globais
@@ -342,31 +342,30 @@ async function askSavePreset(): Promise<void> {
     return;
   }
   const pkg = JSON.parse(readFileSync(pkgPath, 'utf8')) as Record<string, unknown>;
-  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 
-  return new Promise<void>(resolve => {
-    rl.question('Deseja salvar estas dependências como miniworkspace? (y/n) ', ans => {
-      if (ans.toLowerCase() !== 'y') {
-        return (rl.close(), resolve());
-      }
-      rl.question('Nome do miniworkspace: ', name => {
-        const path = join(presetDir, `${name}.json`);
-        const deps =
-          pkg.dependencies !== undefined ? (pkg.dependencies as Record<string, string>) : {};
-        const devDeps =
-          pkg.devDependencies !== undefined ? (pkg.devDependencies as Record<string, string>) : {};
-        const data = {
-          name,
-          dependencies: deps,
-          devDependencies: devDeps,
-        };
-        writeFileSync(path, JSON.stringify(data, null, 2));
-        info(`✅ Miniworkspace "${name}" salvo em ${kleur.gray(path)}`);
-        rl.close();
-        resolve();
-      });
-    });
-  });
+  try {
+    const ans = await question('Deseja salvar estas dependências como miniworkspace? (y/n) ');
+    if (ans.toLowerCase() !== 'y') {
+      return;
+    }
+    
+    const name = await question('Nome do miniworkspace: ');
+    const path = join(presetDir, `${name}.json`);
+    const deps =
+      pkg.dependencies !== undefined ? (pkg.dependencies as Record<string, string>) : {};
+    const devDeps =
+      pkg.devDependencies !== undefined ? (pkg.devDependencies as Record<string, string>) : {};
+    const data = {
+      name,
+      dependencies: deps,
+      devDependencies: devDeps,
+    };
+    writeFileSync(path, JSON.stringify(data, null, 2));
+    info(`✅ Miniworkspace "${name}" salvo em ${kleur.gray(path)}`);
+  } catch (error) {
+    // User cancelled with Ctrl+C or other interruption
+    return;
+  }
 }
 
 // ---------------------

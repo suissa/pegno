@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 // @bun
 
-// pegno.ts
+// p3g.ts
 import { execSync } from "child_process";
 import {
   existsSync,
@@ -17,105 +17,295 @@ import {
 import { join, relative } from "path";
 import * as os from "os";
 
-// node_modules/kleur/index.mjs
-var FORCE_COLOR;
-var NODE_DISABLE_COLORS;
-var NO_COLOR;
-var TERM;
-var isTTY = true;
-if (typeof process !== "undefined") {
-  ({ FORCE_COLOR, NODE_DISABLE_COLORS, NO_COLOR, TERM } = process.env || {});
-  isTTY = process.stdout && process.stdout.isTTY;
-}
-var $ = {
-  enabled: !NODE_DISABLE_COLORS && NO_COLOR == null && TERM !== "dumb" && (FORCE_COLOR != null && FORCE_COLOR !== "0" || isTTY),
-  reset: init(0, 0),
-  bold: init(1, 22),
-  dim: init(2, 22),
-  italic: init(3, 23),
-  underline: init(4, 24),
-  inverse: init(7, 27),
-  hidden: init(8, 28),
-  strikethrough: init(9, 29),
-  black: init(30, 39),
-  red: init(31, 39),
-  green: init(32, 39),
-  yellow: init(33, 39),
-  blue: init(34, 39),
-  magenta: init(35, 39),
-  cyan: init(36, 39),
-  white: init(37, 39),
-  gray: init(90, 39),
-  grey: init(90, 39),
-  bgBlack: init(40, 49),
-  bgRed: init(41, 49),
-  bgGreen: init(42, 49),
-  bgYellow: init(43, 49),
-  bgBlue: init(44, 49),
-  bgMagenta: init(45, 49),
-  bgCyan: init(46, 49),
-  bgWhite: init(47, 49)
+// packages/kleur/index.ts
+var COLORS = {
+  black: [30, 39],
+  red: [31, 39],
+  green: [32, 39],
+  yellow: [33, 39],
+  blue: [34, 39],
+  magenta: [35, 39],
+  cyan: [36, 39],
+  white: [37, 39],
+  gray: [90, 39],
+  redBright: [91, 39],
+  greenBright: [92, 39],
+  yellowBright: [93, 39],
+  blueBright: [94, 39],
+  magentaBright: [95, 39],
+  cyanBright: [96, 39],
+  whiteBright: [97, 39],
+  bgBlack: [40, 49],
+  bgRed: [41, 49],
+  bgGreen: [42, 49],
+  bgYellow: [43, 49],
+  bgBlue: [44, 49],
+  bgMagenta: [45, 49],
+  bgCyan: [46, 49],
+  bgWhite: [47, 49],
+  bgBlackBright: [100, 49],
+  bgRedBright: [101, 49],
+  bgGreenBright: [102, 49],
+  bgYellowBright: [103, 49],
+  bgBlueBright: [104, 49],
+  bgMagentaBright: [105, 49],
+  bgCyanBright: [106, 49],
+  bgWhiteBright: [107, 49],
+  bold: [1, 22],
+  dim: [2, 22],
+  italic: [3, 23],
+  underline: [4, 24],
+  inverse: [7, 27],
+  hidden: [8, 28],
+  strikethrough: [9, 29],
+  reset: [0, 0]
 };
-function run(arr, str) {
-  let i = 0, tmp, beg = "", end = "";
-  for (;i < arr.length; i++) {
-    tmp = arr[i];
-    beg += tmp.open;
-    end += tmp.close;
-    if (!!~str.indexOf(tmp.close)) {
-      str = str.replace(tmp.rgx, tmp.close + tmp.open);
+function createColorFunction(openCode, closeCode) {
+  return (text) => {
+    const noColor = globalThis.process?.env?.NO_COLOR;
+    const forceColor = globalThis.process?.env?.FORCE_COLOR;
+    if (noColor && !forceColor) {
+      return text;
+    }
+    return `\x1B[${openCode}m${text}\x1B[${closeCode}m`;
+  };
+}
+var kleur = {
+  black: createColorFunction(...COLORS.black),
+  red: createColorFunction(...COLORS.red),
+  green: createColorFunction(...COLORS.green),
+  yellow: createColorFunction(...COLORS.yellow),
+  blue: createColorFunction(...COLORS.blue),
+  magenta: createColorFunction(...COLORS.magenta),
+  cyan: createColorFunction(...COLORS.cyan),
+  white: createColorFunction(...COLORS.white),
+  gray: createColorFunction(...COLORS.gray),
+  redBright: createColorFunction(...COLORS.redBright),
+  greenBright: createColorFunction(...COLORS.greenBright),
+  yellowBright: createColorFunction(...COLORS.yellowBright),
+  blueBright: createColorFunction(...COLORS.blueBright),
+  magentaBright: createColorFunction(...COLORS.magentaBright),
+  cyanBright: createColorFunction(...COLORS.cyanBright),
+  whiteBright: createColorFunction(...COLORS.whiteBright),
+  bgBlack: createColorFunction(...COLORS.bgBlack),
+  bgRed: createColorFunction(...COLORS.bgRed),
+  bgGreen: createColorFunction(...COLORS.bgGreen),
+  bgYellow: createColorFunction(...COLORS.bgYellow),
+  bgBlue: createColorFunction(...COLORS.bgBlue),
+  bgMagenta: createColorFunction(...COLORS.bgMagenta),
+  bgCyan: createColorFunction(...COLORS.bgCyan),
+  bgWhite: createColorFunction(...COLORS.bgWhite),
+  bgBlackBright: createColorFunction(...COLORS.bgBlackBright),
+  bgRedBright: createColorFunction(...COLORS.bgRedBright),
+  bgGreenBright: createColorFunction(...COLORS.bgGreenBright),
+  bgYellowBright: createColorFunction(...COLORS.bgYellowBright),
+  bgBlueBright: createColorFunction(...COLORS.bgBlueBright),
+  bgMagentaBright: createColorFunction(...COLORS.bgMagentaBright),
+  bgCyanBright: createColorFunction(...COLORS.bgCyanBright),
+  bgWhiteBright: createColorFunction(...COLORS.bgWhiteBright),
+  bold: createColorFunction(...COLORS.bold),
+  dim: createColorFunction(...COLORS.dim),
+  italic: createColorFunction(...COLORS.italic),
+  underline: createColorFunction(...COLORS.underline),
+  inverse: createColorFunction(...COLORS.inverse),
+  hidden: createColorFunction(...COLORS.hidden),
+  strikethrough: createColorFunction(...COLORS.strikethrough),
+  reset: createColorFunction(...COLORS.reset)
+};
+Object.keys(COLORS).forEach((key) => {
+  const func = kleur[key];
+  if (func) {
+    Object.keys(COLORS).forEach((chainKey) => {
+      const chainFunc = kleur[chainKey];
+      if (chainFunc) {
+        func[chainKey] = function(text) {
+          if (text !== undefined) {
+            return func(chainFunc(text));
+          }
+          return function(innerText) {
+            return func(chainFunc(innerText));
+          };
+        };
+      }
+    });
+  }
+});
+var kleur_default = kleur;
+
+// packages/readline/index.ts
+class Interface {
+  input;
+  output;
+  promptText;
+  buffer = "";
+  isReading = false;
+  constructor(options) {
+    this.input = options.input || process.stdin;
+    this.output = options.output || process.stdout;
+    this.promptText = options.prompt || "> ";
+    if (this.input.isTTY) {
+      this.input.setRawMode(true);
+    }
+    this.input.setEncoding("utf8");
+    this.setupListeners();
+  }
+  setupListeners() {
+    this.input.on("data", (chunk) => {
+      this.handleInput(chunk);
+    });
+    this.input.on("close", () => {
+      this.close();
+    });
+  }
+  handleInput(chunk) {
+    for (const char of chunk) {
+      switch (char) {
+        case "\r":
+        case `
+`:
+          this.submitLine();
+          break;
+        case "\x03":
+          this.emit("SIGINT");
+          this.close();
+          process.exit(0);
+          break;
+        case "\x7F":
+          this.backspace();
+          break;
+        case "\x1B":
+          break;
+        default:
+          if (char >= " " && char <= "~") {
+            this.buffer += char;
+            this.output.write(char);
+          }
+          break;
+      }
     }
   }
-  return beg + str + end;
-}
-function chain(has, keys) {
-  let ctx = { has, keys };
-  ctx.reset = $.reset.bind(ctx);
-  ctx.bold = $.bold.bind(ctx);
-  ctx.dim = $.dim.bind(ctx);
-  ctx.italic = $.italic.bind(ctx);
-  ctx.underline = $.underline.bind(ctx);
-  ctx.inverse = $.inverse.bind(ctx);
-  ctx.hidden = $.hidden.bind(ctx);
-  ctx.strikethrough = $.strikethrough.bind(ctx);
-  ctx.black = $.black.bind(ctx);
-  ctx.red = $.red.bind(ctx);
-  ctx.green = $.green.bind(ctx);
-  ctx.yellow = $.yellow.bind(ctx);
-  ctx.blue = $.blue.bind(ctx);
-  ctx.magenta = $.magenta.bind(ctx);
-  ctx.cyan = $.cyan.bind(ctx);
-  ctx.white = $.white.bind(ctx);
-  ctx.gray = $.gray.bind(ctx);
-  ctx.grey = $.grey.bind(ctx);
-  ctx.bgBlack = $.bgBlack.bind(ctx);
-  ctx.bgRed = $.bgRed.bind(ctx);
-  ctx.bgGreen = $.bgGreen.bind(ctx);
-  ctx.bgYellow = $.bgYellow.bind(ctx);
-  ctx.bgBlue = $.bgBlue.bind(ctx);
-  ctx.bgMagenta = $.bgMagenta.bind(ctx);
-  ctx.bgCyan = $.bgCyan.bind(ctx);
-  ctx.bgWhite = $.bgWhite.bind(ctx);
-  return ctx;
-}
-function init(open, close) {
-  let blk = {
-    open: `\x1B[${open}m`,
-    close: `\x1B[${close}m`,
-    rgx: new RegExp(`\\x1b\\[${close}m`, "g")
-  };
-  return function(txt) {
-    if (this !== undefined && this.has !== undefined) {
-      !!~this.has.indexOf(open) || (this.has.push(open), this.keys.push(blk));
-      return txt === undefined ? this : $.enabled ? run(this.keys, txt + "") : txt + "";
+  submitLine() {
+    this.output.write(`
+`);
+    const line = this.buffer;
+    this.buffer = "";
+    this.emit("line", line);
+  }
+  backspace() {
+    if (this.buffer.length > 0) {
+      this.buffer = this.buffer.slice(0, -1);
+      this.output.write("\b \b");
     }
-    return txt === undefined ? chain([open], [blk]) : $.enabled ? run([blk], txt + "") : txt + "";
-  };
+  }
+  setPrompt(prompt) {
+    this.promptText = prompt;
+  }
+  prompt(preserveCursor) {
+    this.output.write(this.promptText);
+    this.isReading = true;
+  }
+  question(query, callback) {
+    this.once("line", callback);
+    this.output.write(query);
+    this.isReading = true;
+  }
+  questionAsync(query, options) {
+    return new Promise((resolve) => {
+      if (options?.hideEchoBack) {
+        this.questionHidden(query, resolve, options.mask);
+      } else {
+        this.question(query, resolve);
+      }
+    });
+  }
+  questionHidden(query, callback, mask = "*") {
+    const originalWrite = this.output.write;
+    this.output.write = (chunk) => {
+      if (typeof chunk === "string" && chunk.length === 1 && chunk >= " " && chunk <= "~") {
+        return originalWrite.call(this.output, mask);
+      }
+      return originalWrite.call(this.output, chunk);
+    };
+    this.once("line", (answer) => {
+      this.output.write = originalWrite;
+      this.output.write(`
+`);
+      callback(answer);
+    });
+    this.output.write(query);
+    this.isReading = true;
+  }
+  pause() {
+    this.input.pause();
+    return this;
+  }
+  resume() {
+    this.input.resume();
+    return this;
+  }
+  close() {
+    if (this.input.isTTY) {
+      this.input.setRawMode(false);
+    }
+    this.removeAllListeners();
+    this.input.destroy();
+  }
+  write(data, key) {
+    this.output.write(data);
+  }
+  listeners = new Map;
+  on(event, listener) {
+    if (!this.listeners.has(event)) {
+      this.listeners.set(event, []);
+    }
+    this.listeners.get(event)?.push(listener);
+    return this;
+  }
+  once(event, listener) {
+    const wrapped = (...args) => {
+      listener(...args);
+      this.removeListener(event, wrapped);
+    };
+    return this.on(event, wrapped);
+  }
+  removeListener(event, listener) {
+    const listeners = this.listeners.get(event);
+    if (listeners) {
+      const index = listeners.indexOf(listener);
+      if (index > -1) {
+        listeners.splice(index, 1);
+      }
+    }
+    return this;
+  }
+  removeAllListeners() {
+    this.listeners.clear();
+    return this;
+  }
+  emit(event, ...args) {
+    const listeners = this.listeners.get(event);
+    if (listeners) {
+      listeners.forEach((listener) => listener(...args));
+      return true;
+    }
+    return false;
+  }
 }
-var kleur_default = $;
+function question(query, options) {
+  const rl = new Interface({
+    input: options?.input || globalThis.process?.stdin,
+    output: options?.output || globalThis.process?.stdout,
+    prompt: options?.prompt
+  });
+  return new Promise((resolve) => {
+    rl.question(query, (answer) => {
+      rl.close();
+      resolve(answer);
+    });
+  });
+}
 
-// pegno.ts
-import readline from "readline";
+// p3g.ts
 var workspace = process.env.pegno_WORKSPACE !== undefined && process.env.pegno_WORKSPACE.trim() !== "" ? process.env.pegno_WORKSPACE : join(os.homedir(), ".pegno_workspace/js");
 var tmpdir2 = join(os.tmpdir(), `pegno_install_${Date.now()}`);
 var presetDir = join(workspace, "..", "presets");
@@ -352,28 +542,25 @@ async function askSavePreset() {
     return;
   }
   const pkg = JSON.parse(readFileSync(pkgPath, "utf8"));
-  const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
-  return new Promise((resolve) => {
-    rl.question("Deseja salvar estas depend\xEAncias como miniworkspace? (y/n) ", (ans) => {
-      if (ans.toLowerCase() !== "y") {
-        return rl.close(), resolve();
-      }
-      rl.question("Nome do miniworkspace: ", (name) => {
-        const path = join(presetDir, `${name}.json`);
-        const deps = pkg.dependencies !== undefined ? pkg.dependencies : {};
-        const devDeps = pkg.devDependencies !== undefined ? pkg.devDependencies : {};
-        const data = {
-          name,
-          dependencies: deps,
-          devDependencies: devDeps
-        };
-        writeFileSync(path, JSON.stringify(data, null, 2));
-        info(`\u2705 Miniworkspace "${name}" salvo em ${kleur_default.gray(path)}`);
-        rl.close();
-        resolve();
-      });
-    });
-  });
+  try {
+    const ans = await question("Deseja salvar estas depend\xEAncias como miniworkspace? (y/n) ");
+    if (ans.toLowerCase() !== "y") {
+      return;
+    }
+    const name = await question("Nome do miniworkspace: ");
+    const path = join(presetDir, `${name}.json`);
+    const deps = pkg.dependencies !== undefined ? pkg.dependencies : {};
+    const devDeps = pkg.devDependencies !== undefined ? pkg.devDependencies : {};
+    const data = {
+      name,
+      dependencies: deps,
+      devDependencies: devDeps
+    };
+    writeFileSync(path, JSON.stringify(data, null, 2));
+    info(`\u2705 Miniworkspace "${name}" salvo em ${kleur_default.gray(path)}`);
+  } catch (error2) {
+    return;
+  }
 }
 function usePreset(name) {
   const path = join(presetDir, `${name}.json`);

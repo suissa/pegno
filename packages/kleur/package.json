@@ -1,0 +1,37 @@
+{
+  "name": "@p3g/kleur",
+  "version": "1.0.0",
+  "description": "Native terminal color styling - zero-dependency alternative to chalk/kleur",
+  "main": "index.ts",
+  "types": "index.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./index.ts",
+      "require": "./index.ts"
+    }
+  },
+  "files": [
+    "index.ts"
+  ],
+  "keywords": [
+    "colors",
+    "terminal",
+    "cli",
+    "ansi",
+    "styling",
+    "zero-dependency",
+    "chalk",
+    "kleur"
+  ],
+  "author": "Suissa <inmybox@suissai.dev>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/suissa/p3g.git"
+  },
+  "bugs": {
+    "url": "https://github.com/suissa/p3g/issues"
+  },
+  "homepage": "https://github.com/suissa/p3g#readme"
+}
